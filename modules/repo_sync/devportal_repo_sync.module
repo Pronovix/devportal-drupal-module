@@ -1,0 +1,56 @@
+<?php
+
+/**
+ * Implements hook_cron().
+ */
+function devportal_repo_sync_cron() {
+  foreach (\Drupal\devportal_repo_sync\Entity\RepoImport::loadMultiple() as $repo_import) {
+    /** @var \Drupal\devportal_repo_sync\Entity\RepoImport $repo_import */
+    $repo_import->cleanUp(TRUE);
+    \Drupal\devportal_migrate_batch\Plugin\QueueWorker\ImportQueueWorker::createItem($repo_import);
+  }
+}
+
+/**
+ * Implements hook_entity_operation().
+ */
+function devportal_repo_sync_entity_operation(\Drupal\Core\Entity\EntityInterface $entity) {
+  $operations = [];
+
+  if ($entity instanceof \Drupal\node\Entity\Node && $entity->getType() === 'imported_content') {
+    $operations['view'] = [
+      'title' => t('View'),
+      'url' => $entity->toUrl(),
+      'weight' => -5,
+    ];
+    if (!empty($entity->book['bid'])) {
+      $operations['outline'] = [
+        'title' => t('Manage structure'),
+        'url' => \Drupal\Core\Url::fromRoute('book.admin_edit', [
+          'node' => $entity->book['bid'],
+        ]),
+        'weight' => -1,
+      ];
+    }
+  }
+
+  if ($entity instanceof \Drupal\devportal_api_reference\Entity\APIRef) {
+    $operations['view'] = [
+      'title' => t('View'),
+      'url' => $entity->toUrl(),
+      'weight' => -5,
+    ];
+  }
+
+  return $operations;
+}
+
+/**
+ * Implements hook_cache_flush().
+ */
+function devportal_repo_sync_cache_flush() {
+  /** @var \Drupal\Core\Cache\CacheBackendInterface $cache */
+  $cache = \Drupal::service('cache.repositorysource');
+
+  $cache->invalidateAll();
+}

@@ -1,0 +1,10 @@
+api_response.api_response_type.*:
+  type: config_entity
+  label: 'API Response type settings'
+  mapping:
+    id:
+      type: string
+      label: 'Machine-readable name'
+    label:
+      type: label
+      label: 'Label'

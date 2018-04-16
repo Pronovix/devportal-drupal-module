@@ -1,0 +1,10 @@
+api_global_response.api_global_response_type.*:
+  type: config_entity
+  label: 'API Global Response type settings'
+  mapping:
+    id:
+      type: string
+      label: 'Machine-readable name'
+    label:
+      type: label
+      label: 'Label'

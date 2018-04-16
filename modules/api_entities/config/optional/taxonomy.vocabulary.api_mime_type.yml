@@ -1,0 +1,8 @@
+langcode: en
+status: true
+dependencies: {  }
+name: 'API MIME Type'
+vid: api_mime_type
+description: ''
+hierarchy: 0
+weight: 0

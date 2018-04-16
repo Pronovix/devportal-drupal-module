@@ -1,0 +1,25 @@
+{#
+/**
+ * @file api-endpoint-set.html.twig
+ * Default theme implementation to present API Endpoint Set data.
+ *
+ * This template is used when viewing API Endpoint Set pages.
+ *
+ * Available variables:
+ * - content: A list of content items. Use 'content' to print all content, or
+ *   print a subset such as 'content.field_example'. Fields attached to an
+ *   entity such as 'api_tag' are available as 'content.api_tag'.
+ * - attributes: HTML attributes for the container element.
+ *
+ * @see template_preprocess_api_endpoint_set()
+ *
+ * @ingroup themeable
+ */
+#}
+<div{{ attributes }}>
+  {{ title_prefix }}
+  {{ title_suffix }}
+  <div{{ content_attributes }}>
+    {{ content }}
+  </div>
+</div>

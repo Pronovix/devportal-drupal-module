@@ -1,0 +1,10 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - devportal_api_entities
+id: api_query_param_delete_action
+label: 'Delete API HTTP Method Query Parameter'
+type: api_query_param
+plugin: api_query_param_delete_action
+configuration: {  }

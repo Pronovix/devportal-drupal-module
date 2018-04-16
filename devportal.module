@@ -1,0 +1,8 @@
+<?php
+
+/**
+* Implements hook_toolbar_alter().
+*/
+function devportal_toolbar_alter(&$items) {
+  $items['administration']['#attached']['library'][] = 'devportal/menu';
+}

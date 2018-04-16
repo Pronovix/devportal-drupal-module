@@ -1,0 +1,11 @@
+entity.repo_account.add_form:
+  route_name: 'entity.repo_account.add_form'
+  title: 'Add repo account'
+  appears_on:
+    - entity.repo_account.collection
+
+entity.repo_import.add_form:
+  route_name: entity.repo_import.add_form
+  title: 'Add import'
+  appears_on:
+    - entity.repo_import.collection

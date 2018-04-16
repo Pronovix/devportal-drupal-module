@@ -1,0 +1,10 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.api_method_parameter_type
+id: taxonomy_term.api_method_parameter_type
+target_entity_type_id: taxonomy_term
+target_bundle: api_method_parameter_type
+default_langcode: zxx
+language_alterable: false

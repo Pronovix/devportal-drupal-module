@@ -1,0 +1,15 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - devportal_api_reference
+name: 'GitHub Flavored Markdown'
+format: github_flavored_markdown
+weight: 0
+filters:
+  filter_github_flavored_markdown:
+    id: filter_github_flavored_markdown
+    provider: devportal_api_reference
+    status: true
+    weight: 10
+    settings: {  }

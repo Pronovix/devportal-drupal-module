@@ -1,0 +1,7 @@
+name: Devportal
+description: Common devportal functionality
+package: Devportal
+
+type: module
+core: 8.x
+

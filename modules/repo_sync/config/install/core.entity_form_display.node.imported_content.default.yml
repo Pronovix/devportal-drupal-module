@@ -1,0 +1,66 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.imported_content.field_ic_body
+    - field.field.node.imported_content.field_ic_filename
+    - field.field.node.imported_content.field_ic_provider
+    - field.field.node.imported_content.field_ic_repository
+    - field.field.node.imported_content.field_ic_version
+    - node.type.imported_content
+  module:
+    - path
+id: node.imported_content.default
+targetEntityType: node
+bundle: imported_content
+mode: default
+content:
+  created:
+    type: datetime_timestamp
+    weight: 2
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  path:
+    type: path
+    weight: 5
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  promote:
+    type: boolean_checkbox
+    settings:
+      display_label: true
+    weight: 3
+    region: content
+    third_party_settings: {  }
+  sticky:
+    type: boolean_checkbox
+    settings:
+      display_label: true
+    weight: 4
+    region: content
+    third_party_settings: {  }
+  title:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  uid:
+    type: entity_reference_autocomplete
+    weight: 1
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    region: content
+    third_party_settings: {  }
+hidden:
+  field_ic_body: true
+  field_ic_filename: true
+  field_ic_provider: true
+  field_ic_repository: true
+  field_ic_version: true

@@ -1,0 +1,11 @@
+services:
+  cache.repositorysource:
+    class: Drupal\Core\Cache\CacheBackendInterface
+    tags:
+      - { name: cache.bin }
+    factory: cache_factory:get
+    arguments: [repositorysource]
+  migrate_import_events.devportal_repo_sync_subscriber:
+    class: Drupal\devportal_repo_sync\EventSubscriber\MigrateEventSubscriber
+    tags:
+      - { name: 'event_subscriber' }

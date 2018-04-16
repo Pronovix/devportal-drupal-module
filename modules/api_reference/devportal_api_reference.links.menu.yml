@@ -1,0 +1,30 @@
+entity.api_ref.collection:
+  title: 'API References'
+  route_name: entity.api_ref.collection
+  description: 'List API References'
+  parent: system.admin_devportal
+  weight: -5
+
+entity.api_ref.add_page:
+  title: 'Add API Reference'
+  route_name: entity.api_ref.add_page
+  parent: entity.api_ref.collection
+  description: 'Add a new API Reference.'
+
+entity.api_ref_type.collection:
+  title: 'API Reference types'
+  route_name: entity.api_ref_type.collection
+  description: 'List API Reference types (bundles)'
+  parent: system.admin_devportal_config_ref
+
+entity.api_ref_type.add_form:
+  title: 'Add API Reference type'
+  route_name: entity.api_ref_type.add_form
+  parent: entity.api_ref_type.collection
+  description: 'Add a new API Reference type.'
+
+system.admin_devportal_config_ref:
+  title: 'API reference'
+  route_name: devportal.admin_api_ref_config
+  parent: system.admin_devportal_config
+  description: 'Configure API references'

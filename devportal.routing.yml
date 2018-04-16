@@ -1,0 +1,17 @@
+devportal.admin_page:
+  path: '/admin/devportal'
+  defaults:
+    _controller: '\Drupal\system\Controller\SystemController::systemAdminMenuBlockPage'
+    link_id: 'devportal.admin_page'
+    _title: 'Devportal'
+  requirements:
+    _permission: 'administer devportal'
+
+devportal.admin_config_page:
+  path: '/admin/devportal/config'
+  defaults:
+    _controller: '\Drupal\system\Controller\SystemController::systemAdminMenuBlockPage'
+    link_id: 'devportal.admin_config_page'
+    _title: 'Configuration'
+  requirements:
+    _permission: 'administer devportal'

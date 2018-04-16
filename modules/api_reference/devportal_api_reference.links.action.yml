@@ -1,0 +1,10 @@
+api_ref.add_page:
+  route_name: entity.api_ref.add_page
+  title: 'Add API Reference'
+  appears_on:
+    - entity.api_ref.collection
+entity.api_ref_type.add_form:
+  route_name: 'entity.api_ref_type.add_form'
+  title: 'Add API Reference type'
+  appears_on:
+    - entity.api_ref_type.collection

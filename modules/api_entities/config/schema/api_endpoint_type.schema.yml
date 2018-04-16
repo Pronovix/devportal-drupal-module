@@ -1,0 +1,10 @@
+api_endpoint.api_endpoint_type.*:
+  type: config_entity
+  label: 'API Endpoint type settings'
+  mapping:
+    id:
+      type: string
+      label: 'Machine-readable name'
+    label:
+      type: label
+      label: 'Label'

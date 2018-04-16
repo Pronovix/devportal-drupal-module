@@ -1,0 +1,53 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.imported_content.field_ic_body
+    - field.field.node.imported_content.field_ic_filename
+    - field.field.node.imported_content.field_ic_provider
+    - field.field.node.imported_content.field_ic_repository
+    - field.field.node.imported_content.field_ic_version
+    - node.type.imported_content
+  module:
+    - text
+    - user
+id: node.imported_content.default
+targetEntityType: node
+bundle: imported_content
+mode: default
+content:
+  field_ic_body:
+    type: text_default
+    weight: 4
+    region: content
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+  field_ic_filename:
+    type: text_default
+    weight: 3
+    region: content
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+  field_ic_repository:
+    type: text_default
+    weight: 2
+    region: content
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+  field_ic_version:
+    type: text_default
+    weight: 1
+    region: content
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+  links:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  field_ic_provider: true

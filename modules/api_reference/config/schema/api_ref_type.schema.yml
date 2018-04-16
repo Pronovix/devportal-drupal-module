@@ -1,0 +1,21 @@
+devportal_api_reference.api_ref_type.*:
+  type: config_entity
+  label: 'API Reference Type'
+  mapping:
+    id:
+      type: string
+      label: 'ID'
+    label:
+      type: label
+      label: 'Label'
+    description:
+      type: string
+      label: 'Description'
+    filtered_extensions:
+      type: sequence
+      sequence:
+        type: string
+    common_extensions:
+      type: sequence
+      sequence:
+        type: string

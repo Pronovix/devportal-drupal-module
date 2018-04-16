@@ -1,0 +1,749 @@
+entity.api_doc.collection_tab:
+  title: 'API Documentations'
+  route_name: entity.api_doc.collection
+  base_route: system.admin_content
+entity.api_doc.canonical:
+  title: View
+  route_name: entity.api_doc.canonical
+  base_route: entity.api_doc.canonical
+entity.api_doc.edit_form:
+  title: Edit
+  route_name: entity.api_doc.edit_form
+  base_route: entity.api_doc.canonical
+entity.api_doc.delete_form:
+  title: Delete
+  route_name: entity.api_doc.delete_form
+  base_route: entity.api_doc.canonical
+entity.api_doc.version_history:
+  title: Revisions
+  route_name: entity.api_doc.version_history
+  base_route: entity.api_doc.canonical
+entity.api_doc.settings:
+  title: Settings
+  route_name: entity.api_doc.settings
+  base_route: entity.api_doc.settings
+entity.api_doc_type.edit_form:
+  title: 'Edit'
+  route_name: entity.api_doc_type.edit_form
+  base_route: entity.api_doc_type.edit_form
+
+entity.api_contact.collection_tab:
+  title: 'API Contacts'
+  route_name: entity.api_contact.collection
+  base_route: system.admin_content
+entity.api_contact.canonical:
+  title: View
+  route_name: entity.api_contact.canonical
+  base_route: entity.api_contact.canonical
+entity.api_contact.edit_form:
+  title: Edit
+  route_name: entity.api_contact.edit_form
+  base_route: entity.api_contact.canonical
+entity.api_contact.delete_form:
+  title: Delete
+  route_name: entity.api_contact.delete_form
+  base_route: entity.api_contact.canonical
+entity.api_contact.version_history:
+  title: Revisions
+  route_name: entity.api_contact.version_history
+  base_route: entity.api_contact.canonical
+entity.api_contact.settings:
+  title: Settings
+  route_name: entity.api_contact.settings
+  base_route: entity.api_contact.settings
+entity.api_contact_type.edit_form:
+  title: 'Edit'
+  route_name: entity.api_contact_type.edit_form
+  base_route: entity.api_contact_type.edit_form
+
+entity.api_license.collection_tab:
+  title: 'API Licenses'
+  route_name: entity.api_license.collection
+  base_route: system.admin_content
+entity.api_license.canonical:
+  title: View
+  route_name: entity.api_license.canonical
+  base_route: entity.api_license.canonical
+entity.api_license.edit_form:
+  title: Edit
+  route_name: entity.api_license.edit_form
+  base_route: entity.api_license.canonical
+entity.api_license.delete_form:
+  title: Delete
+  route_name: entity.api_license.delete_form
+  base_route: entity.api_license.canonical
+entity.api_license.version_history:
+  title: Revisions
+  route_name: entity.api_license.version_history
+  base_route: entity.api_license.canonical
+entity.api_license.settings:
+  title: Settings
+  route_name: entity.api_license.settings
+  base_route: entity.api_license.settings
+entity.api_license_type.edit_form:
+  title: 'Edit'
+  route_name: entity.api_license_type.edit_form
+  base_route: entity.api_license_type.edit_form
+
+entity.api_tag.collection_tab:
+  title: 'API Tags'
+  route_name: entity.api_tag.collection
+  base_route: system.admin_content
+entity.api_tag.canonical:
+  title: View
+  route_name: entity.api_tag.canonical
+  base_route: entity.api_tag.canonical
+entity.api_tag.edit_form:
+  title: Edit
+  route_name: entity.api_tag.edit_form
+  base_route: entity.api_tag.canonical
+entity.api_tag.delete_form:
+  title: Delete
+  route_name: entity.api_tag.delete_form
+  base_route: entity.api_tag.canonical
+entity.api_tag.version_history:
+  title: Revisions
+  route_name: entity.api_tag.version_history
+  base_route: entity.api_tag.canonical
+entity.api_tag.settings:
+  title: Settings
+  route_name: entity.api_tag.settings
+  base_route: entity.api_tag.settings
+entity.api_tag_type.edit_form:
+  title: 'Edit'
+  route_name: entity.api_tag_type.edit_form
+  base_route: entity.api_tag_type.edit_form
+
+entity.api_version_tag.collection_tab:
+  title: 'API Version Tags'
+  route_name: entity.api_version_tag.collection
+  base_route: system.admin_content
+entity.api_version_tag.canonical:
+  title: View
+  route_name: entity.api_version_tag.canonical
+  base_route: entity.api_version_tag.canonical
+entity.api_version_tag.edit_form:
+  title: Edit
+  route_name: entity.api_version_tag.edit_form
+  base_route: entity.api_version_tag.canonical
+entity.api_version_tag.delete_form:
+  title: Delete
+  route_name: entity.api_version_tag.delete_form
+  base_route: entity.api_version_tag.canonical
+entity.api_version_tag.settings:
+  title: Settings
+  route_name: entity.api_version_tag.settings
+  base_route: entity.api_version_tag.settings
+entity.api_version_tag_type.edit_form:
+  title: 'Edit'
+  route_name: entity.api_version_tag_type.edit_form
+  base_route: entity.api_version_tag_type.edit_form
+
+entity.api_endpoint.collection_tab:
+  title: 'API Endpoints'
+  route_name: entity.api_endpoint.collection
+  base_route: system.admin_content
+entity.api_endpoint.canonical:
+  title: View
+  route_name: entity.api_endpoint.canonical
+  base_route: entity.api_endpoint.canonical
+entity.api_endpoint.edit_form:
+  title: Edit
+  route_name: entity.api_endpoint.edit_form
+  base_route: entity.api_endpoint.canonical
+entity.api_endpoint.delete_form:
+  title: Delete
+  route_name: entity.api_endpoint.delete_form
+  base_route: entity.api_endpoint.canonical
+entity.api_endpoint.version_history:
+  title: Revisions
+  route_name: entity.api_endpoint.version_history
+  base_route: entity.api_endpoint.canonical
+entity.api_endpoint.settings:
+  title: Settings
+  route_name: entity.api_endpoint.settings
+  base_route: entity.api_endpoint.settings
+entity.api_endpoint_type.edit_form:
+  title: 'Edit'
+  route_name: entity.api_endpoint_type.edit_form
+  base_route: entity.api_endpoint_type.edit_form
+
+entity.api_endpoint_set.collection_tab:
+  title: 'API Endpoint Sets'
+  route_name: entity.api_endpoint_set.collection
+  base_route: system.admin_content
+entity.api_endpoint_set.canonical:
+  title: View
+  route_name: entity.api_endpoint_set.canonical
+  base_route: entity.api_endpoint_set.canonical
+entity.api_endpoint_set.edit_form:
+  title: Edit
+  route_name: entity.api_endpoint_set.edit_form
+  base_route: entity.api_endpoint_set.canonical
+entity.api_endpoint_set.delete_form:
+  title: Delete
+  route_name: entity.api_endpoint_set.delete_form
+  base_route: entity.api_endpoint_set.canonical
+entity.api_endpoint_set.version_history:
+  title: Revisions
+  route_name: entity.api_endpoint_set.version_history
+  base_route: entity.api_endpoint_set.canonical
+entity.api_endpoint_set.settings:
+  title: Settings
+  route_name: entity.api_endpoint_set.settings
+  base_route: entity.api_endpoint_set.settings
+entity.api_endpoint_set_type.edit_form:
+  title: 'Edit'
+  route_name: entity.api_endpoint_set_type.edit_form
+  base_route: entity.api_endpoint_set_type.edit_form
+
+entity.api_method.collection_tab:
+  title: 'API HTTP Methods'
+  route_name: entity.api_method.collection
+  base_route: system.admin_content
+entity.api_method.canonical:
+  title: View
+  route_name: entity.api_method.canonical
+  base_route: entity.api_method.canonical
+entity.api_method.edit_form:
+  title: Edit
+  route_name: entity.api_method.edit_form
+  base_route: entity.api_method.canonical
+entity.api_method.delete_form:
+  title: Delete
+  route_name: entity.api_method.delete_form
+  base_route: entity.api_method.canonical
+entity.api_method.version_history:
+  title: Revisions
+  route_name: entity.api_method.version_history
+  base_route: entity.api_method.canonical
+entity.api_method.settings:
+  title: Settings
+  route_name: entity.api_method.settings
+  base_route: entity.api_method.settings
+entity.api_method_type.edit_form:
+  title: 'Edit'
+  route_name: entity.api_method_type.edit_form
+  base_route: entity.api_method_type.edit_form
+
+entity.api_query_param.collection_tab:
+  title: 'API HTTP Method Query Parameters'
+  route_name: entity.api_query_param.collection
+  base_route: system.admin_content
+entity.api_query_param.canonical:
+  title: View
+  route_name: entity.api_query_param.canonical
+  base_route: entity.api_query_param.canonical
+entity.api_query_param.edit_form:
+  title: Edit
+  route_name: entity.api_query_param.edit_form
+  base_route: entity.api_query_param.canonical
+entity.api_query_param.delete_form:
+  title: Delete
+  route_name: entity.api_query_param.delete_form
+  base_route: entity.api_query_param.canonical
+entity.api_query_param.version_history:
+  title: Revisions
+  route_name: entity.api_query_param.version_history
+  base_route: entity.api_query_param.canonical
+entity.api_query_param.settings:
+  title: Settings
+  route_name: entity.api_query_param.settings
+  base_route: entity.api_query_param.settings
+entity.api_query_param_type.edit_form:
+  title: 'Edit'
+  route_name: entity.api_query_param_type.edit_form
+  base_route: entity.api_query_param_type.edit_form
+
+entity.api_header_param.collection_tab:
+  title: 'API HTTP Method Header Parameters'
+  route_name: entity.api_header_param.collection
+  base_route: system.admin_content
+entity.api_header_param.canonical:
+  title: View
+  route_name: entity.api_header_param.canonical
+  base_route: entity.api_header_param.canonical
+entity.api_header_param.edit_form:
+  title: Edit
+  route_name: entity.api_header_param.edit_form
+  base_route: entity.api_header_param.canonical
+entity.api_header_param.delete_form:
+  title: Delete
+  route_name: entity.api_header_param.delete_form
+  base_route: entity.api_header_param.canonical
+entity.api_header_param.version_history:
+  title: Revisions
+  route_name: entity.api_header_param.version_history
+  base_route: entity.api_header_param.canonical
+entity.api_header_param.settings:
+  title: Settings
+  route_name: entity.api_header_param.settings
+  base_route: entity.api_header_param.settings
+entity.api_header_param_type.edit_form:
+  title: 'Edit'
+  route_name: entity.api_header_param_type.edit_form
+  base_route: entity.api_header_param_type.edit_form
+
+entity.api_body_param.collection_tab:
+  title: 'API HTTP Method Body Parameters'
+  route_name: entity.api_body_param.collection
+  base_route: system.admin_content
+entity.api_body_param.canonical:
+  title: View
+  route_name: entity.api_body_param.canonical
+  base_route: entity.api_body_param.canonical
+entity.api_body_param.edit_form:
+  title: Edit
+  route_name: entity.api_body_param.edit_form
+  base_route: entity.api_body_param.canonical
+entity.api_body_param.delete_form:
+  title: Delete
+  route_name: entity.api_body_param.delete_form
+  base_route: entity.api_body_param.canonical
+entity.api_body_param.version_history:
+  title: Revisions
+  route_name: entity.api_body_param.version_history
+  base_route: entity.api_body_param.canonical
+entity.api_body_param.settings:
+  title: Settings
+  route_name: entity.api_body_param.settings
+  base_route: entity.api_body_param.settings
+entity.api_body_param_type.edit_form:
+  title: 'Edit'
+  route_name: entity.api_body_param_type.edit_form
+  base_route: entity.api_body_param_type.edit_form
+
+entity.api_path_param.collection_tab:
+  title: 'API HTTP Method Path Parameters'
+  route_name: entity.api_path_param.collection
+  base_route: system.admin_content
+entity.api_path_param.canonical:
+  title: View
+  route_name: entity.api_path_param.canonical
+  base_route: entity.api_path_param.canonical
+entity.api_path_param.edit_form:
+  title: Edit
+  route_name: entity.api_path_param.edit_form
+  base_route: entity.api_path_param.canonical
+entity.api_path_param.delete_form:
+  title: Delete
+  route_name: entity.api_path_param.delete_form
+  base_route: entity.api_path_param.canonical
+entity.api_path_param.version_history:
+  title: Revisions
+  route_name: entity.api_path_param.version_history
+  base_route: entity.api_path_param.canonical
+entity.api_path_param.settings:
+  title: Settings
+  route_name: entity.api_path_param.settings
+  base_route: entity.api_path_param.settings
+entity.api_path_param_type.edit_form:
+  title: 'Edit'
+  route_name: entity.api_path_param_type.edit_form
+  base_route: entity.api_path_param_type.edit_form
+
+entity.api_form_data_param.collection_tab:
+  title: 'API HTTP Method Form Data Parameters'
+  route_name: entity.api_form_data_param.collection
+  base_route: system.admin_content
+entity.api_form_data_param.canonical:
+  title: View
+  route_name: entity.api_form_data_param.canonical
+  base_route: entity.api_form_data_param.canonical
+entity.api_form_data_param.edit_form:
+  title: Edit
+  route_name: entity.api_form_data_param.edit_form
+  base_route: entity.api_form_data_param.canonical
+entity.api_form_data_param.delete_form:
+  title: Delete
+  route_name: entity.api_form_data_param.delete_form
+  base_route: entity.api_form_data_param.canonical
+entity.api_form_data_param.version_history:
+  title: Revisions
+  route_name: entity.api_form_data_param.version_history
+  base_route: entity.api_form_data_param.canonical
+entity.api_form_data_param.settings:
+  title: Settings
+  route_name: entity.api_form_data_param.settings
+  base_route: entity.api_form_data_param.settings
+entity.api_form_data_param_type.edit_form:
+  title: 'Edit'
+  route_name: entity.api_form_data_param_type.edit_form
+  base_route: entity.api_form_data_param_type.edit_form
+
+entity.api_schema.collection_tab:
+  title: 'API Schemas'
+  route_name: entity.api_schema.collection
+  base_route: system.admin_content
+entity.api_schema.canonical:
+  title: View
+  route_name: entity.api_schema.canonical
+  base_route: entity.api_schema.canonical
+entity.api_schema.edit_form:
+  title: Edit
+  route_name: entity.api_schema.edit_form
+  base_route: entity.api_schema.canonical
+entity.api_schema.delete_form:
+  title: Delete
+  route_name: entity.api_schema.delete_form
+  base_route: entity.api_schema.canonical
+entity.api_schema.version_history:
+  title: Revisions
+  route_name: entity.api_schema.version_history
+  base_route: entity.api_schema.canonical
+entity.api_schema.settings:
+  title: Settings
+  route_name: entity.api_schema.settings
+  base_route: entity.api_schema.settings
+entity.api_schema_type.edit_form:
+  title: 'Edit'
+  route_name: entity.api_schema_type.edit_form
+  base_route: entity.api_schema_type.edit_form
+
+entity.api_global_schema.collection_tab:
+  title: 'API Global Schemas'
+  route_name: entity.api_global_schema.collection
+  base_route: system.admin_content
+entity.api_global_schema.canonical:
+  title: View
+  route_name: entity.api_global_schema.canonical
+  base_route: entity.api_global_schema.canonical
+entity.api_global_schema.edit_form:
+  title: Edit
+  route_name: entity.api_global_schema.edit_form
+  base_route: entity.api_global_schema.canonical
+entity.api_global_schema.delete_form:
+  title: Delete
+  route_name: entity.api_global_schema.delete_form
+  base_route: entity.api_global_schema.canonical
+entity.api_global_schema.version_history:
+  title: Revisions
+  route_name: entity.api_global_schema.version_history
+  base_route: entity.api_global_schema.canonical
+entity.api_global_schema.settings:
+  title: Settings
+  route_name: entity.api_global_schema.settings
+  base_route: entity.api_global_schema.settings
+entity.api_global_schema_type.edit_form:
+  title: 'Edit'
+  route_name: entity.api_global_schema_type.edit_form
+  base_route: entity.api_global_schema_type.edit_form
+
+entity.api_param.collection_tab:
+  title: 'API Paremeters'
+  route_name: entity.api_param.collection
+  base_route: system.admin_content
+entity.api_param.canonical:
+  title: View
+  route_name: entity.api_param.canonical
+  base_route: entity.api_param.canonical
+entity.api_param.edit_form:
+  title: Edit
+  route_name: entity.api_param.edit_form
+  base_route: entity.api_param.canonical
+entity.api_param.delete_form:
+  title: Delete
+  route_name: entity.api_param.delete_form
+  base_route: entity.api_param.canonical
+entity.api_param.version_history:
+  title: Revisions
+  route_name: entity.api_param.version_history
+  base_route: entity.api_param.canonical
+entity.api_param.settings:
+  title: Settings
+  route_name: entity.api_param.settings
+  base_route: entity.api_param.settings
+entity.api_param_type.edit_form:
+  title: 'Edit'
+  route_name: entity.api_param_type.edit_form
+  base_route: entity.api_param_type.edit_form
+
+entity.api_global_param.collection_tab:
+  title: 'API Global Parameters'
+  route_name: entity.api_global_param.collection
+  base_route: system.admin_content
+entity.api_global_param.canonical:
+  title: View
+  route_name: entity.api_global_param.canonical
+  base_route: entity.api_global_param.canonical
+entity.api_global_param.edit_form:
+  title: Edit
+  route_name: entity.api_global_param.edit_form
+  base_route: entity.api_global_param.canonical
+entity.api_global_param.delete_form:
+  title: Delete
+  route_name: entity.api_global_param.delete_form
+  base_route: entity.api_global_param.canonical
+entity.api_global_param.version_history:
+  title: Revisions
+  route_name: entity.api_global_param.version_history
+  base_route: entity.api_global_param.canonical
+entity.api_global_param.settings:
+  title: Settings
+  route_name: entity.api_global_param.settings
+  base_route: entity.api_global_param.settings
+entity.api_global_param_type.edit_form:
+  title: 'Edit'
+  route_name: entity.api_global_param_type.edit_form
+  base_route: entity.api_global_param_type.edit_form
+
+entity.api_meta_param.collection_tab:
+  title: 'API Meta Parameters'
+  route_name: entity.api_meta_param.collection
+  base_route: system.admin_content
+entity.api_meta_param.canonical:
+  title: View
+  route_name: entity.api_meta_param.canonical
+  base_route: entity.api_meta_param.canonical
+entity.api_meta_param.edit_form:
+  title: Edit
+  route_name: entity.api_meta_param.edit_form
+  base_route: entity.api_meta_param.canonical
+entity.api_meta_param.delete_form:
+  title: Delete
+  route_name: entity.api_meta_param.delete_form
+  base_route: entity.api_meta_param.canonical
+entity.api_meta_param.version_history:
+  title: Revisions
+  route_name: entity.api_meta_param.version_history
+  base_route: entity.api_meta_param.canonical
+entity.api_meta_param.settings:
+  title: Settings
+  route_name: entity.api_meta_param.settings
+  base_route: entity.api_meta_param.settings
+entity.api_meta_param_type.edit_form:
+  title: 'Edit'
+  route_name: entity.api_meta_param_type.edit_form
+  base_route: entity.api_meta_param_type.edit_form
+
+entity.api_param_item.collection_tab:
+  title: 'API HTTP Method Parameter Items'
+  route_name: entity.api_param_item.collection
+  base_route: system.admin_content
+entity.api_param_item.canonical:
+  title: View
+  route_name: entity.api_param_item.canonical
+  base_route: entity.api_param_item.canonical
+entity.api_param_item.edit_form:
+  title: Edit
+  route_name: entity.api_param_item.edit_form
+  base_route: entity.api_param_item.canonical
+entity.api_param_item.delete_form:
+  title: Delete
+  route_name: entity.api_param_item.delete_form
+  base_route: entity.api_param_item.canonical
+entity.api_param_item.version_history:
+  title: Revisions
+  route_name: entity.api_param_item.version_history
+  base_route: entity.api_param_item.canonical
+entity.api_param_item.settings:
+  title: Settings
+  route_name: entity.api_param_item.settings
+  base_route: entity.api_param_item.settings
+entity.api_param_item_type.edit_form:
+  title: 'Edit'
+  route_name: entity.api_param_item_type.edit_form
+  base_route: entity.api_param_item_type.edit_form
+
+entity.api_global_response.collection_tab:
+  title: 'API Global Responses'
+  route_name: entity.api_global_response.collection
+  base_route: system.admin_content
+entity.api_global_response.canonical:
+  title: View
+  route_name: entity.api_global_response.canonical
+  base_route: entity.api_global_response.canonical
+entity.api_global_response.edit_form:
+  title: Edit
+  route_name: entity.api_global_response.edit_form
+  base_route: entity.api_global_response.canonical
+entity.api_global_response.delete_form:
+  title: Delete
+  route_name: entity.api_global_response.delete_form
+  base_route: entity.api_global_response.canonical
+entity.api_global_response.version_history:
+  title: Revisions
+  route_name: entity.api_global_response.version_history
+  base_route: entity.api_global_response.canonical
+entity.api_global_response.settings:
+  title: Settings
+  route_name: entity.api_global_response.settings
+  base_route: entity.api_global_response.settings
+entity.api_global_response_type.edit_form:
+  title: 'Edit'
+  route_name: entity.api_global_response_type.edit_form
+  base_route: entity.api_global_response_type.edit_form
+
+entity.api_response_header.collection_tab:
+  title: 'API Response Headers'
+  route_name: entity.api_response_header.collection
+  base_route: system.admin_content
+entity.api_response_header.canonical:
+  title: View
+  route_name: entity.api_response_header.canonical
+  base_route: entity.api_response_header.canonical
+entity.api_response_header.edit_form:
+  title: Edit
+  route_name: entity.api_response_header.edit_form
+  base_route: entity.api_response_header.canonical
+entity.api_response_header.delete_form:
+  title: Delete
+  route_name: entity.api_response_header.delete_form
+  base_route: entity.api_response_header.canonical
+entity.api_response_header.version_history:
+  title: Revisions
+  route_name: entity.api_response_header.version_history
+  base_route: entity.api_response_header.canonical
+entity.api_response_header.settings:
+  title: Settings
+  route_name: entity.api_response_header.settings
+  base_route: entity.api_response_header.settings
+entity.api_response_header_type.edit_form:
+  title: 'Edit'
+  route_name: entity.api_response_header_type.edit_form
+  base_route: entity.api_response_header_type.edit_form
+
+entity.api_response_example.collection_tab:
+  title: 'API Response Examples'
+  route_name: entity.api_response_example.collection
+  base_route: system.admin_content
+entity.api_response_example.canonical:
+  title: View
+  route_name: entity.api_response_example.canonical
+  base_route: entity.api_response_example.canonical
+entity.api_response_example.edit_form:
+  title: Edit
+  route_name: entity.api_response_example.edit_form
+  base_route: entity.api_response_example.canonical
+entity.api_response_example.delete_form:
+  title: Delete
+  route_name: entity.api_response_example.delete_form
+  base_route: entity.api_response_example.canonical
+entity.api_response_example.version_history:
+  title: Revisions
+  route_name: entity.api_response_example.version_history
+  base_route: entity.api_response_example.canonical
+entity.api_response_example.settings:
+  title: Settings
+  route_name: entity.api_response_example.settings
+  base_route: entity.api_response_example.settings
+entity.api_response_example_type.edit_form:
+  title: 'Edit'
+  route_name: entity.api_response_example_type.edit_form
+  base_route: entity.api_response_example_type.edit_form
+
+entity.api_response_set.collection_tab:
+  title: 'API Response Sets'
+  route_name: entity.api_response_set.collection
+  base_route: system.admin_content
+entity.api_response_set.canonical:
+  title: View
+  route_name: entity.api_response_set.canonical
+  base_route: entity.api_response_set.canonical
+entity.api_response_set.edit_form:
+  title: Edit
+  route_name: entity.api_response_set.edit_form
+  base_route: entity.api_response_set.canonical
+entity.api_response_set.delete_form:
+  title: Delete
+  route_name: entity.api_response_set.delete_form
+  base_route: entity.api_response_set.canonical
+entity.api_response_set.version_history:
+  title: Revisions
+  route_name: entity.api_response_set.version_history
+  base_route: entity.api_response_set.canonical
+entity.api_response_set.settings:
+  title: Settings
+  route_name: entity.api_response_set.settings
+  base_route: entity.api_response_set.settings
+entity.api_response_set_type.edit_form:
+  title: 'Edit'
+  route_name: entity.api_response_set_type.edit_form
+  base_route: entity.api_response_set_type.edit_form
+
+entity.api_response.collection_tab:
+  title: 'API Responses'
+  route_name: entity.api_response.collection
+  base_route: system.admin_content
+entity.api_response.canonical:
+  title: View
+  route_name: entity.api_response.canonical
+  base_route: entity.api_response.canonical
+entity.api_response.edit_form:
+  title: Edit
+  route_name: entity.api_response.edit_form
+  base_route: entity.api_response.canonical
+entity.api_response.delete_form:
+  title: Delete
+  route_name: entity.api_response.delete_form
+  base_route: entity.api_response.canonical
+entity.api_response.version_history:
+  title: Revisions
+  route_name: entity.api_response.version_history
+  base_route: entity.api_response.canonical
+entity.api_response.settings:
+  title: Settings
+  route_name: entity.api_response.settings
+  base_route: entity.api_response.settings
+entity.api_response_type.edit_form:
+  title: 'Edit'
+  route_name: entity.api_response_type.edit_form
+  base_route: entity.api_response_type.edit_form
+
+entity.api_ext_doc.collection_tab:
+  title: 'API External Documentations'
+  route_name: entity.api_ext_doc.collection
+  base_route: system.admin_content
+entity.api_ext_doc.canonical:
+  title: View
+  route_name: entity.api_ext_doc.canonical
+  base_route: entity.api_ext_doc.canonical
+entity.api_ext_doc.edit_form:
+  title: Edit
+  route_name: entity.api_ext_doc.edit_form
+  base_route: entity.api_ext_doc.canonical
+entity.api_ext_doc.delete_form:
+  title: Delete
+  route_name: entity.api_ext_doc.delete_form
+  base_route: entity.api_ext_doc.canonical
+entity.api_ext_doc.version_history:
+  title: Revisions
+  route_name: entity.api_ext_doc.version_history
+  base_route: entity.api_ext_doc.canonical
+entity.api_ext_doc.settings:
+  title: Settings
+  route_name: entity.api_ext_doc.settings
+  base_route: entity.api_ext_doc.settings
+entity.api_ext_doc_type.edit_form:
+  title: 'Edit'
+  route_name: entity.api_ext_doc_type.edit_form
+  base_route: entity.api_ext_doc_type.edit_form
+
+entity.api_info.collection_tab:
+  title: 'API Infos'
+  route_name: entity.api_info.collection
+  base_route: system.admin_content
+entity.api_info.canonical:
+  title: View
+  route_name: entity.api_info.canonical
+  base_route: entity.api_info.canonical
+entity.api_info.edit_form:
+  title: Edit
+  route_name: entity.api_info.edit_form
+  base_route: entity.api_info.canonical
+entity.api_info.delete_form:
+  title: Delete
+  route_name: entity.api_info.delete_form
+  base_route: entity.api_info.canonical
+entity.api_info.version_history:
+  title: Revisions
+  route_name: entity.api_info.version_history
+  base_route: entity.api_info.canonical
+entity.api_info.settings:
+  title: Settings
+  route_name: entity.api_info.settings
+  base_route: entity.api_info.settings
+entity.api_info_type.edit_form:
+  title: 'Edit'
+  route_name: entity.api_info_type.edit_form
+  base_route: entity.api_info_type.edit_form

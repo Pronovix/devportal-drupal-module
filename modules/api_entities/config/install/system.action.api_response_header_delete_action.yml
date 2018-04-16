@@ -1,0 +1,10 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - devportal_api_entities
+id: api_response_header_delete_action
+label: 'Delete API Response Header'
+type: api_response_header
+plugin: api_response_header_delete_action
+configuration: {  }

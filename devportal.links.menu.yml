@@ -1,0 +1,12 @@
+system.admin_devportal:
+  title: 'Devportal'
+  description: 'Devportal settings'
+  route_name: 'devportal.admin_page'
+  parent: 'system.admin'
+  weight: 2
+
+system.admin_devportal_config:
+  title: 'Configuration'
+  route_name: 'devportal.admin_config_page'
+  parent: 'system.admin_devportal'
+  description: 'Manage API reference configurations.'

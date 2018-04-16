@@ -1,0 +1,10 @@
+api_response_example.api_response_example_type.*:
+  type: config_entity
+  label: 'API Response Example type settings'
+  mapping:
+    id:
+      type: string
+      label: 'Machine-readable name'
+    label:
+      type: label
+      label: 'Label'

@@ -1,0 +1,10 @@
+api_header_param.api_header_param_type.*:
+  type: config_entity
+  label: 'API HTTP Method Header Parameter type settings'
+  mapping:
+    id:
+      type: string
+      label: 'Machine-readable name'
+    label:
+      type: label
+      label: 'Label'

@@ -1,0 +1,13 @@
+{
+    "name": "Devportal",
+    "type": "drupal-module",
+    "license": "GPL-2.0+",
+    "require": {
+        "php": ">=5.6.0",
+        "knplabs/github-api": "^2.0",
+        "php-http/guzzle6-adapter": "^v1.1",
+        "league/commonmark": "^0.15.3",
+        "michelf/php-markdown": "^1.7.0",
+        "erusev/parsedown": "^1.6.3"
+    }
+}

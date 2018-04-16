@@ -1,0 +1,8 @@
+devportal.admin_api_ref_config:
+  path: '/admin/devportal/config/reference'
+  defaults:
+    _controller: '\Drupal\system\Controller\SystemController::systemAdminMenuBlockPage'
+    link_id: 'devportal.admin_api_ref_config'
+    _title: 'API Reference'
+  requirements:
+    _permission: 'administer devportal'

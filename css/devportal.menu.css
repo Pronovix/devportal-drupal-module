@@ -1,0 +1,29 @@
+/**
+ * @file
+ * Devportal toolbar icon styling.
+ */
+
+/* Default Drupal toolbar. */
+.toolbar-bar .toolbar-icon-system-admin-devportal:before {
+  background-image: url("../icons/787878/devportal.svg");
+  transition: width 0s;
+}
+.toolbar-icon-system-admin-devportal:active:before,
+.toolbar-icon-system-admin-devportal.is-active:before {
+  background-image: url("../icons/000000/devportal.svg");
+}
+
+/* Adminimal toolbar. */
+.adminimal-admin-toolbar .toolbar-tray-horizontal .menu-item--expanded:hover .toolbar-icon-system-admin-devportal:before,
+.adminimal-admin-toolbar .toolbar-icon-system-admin-devportal:hover:before,
+.adminimal-admin-toolbar .toolbar-icon-system-admin-devportal:active:before,
+.adminimal-admin-toolbar .toolbar-icon-system-admin-devportal.is-active:before {
+  background-image: url("../icons/ffffff/devportal.svg");
+}
+.adminimal .toolbar-icon-system-admin-devportal:active:before,
+.adminimal .toolbar-icon-system-admin-devportal.is-active:before {
+  background-image: url("../icons/787878/devportal.svg");
+}
+.adminimal-admin-toolbar .toolbar-icon-system-admin-devportal:before {
+  background-image: url("../icons/acacac/devportal.svg");
+}

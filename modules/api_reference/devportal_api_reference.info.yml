@@ -1,0 +1,15 @@
+name: Devportal API Reference
+description: API reference entity
+package: Devportal
+
+type: module
+core: 8.x
+
+dependencies:
+  - drupal:file
+  - drupal:filter
+  - drupal:options
+  - views:views
+  - devportal:devportal
+  - devportal:devportal_migrate_batch
+  - swagger_ui_formatter:swagger_ui_formatter

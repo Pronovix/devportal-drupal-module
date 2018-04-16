@@ -1,0 +1,10 @@
+api_contact.api_contact_type.*:
+  type: config_entity
+  label: 'API Contact type settings'
+  mapping:
+    id:
+      type: string
+      label: 'Machine-readable name'
+    label:
+      type: label
+      label: 'Label'

@@ -1,0 +1,10 @@
+api_tag.api_tag_type.*:
+  type: config_entity
+  label: 'API Tag type settings'
+  mapping:
+    id:
+      type: string
+      label: 'Machine-readable name'
+    label:
+      type: label
+      label: 'Label'

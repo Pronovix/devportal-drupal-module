@@ -1,0 +1,10 @@
+api_param.api_param_type.*:
+  type: config_entity
+  label: 'API Parameter type settings'
+  mapping:
+    id:
+      type: string
+      label: 'Machine-readable name'
+    label:
+      type: label
+      label: 'Label'

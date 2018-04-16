@@ -1,0 +1,3 @@
+administer devportal:
+  title: 'Administer devportal'
+  restrict access: true

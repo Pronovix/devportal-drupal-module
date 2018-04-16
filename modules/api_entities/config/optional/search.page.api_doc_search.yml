@@ -1,0 +1,12 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - devportal_api_entities
+id: api_doc_search
+label: API Documentation
+path: api_doc
+weight: -10
+plugin: api_doc_search
+configuration:
+  rankings: {  }

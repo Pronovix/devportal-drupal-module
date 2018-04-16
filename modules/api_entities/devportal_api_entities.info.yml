@@ -1,0 +1,19 @@
+name: Devportal Docs
+description: Entity type definitions and migrations for Devportal Docs.
+package: Devportal
+
+dependencies:
+  - drupal:file
+  - drupal:filter
+  - drupal:link
+  - drupal:node
+  - drupal:options
+  - drupal:taxonomy
+  - entity_reference_revisions:entity_reference_revisions
+  - inline_entity_form:inline_entity_form
+  - migrate_plus:migrate_plus
+  - devportal:devportal_migrate_batch
+  - devportal:devportal_api_reference
+
+type: module
+core: 8.x

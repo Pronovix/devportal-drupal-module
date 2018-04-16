@@ -1,0 +1,5 @@
+menu:
+  version: VERSION
+  css:
+    theme:
+      css/devportal.menu.css: {}

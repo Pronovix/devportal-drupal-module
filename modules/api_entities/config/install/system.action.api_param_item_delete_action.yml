@@ -1,0 +1,10 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - devportal_api_entities
+id: api_param_item_delete_action
+label: 'Delete API HTTP Method Parameter Item'
+type: api_param_item
+plugin: api_param_item_delete_action
+configuration: {  }

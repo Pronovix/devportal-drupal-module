@@ -1,0 +1,10 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - devportal_api_entities
+id: api_endpoint_set_delete_action
+label: 'Delete API Endpoint Set'
+type: api_endpoint_set
+plugin: api_endpoint_set_delete_action
+configuration: {  }

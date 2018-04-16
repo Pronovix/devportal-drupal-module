@@ -1,0 +1,5 @@
+repo-content-import-form:
+  version: VERSION
+  css:
+    theme:
+      css/repo_content_import_form.css: {}

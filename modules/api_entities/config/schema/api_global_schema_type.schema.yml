@@ -1,0 +1,10 @@
+api_global_schema.api_global_schema_type.*:
+  type: config_entity
+  label: 'API Global Schema type settings'
+  mapping:
+    id:
+      type: string
+      label: 'Machine-readable name'
+    label:
+      type: label
+      label: 'Label'

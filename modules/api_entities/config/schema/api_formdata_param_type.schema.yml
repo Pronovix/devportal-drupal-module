@@ -1,0 +1,10 @@
+api_form_data_param.api_form_data_param_type.*:
+  type: config_entity
+  label: 'API HTTP Method Form Data Parameter type settings'
+  mapping:
+    id:
+      type: string
+      label: 'Machine-readable name'
+    label:
+      type: label
+      label: 'Label'

@@ -1,0 +1,14 @@
+langcode: en
+status: true
+dependencies: {  }
+id: swagger_2_0
+label: 'Swagger (OpenAPI) 2.0'
+description: ''
+filtered_extensions:
+  - swagger.yaml
+  - swagger.yml
+  - swagger.json
+common_extensions:
+  - yaml
+  - yml
+  - json

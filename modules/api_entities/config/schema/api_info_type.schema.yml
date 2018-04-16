@@ -1,0 +1,10 @@
+api_info.api_info_type.*:
+  type: config_entity
+  label: 'API Info type settings'
+  mapping:
+    id:
+      type: string
+      label: 'Machine-readable name'
+    label:
+      type: label
+      label: 'Label'

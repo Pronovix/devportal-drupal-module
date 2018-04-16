@@ -1,0 +1,16 @@
+<?php
+
+/**
+ * Implements hook_theme().
+ */
+function devportal_api_reference_theme() {
+  $theme = [];
+
+  $theme['api_ref'] = [
+    'render element' => 'elements',
+    'file' => 'api_ref.page.inc',
+    'template' => 'api-ref',
+  ];
+
+  return $theme;
+}

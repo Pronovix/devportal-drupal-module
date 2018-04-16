@@ -1,0 +1,18 @@
+name: Repository Sync
+description: Imports content from remote repositories.
+package: Devportal
+type: module
+core: 8.x
+dependencies:
+  - drupal:book
+  - drupal:node
+  - drupal:text
+  - drupal:migrate
+  - drupal:migrate_drupal_ui
+  - devportal:devportal_migrate_batch
+  - devportal:devportal_api_reference
+  - drupal:path
+  - drupal:editor
+  - drupal:menu_ui
+  - drupal:views
+configure: devportal_repo_sync.admin_settings

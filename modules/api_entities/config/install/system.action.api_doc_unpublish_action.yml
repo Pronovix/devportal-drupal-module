@@ -1,0 +1,10 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - devportal_api_entities
+id: api_doc_unpublish_action
+label: 'Unpublish API Documentation'
+type: api_doc
+plugin: api_doc_unpublish_action
+configuration: {  }

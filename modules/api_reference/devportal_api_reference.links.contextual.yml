@@ -1,0 +1,11 @@
+entity.api_ref.edit_form:
+  title: Edit
+  route_name: entity.api_ref.edit_form
+  group: api_ref
+  weight: 10
+entity.api_ref.delete_form:
+  title: Delete
+  route_name: entity.api_ref.delete_form
+  group: api_ref
+  weight: 20
+
