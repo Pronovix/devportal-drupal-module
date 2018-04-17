@@ -1,5 +1,5 @@
 {
-    "name": "Devportal",
+    "name": "drupal/devportal",
     "type": "drupal-module",
     "license": "GPL-2.0+",
     "require": {
