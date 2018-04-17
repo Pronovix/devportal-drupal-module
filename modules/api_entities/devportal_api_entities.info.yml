@@ -1,4 +1,4 @@
-name: Devportal Docs
+name: Devportal API Entities
 description: Entity type definitions and migrations for Devportal Docs.
 package: Devportal
 
