@@ -9,7 +9,7 @@ dependencies:
   - drupal:file
   - drupal:filter
   - drupal:options
-  - views:views
+  - drupal:views
   - devportal:devportal
   - devportal:devportal_migrate_batch
   - swagger_ui_formatter:swagger_ui_formatter
