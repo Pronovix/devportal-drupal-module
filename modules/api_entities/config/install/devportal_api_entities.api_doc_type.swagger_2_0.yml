@@ -1,0 +1,5 @@
+langcode: en
+status: true
+dependencies: {  }
+id: swagger_2_0
+label: 'Swagger 2.0'
