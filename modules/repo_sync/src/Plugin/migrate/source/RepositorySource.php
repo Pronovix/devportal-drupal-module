@@ -123,6 +123,7 @@ abstract class RepositorySource extends SourcePluginBase implements MigrateSourc
 
   /**
    * {@inheritdoc}
+   * @throws \Drupal\migrate\MigrateException
    */
   public function __construct(array $configuration, $plugin_id, $plugin_definition, LoggerChannelInterface $loggerChannel, CacheBackendInterface $cacheBackend, $cache = TRUE, MigrationInterface $migration = NULL) {
     // It is not possible to construct a SourcePluginBase without a migration.
@@ -175,6 +176,7 @@ abstract class RepositorySource extends SourcePluginBase implements MigrateSourc
 
   /**
    * {@inheritdoc}
+   * @throws \Drupal\migrate\MigrateException
    */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition, MigrationInterface $migration = NULL) {
     /** @var LoggerChannelFactory $loggerFactory */

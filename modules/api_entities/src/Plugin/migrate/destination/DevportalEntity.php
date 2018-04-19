@@ -25,6 +25,7 @@ class DevportalEntity extends EntityContentBase {
 
   /**
    * {@inheritdoc}
+   * @throws \Drupal\migrate\MigrateException
    */
   protected function getEntity(Row $row, array $old_destination_id_values) {
     // Load the current API Version Tag object for revision log.

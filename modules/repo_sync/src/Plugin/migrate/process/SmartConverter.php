@@ -69,6 +69,8 @@ class SmartConverter extends ProcessPluginBase implements MigrateProcessInterfac
 
   /**
    * {@inheritdoc}
+   * @throws \Drupal\migrate\MigrateException
+   * @throws \Drupal\Component\Plugin\Exception\PluginException
    */
   public function transform($value, MigrateExecutableInterface $migrate_executable, Row $row, $destination_property) {
     list($filename, $content) = $value;

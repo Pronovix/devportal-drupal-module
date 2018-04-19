@@ -617,6 +617,8 @@ class RepoImport extends ConfigEntityBase implements ConfigEntityInterface, Migr
 
   /**
    * {@inheritdoc}
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   * @throws \Drupal\Component\Plugin\Exception\PluginException
    */
   public function cleanUp($all = FALSE) {
     if ($all) {
@@ -629,6 +631,9 @@ class RepoImport extends ConfigEntityBase implements ConfigEntityInterface, Migr
 
   /**
    * Looks at the recent commits and deletes deleted content.
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   * @throws \Drupal\Component\Plugin\Exception\PluginException
    */
   protected function cleanUpNew() {
     $last_import = $this->getLatestImport();
@@ -675,6 +680,9 @@ class RepoImport extends ConfigEntityBase implements ConfigEntityInterface, Migr
    * Compares the full repository content with the local content.
    *
    * Excess content will be removed.
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   * @throws \Drupal\Component\Plugin\Exception\PluginException
    */
   protected function cleanUpAll() {
     $repo_account = RepoAccount::load($this->repo_account_id);
@@ -716,6 +724,7 @@ class RepoImport extends ConfigEntityBase implements ConfigEntityInterface, Migr
    * Returns a source plugin instance for this import.
    *
    * @return RepositorySource
+   * @throws \Drupal\Component\Plugin\Exception\PluginException
    */
   protected function getSourcePlugin() {
     $repo_account = RepoAccount::load($this->repo_account_id);
@@ -749,6 +758,7 @@ class RepoImport extends ConfigEntityBase implements ConfigEntityInterface, Migr
 
   /**
    * {@inheritdoc}
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    */
   public function delete() {
     $migrations = [

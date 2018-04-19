@@ -268,6 +268,7 @@ class APIDoc extends EditorialContentEntityBase implements APIDocInterface {
 
   /**
    * {@inheritdoc}
+   * @throws \Drupal\Core\TypedData\Exception\MissingDataException
    */
   public function generateAutoLabel() {
     /** @var \Drupal\Core\Field\Plugin\Field\FieldType\EntityReferenceItem $info_first */
@@ -481,6 +482,7 @@ class APIDoc extends EditorialContentEntityBase implements APIDocInterface {
 
   /**
    * {@inheritdoc}
+   * @throws \Drupal\Core\TypedData\Exception\MissingDataException
    */
   public function label() {
     $label = parent::label();

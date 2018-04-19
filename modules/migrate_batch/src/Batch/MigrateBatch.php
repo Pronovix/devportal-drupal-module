@@ -53,6 +53,8 @@ class MigrateBatch {
    *
    * @return bool
    *   TRUE if items are left, FALSE if the migration is completed.
+   * @throws \Drupal\migrate\MigrateException
+   * @throws \Drupal\Component\Plugin\Exception\PluginException
    */
   public static function import(MigrationGeneratorInterface $generator, array &$context) {
     $migrations = static::getMigrations($generator->getFilterPattern());
@@ -66,6 +68,9 @@ class MigrateBatch {
    *   Repository import generator.
    * @param array $context
    *   Batch context.
+   *
+   * @throws \Drupal\migrate\MigrateException
+   * @throws \Drupal\Component\Plugin\Exception\PluginException
    */
   public static function importRelated(MigrationGeneratorInterface $rootGenerator, array &$context) {
     $generators = $rootGenerator->relatedGenerators();
@@ -88,6 +93,8 @@ class MigrateBatch {
    *   Repository import generator.
    * @param array $context
    *   Batch context.
+   *
+   * @throws \Drupal\Component\Plugin\Exception\PluginException
    */
   public static function markUpdates(MigrationGeneratorInterface $generator, array &$context) {
     $migrations = static::getMigrations($generator->getFilterPattern());
@@ -129,6 +136,7 @@ class MigrateBatch {
    *
    * @return bool
    *   TRUE if items are left, FALSE if the migration is completed.
+   * @throws \Drupal\migrate\MigrateException
    */
   public static function run(array $migrations, array &$context) {
     if (empty($context['sandbox'])) {
@@ -210,6 +218,7 @@ class MigrateBatch {
    *
    * @return MigrationInterface[]
    *   Matching migrations.
+   * @throws \Drupal\Component\Plugin\Exception\PluginException
    */
   public static function getMigrations($filter_pattern) {
     static::clearMigrationDiscoveryCache();

@@ -95,6 +95,7 @@ class APITagSwagger20 extends Swagger20Source implements Swagger20SourceInterfac
 
   /**
    * {@inheritdoc}
+   * @throws \Drupal\migrate\MigrateException
    */
   public function initializeIterator() {
     $data = $this->getSourceData();

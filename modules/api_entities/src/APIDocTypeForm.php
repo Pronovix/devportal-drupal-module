@@ -80,6 +80,8 @@ class APIDocTypeForm extends EntityForm {
 
   /**
    * {@inheritdoc}
+   * @throws \Drupal\Core\Entity\EntityMalformedException
+   * @throws \Drupal\Core\Entity\EntityStorageException
    */
   public function save(array $form, FormStateInterface $form_state) {
     $api_doc_type = $this->entity;

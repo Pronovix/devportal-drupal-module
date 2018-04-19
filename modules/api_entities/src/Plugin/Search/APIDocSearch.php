@@ -205,6 +205,7 @@ class APIDocSearch extends ConfigurableSearchPluginBase implements AccessibleInt
 
   /**
    * {@inheritdoc}
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    */
   public function execute() {
     if ($this->isSearchExecutable()) {
@@ -316,6 +317,7 @@ class APIDocSearch extends ConfigurableSearchPluginBase implements AccessibleInt
    *
    * @return array
    *   Array of search result item render arrays (empty array if no results).
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    */
   protected function prepareResults(StatementInterface $found) {
     $results = [];
@@ -408,6 +410,7 @@ class APIDocSearch extends ConfigurableSearchPluginBase implements AccessibleInt
 
   /**
    * {@inheritdoc}
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    */
   public function updateIndex() {
     // Interpret the cron limit setting as the maximum number of

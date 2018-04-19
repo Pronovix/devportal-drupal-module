@@ -56,6 +56,7 @@ trait RepoSourceInfoTrait {
    * @param string $version
    *
    * @return RepositorySource
+   * @throws \Drupal\Component\Plugin\Exception\PluginException
    */
   protected function createProviderInstance(RepoAccount $repo_account, $repository, $version) {
     return $this->migrateSourcePluginManager->createInstance($repo_account->getProvider(), [

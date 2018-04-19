@@ -123,6 +123,7 @@ class APIResponseExample extends RevisionableContentEntityBase implements APIRes
 
   /**
    * {@inheritdoc}
+   * @throws \Drupal\Core\TypedData\Exception\MissingDataException
    */
   public function generateAutoLabel() {
     /** @var \Drupal\Core\Field\Plugin\Field\FieldType\EntityReferenceItem $response_first */
@@ -246,6 +247,7 @@ class APIResponseExample extends RevisionableContentEntityBase implements APIRes
 
   /**
    * {@inheritdoc}
+   * @throws \Drupal\Core\TypedData\Exception\MissingDataException
    */
   public function label() {
     $label = parent::label();

@@ -35,6 +35,7 @@ abstract class Swagger20Source extends SourcePluginBase {
 
   /**
    * {@inheritdoc}
+   * @throws \Drupal\migrate\MigrateException
    */
   public function __construct(array $configuration, $plugin_id, $plugin_definition, MigrationInterface $migration) {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $migration);

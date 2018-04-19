@@ -17,6 +17,8 @@ final class FakeBookNode extends Node {
    * Makes the node save fail.
    *
    * Normally, this function is never called.
+   *
+   * @throws \Exception
    */
   private static function nope() {
     throw new \Exception('https://www.youtube.com/watch?v=dQw4w9WgXcQ');
@@ -31,6 +33,7 @@ final class FakeBookNode extends Node {
 
   /**
    * {@inheritdoc}
+   * @throws \Exception
    */
   public function preSaveRevision(EntityStorageInterface $storage, \stdClass $record) {
     static::nope();
@@ -38,6 +41,7 @@ final class FakeBookNode extends Node {
 
   /**
    * {@inheritdoc}
+   * @throws \Exception
    */
   public static function preDelete(EntityStorageInterface $storage, array $entities) {
     static::nope();

@@ -80,6 +80,7 @@ class APIResponseHeaderSwagger20 extends Swagger20Source implements Swagger20Sou
 
   /**
    * {@inheritdoc}
+   * @throws \Drupal\migrate\MigrateException
    */
   public function initializeIterator() {
     $data = $this->getSourceData();

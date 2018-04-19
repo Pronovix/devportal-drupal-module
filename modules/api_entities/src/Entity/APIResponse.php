@@ -153,6 +153,7 @@ class APIResponse extends RevisionableContentEntityBase implements APIResponseIn
 
   /**
    * {@inheritdoc}
+   * @throws \Drupal\Core\TypedData\Exception\MissingDataException
    */
   public function generateAutoLabel() {
     if ($this->getDescription()) {
@@ -356,6 +357,7 @@ class APIResponse extends RevisionableContentEntityBase implements APIResponseIn
 
   /**
    * {@inheritdoc}
+   * @throws \Drupal\Core\TypedData\Exception\MissingDataException
    */
   public function label() {
     $label = parent::label();

@@ -165,6 +165,7 @@ class APIMethod extends RevisionableContentEntityBase implements APIMethodInterf
 
   /**
    * {@inheritdoc}
+   * @throws \Drupal\Core\TypedData\Exception\MissingDataException
    */
   public function generateAutoLabel() {
     $methods = $this->get('http_method')->getSetting('allowed_values');
@@ -407,6 +408,7 @@ class APIMethod extends RevisionableContentEntityBase implements APIMethodInterf
 
   /**
    * {@inheritdoc}
+   * @throws \Drupal\Core\TypedData\Exception\MissingDataException
    */
   public function label() {
     $label = parent::label();

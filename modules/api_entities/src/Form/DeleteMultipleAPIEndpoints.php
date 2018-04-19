@@ -53,6 +53,8 @@ class DeleteMultipleAPIEndpoints extends ConfirmFormBase {
    *   The entity manager.
    * @param \Drupal\Core\Session\AccountProxyInterface
    *   The current user.
+   *
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    */
   public function __construct(PrivateTempStoreFactory $temp_store_factory, EntityTypeManagerInterface $manager, AccountProxyInterface $current_user) {
     $this->tempStoreFactory = $temp_store_factory;
@@ -62,6 +64,7 @@ class DeleteMultipleAPIEndpoints extends ConfirmFormBase {
 
   /**
    * {@inheritdoc}
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    */
   public static function create(ContainerInterface $container) {
     /** @var PrivateTempStoreFactory $temp_store_factory */
@@ -159,6 +162,8 @@ class DeleteMultipleAPIEndpoints extends ConfirmFormBase {
 
   /**
    * {@inheritdoc}
+   * @throws \Drupal\Core\TempStore\TempStoreException
+   * @throws \Drupal\Core\Entity\EntityStorageException
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     if ($form_state->getValue('confirm') && !empty($this->apiEndpointInfo)) {

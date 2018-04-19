@@ -80,6 +80,8 @@ class APILicenseTypeForm extends EntityForm {
 
   /**
    * {@inheritdoc}
+   * @throws \Drupal\Core\Entity\EntityMalformedException
+   * @throws \Drupal\Core\Entity\EntityStorageException
    */
   public function save(array $form, FormStateInterface $form_state) {
     $api_license_type = $this->entity;

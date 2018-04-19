@@ -129,6 +129,7 @@ class APIEndpointRevisionRevertForm extends ConfirmFormBase {
 
   /**
    * {@inheritdoc}
+   * @throws \Drupal\Core\Entity\EntityStorageException
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     // The revision timestamp will be updated when the revision is saved. Keep

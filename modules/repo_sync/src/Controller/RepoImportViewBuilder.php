@@ -84,6 +84,7 @@ class RepoImportViewBuilder extends EntityViewBuilder {
 
   /**
    * {@inheritdoc}
+   * @throws \Drupal\Core\Entity\EntityMalformedException
    */
   protected function getBuildDefaults(EntityInterface $entity, $view_mode) {
     /** @var RepoImport $entity */
