@@ -1,0 +1,25 @@
+administer api bundles:
+  title: 'Administer API Bundles'
+  restrict access: true
+access api bundle overview:
+  title: 'Access API Bundle overview'
+access api bundle revisions:
+  title: 'Access API Bundle revisions'
+revert all api bundle revisions:
+  title: 'Revert all API Bundle revisions'
+  restrict access: true
+delete all api bundle revisions:
+  title: 'Delete all API Bundle revisions'
+  restrict access: true
+add api bundles:
+  title: 'Add API Bundles'
+view api bundles:
+  title: 'View API Bundles'
+edit api bundles:
+  title: 'Edit API Bundles'
+delete api bundles:
+  title: 'Delete API Bundles'
+  restrict access: true
+administer api bundle types:
+  title: 'Administer API Bundle types'
+  restrict access: true

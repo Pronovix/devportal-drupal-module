@@ -1,0 +1,9 @@
+name: Devportal API Bundle
+description: API Bundle entity.
+package: Devportal
+
+type: module
+core: 8.x
+
+dependencies:
+  - devportal:devportal_api_reference

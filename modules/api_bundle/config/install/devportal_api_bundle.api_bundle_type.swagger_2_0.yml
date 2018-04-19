@@ -1,0 +1,6 @@
+uuid: 46221fba-22f4-4dd5-951c-e4466d80af97
+langcode: en
+status: true
+dependencies: {  }
+id: swagger_2_0
+label: 'Swagger (OpenAPI) 2.0'

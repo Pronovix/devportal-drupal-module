@@ -1,0 +1,10 @@
+api_bundle.api_bundle_type.*:
+  type: config_entity
+  label: 'API Bundle type settings'
+  mapping:
+    id:
+      type: string
+      label: 'Machine-readable name'
+    label:
+      type: label
+      label: 'Label'

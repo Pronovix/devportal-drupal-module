@@ -1,0 +1,10 @@
+api_bundle.add_page:
+  route_name: entity.api_bundle.add_page
+  title: 'Add API Bundle'
+  appears_on:
+    - entity.api_bundle.collection
+entity.api_bundle_type.add_form:
+  route_name: 'entity.api_bundle_type.add_form'
+  title: 'Add API Bundle type'
+  appears_on:
+    - entity.api_bundle_type.collection

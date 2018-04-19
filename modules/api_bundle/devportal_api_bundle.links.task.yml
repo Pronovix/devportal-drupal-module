@@ -1,0 +1,24 @@
+entity.api_bundle.canonical:
+  title: View
+  route_name: entity.api_bundle.canonical
+  base_route: entity.api_bundle.canonical
+entity.api_bundle.edit_form:
+  title: Edit
+  route_name: entity.api_bundle.edit_form
+  base_route: entity.api_bundle.canonical
+entity.api_bundle.delete_form:
+  title: Delete
+  route_name: entity.api_bundle.delete_form
+  base_route: entity.api_bundle.canonical
+entity.api_bundle.version_history:
+  title: Revisions
+  route_name: entity.api_bundle.version_history
+  base_route: entity.api_bundle.canonical
+entity.api_bundle.settings:
+  title: Settings
+  route_name: entity.api_bundle.settings
+  base_route: entity.api_bundle.settings
+entity.api_bundle_type.edit_form:
+  title: Edit
+  route_name: entity.api_bundle_type.edit_form
+  base_route: entity.api_bundle_type.edit_form
