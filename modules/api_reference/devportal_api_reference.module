@@ -3,14 +3,148 @@
 /**
  * Implements hook_theme().
  */
-function devportal_api_reference_theme() {
+function devportal_api_reference_theme($existing, $type, $theme, $path) {
   $theme = [];
-
   $theme['api_ref'] = [
     'render element' => 'elements',
     'file' => 'api_ref.page.inc',
     'template' => 'api-ref',
   ];
-
   return $theme;
+}
+
+/**
+ * Implements hook_menu_links_discovered_alter().
+ */
+function devportal_api_reference_menu_links_discovered_alter(&$links) {
+  // Add menu links for bundles.
+  foreach (\Drupal::entityTypeManager()->getStorage("api_ref_type")->loadMultiple() as $type) {
+    $links["entity.api_ref.add." . $type->id()] = [
+      'title' => t($type->label()),
+      'route_name' => "entity.api_ref.add_form",
+      'parent' => "entity.api_ref.add_page",
+      'route_parameters' => ["api_ref_type" => $type->id()],
+    ];
+  }
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK().
+ */
+function devportal_api_reference_theme_suggestions_api_ref(array $variables) {
+  $suggestions = [];
+  /** @var \Drupal\devportal_api_reference\Entity\APIRef $entity */
+  $entity = $variables['elements']['#api_ref'];
+  $sanitized_view_mode = strtr($variables['elements']['#view_mode'], '.', '_');
+
+  $suggestions[] = $entity->getEntityTypeId() . '__' . $sanitized_view_mode;
+  $suggestions[] = $entity->getEntityTypeId() . '__' . $entity->bundle();
+  $suggestions[] = $entity->getEntityTypeId() . '__' . $entity->bundle() . '__' . $sanitized_view_mode;
+  $suggestions[] = $entity->getEntityTypeId() . '__' . $entity->id();
+  $suggestions[] = $entity->getEntityTypeId() . '__' . $entity->id() . '__' . $sanitized_view_mode;
+
+  return $suggestions;
+}
+
+/**
+ * Implements hook_views_data_alter().
+ */
+function devportal_api_reference_views_data_alter(array &$data) {
+  // Entity reference base fields should have a reverse relationship in Views
+  // (just like the sitebuilder-added entity reference fields have), not only
+  // a forward relationship.
+  // @see core_field_views_data()
+  $entity_type_manager = \Drupal::entityTypeManager();
+  /** @var \Drupal\Core\Entity\EntityFieldManager $entity_field_manager */
+  $entity_field_manager = \Drupal::service('entity_field.manager');
+  $entity_types = $entity_type_manager->getDefinitions();
+  foreach ($entity_types as $source_entity_type_id => $source_entity_type) {
+    // Handle only our own entity types as source.
+    if ($source_entity_type->getProvider() != 'devportal_api_reference') {
+      continue;
+    }
+    // Handle only content entity types as source.
+    if (!($source_entity_type instanceof ContentEntityType)) {
+      continue;
+    }
+    $base_field_definitions = $entity_field_manager->getBaseFieldDefinitions($source_entity_type_id);
+    foreach ($base_field_definitions as $base_field_id => $base_field_definition) {
+      // Handle only entity reference fields.
+      if ($base_field_definition->getType() != 'entity_reference') {
+        continue;
+      }
+      /** @var \Drupal\Core\Field\TypedData\FieldItemDataDefinition $item_definition */
+      $item_definition = $base_field_definition->getItemDefinition();
+      $field_definition = $item_definition->getFieldDefinition();
+      $field_storage = $field_definition->getFieldStorageDefinition();
+      $target_entity_type_id = $field_storage->getSetting('target_type');
+      $target_entity_type = $entity_type_manager->getDefinition($target_entity_type_id);
+      // Handle only our own entity types as target.
+      if ($target_entity_type->getProvider() != 'devportal_api_reference') {
+        continue;
+      }
+      // Handle only content entity types as target.
+      if (!($target_entity_type instanceof ContentEntityType)) {
+        continue;
+      }
+
+      // Here comes the heart of the dance.
+      $pseudo_field_name = 'reverse__' . $source_entity_type_id . '__' . $base_field_id;
+      $args = [
+        '@label' => $target_entity_type->getLabel(),
+        '@field_name' => $base_field_definition->getName(),
+        '@entity' => $source_entity_type->getLabel(),
+      ];
+      // The sitebuilder-added entity reference fields have the same storage
+      // schema regardless their cardinality. Sadly, this is not true for entity
+      // reference base fields: multi-value fields (ones with cardinality != 1)
+      // have a link table between the source and the target entities (just like
+      // sitebuilder-added fields have one regardless their cardinality).
+      if ($base_field_definition->isMultiple()) {
+        $views_table = $target_entity_type->getDataTable();
+        $field_table = $source_entity_type_id . '__' . $base_field_id;
+        $field_field = $base_field_id . '_' . $base_field_definition->getMainPropertyName();
+        $data[$views_table][$pseudo_field_name]['relationship'] = [
+          'title' => t('@entity using @field_name', $args),
+          'label' => t('Rev: @entity', $args),
+          'group' => $target_entity_type->getLabel(),
+          'help' => t('Relate each @entity with the @field_name field set to the @label.', $args),
+          'id' => 'entity_reverse',
+          'base' => $source_entity_type->getDataTable(),
+          //'entity_type' => $source_entity_type_id,
+          'base field' => $source_entity_type->getKey('id'),
+          //'base field' => 'entity_id',
+          'field_name' => $source_entity_type_id . '_' . $base_field_id,
+          'field table' => $field_table,
+          'field field' => $field_field,
+          'join_extra' => [
+            [
+              'field' => 'deleted',
+              'value' => 0,
+              'numeric' => TRUE,
+            ],
+          ],
+        ];
+      }
+      else {
+        $field_table = $target_entity_type->getDataTable();
+        $field_field = $base_field_id;
+        // Cannot use the `entity_reverse` @ViewsRelationship handler plugin here,
+        // since it always creates two JOINS, which is totally unneeded for
+        // single-value baseFields, because their value is available right away on
+        // the entity_type_field_data table.
+        $data[$field_table][$pseudo_field_name]['relationship'] = [
+          'title' => t('@entity using @field_name', $args),
+          'label' => t('Rev: @entity', $args),
+          'group' => $target_entity_type->getLabel(),
+          'help' => t('Relate each @entity with the @field_name field set to the @label.', $args),
+          'id' => 'standard',
+          'base' => $source_entity_type->getDataTable() ?: $source_entity_type->getBaseTable(),
+          'entity type' => $target_entity_type_id,
+          'base field' => $base_field_id,
+          'relationship field' => $target_entity_type->getKey('id'),
+        ];
+      }
+    }
+  }
 }
