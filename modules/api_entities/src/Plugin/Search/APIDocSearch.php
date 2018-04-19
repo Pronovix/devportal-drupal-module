@@ -23,7 +23,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\devportal_api_entities\APIDocInterface;
 
 /**
- * Handles searching for API Documentation entities using the Search module index.
+ * Handles searching for API Documentation entities using the Search module
+ * index.
  *
  * @SearchPlugin(
  *   id = "api_doc_search",
@@ -110,22 +111,37 @@ class APIDocSearch extends ConfigurableSearchPluginBase implements AccessibleInt
    * {@inheritdoc}
    */
   static public function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+    /** @var \Drupal\Core\Database\Connection $database */
+    $database = $container->get('database');
+    /** @var \Drupal\Core\Entity\EntityManagerInterface $entity_manager */
+    $entity_manager = $container->get('entity.manager');
+    /** @var \Drupal\Core\Extension\ModuleHandlerInterface $module_handler */
+    $module_handler = $container->get('module_handler');
+    /** @var \Drupal\Core\Config\Config $search_settings */
+    $search_settings = $container->get('config.factory')->get('search.settings');
+    /** @var \Drupal\Core\Language\LanguageManagerInterface $language_manager */
+    $language_manager = $container->get('language_manager');
+    /** @var \Drupal\Core\Render\RendererInterface $renderer */
+    $renderer = $container->get('renderer');
+    /** @var \Drupal\Core\Session\AccountInterface $account */
+    $account = $container->get('current_user');
     return new static(
       $configuration,
       $plugin_id,
       $plugin_definition,
-      $container->get('database'),
-      $container->get('entity.manager'),
-      $container->get('module_handler'),
-      $container->get('config.factory')->get('search.settings'),
-      $container->get('language_manager'),
-      $container->get('renderer'),
-      $container->get('current_user')
+      $database,
+      $entity_manager,
+      $module_handler,
+      $search_settings,
+      $language_manager,
+      $renderer,
+      $account
     );
   }
 
   /**
-   * Constructs a \Drupal\devportal_api_entities\Plugin\Search\APIDocSearch object.
+   * Constructs a \Drupal\devportal_api_entities\Plugin\Search\APIDocSearch
+   * object.
    *
    * @param array $configuration
    *   A configuration array containing information about the plugin instance.
@@ -421,6 +437,7 @@ class APIDocSearch extends ConfigurableSearchPluginBase implements AccessibleInt
 
     $api_doc_storage = $this->entityManager->getStorage('api_doc');
     foreach ($api_doc_storage->loadMultiple($api_doc_ids) as $api_doc) {
+      /** @var \Drupal\devportal_api_entities\APIDocInterface $api_doc */
       $this->indexAPIDoc($api_doc);
     }
   }
@@ -447,7 +464,7 @@ class APIDocSearch extends ConfigurableSearchPluginBase implements AccessibleInt
         '#prefix' => '<h1>',
         '#plain_text' => $api_doc->label(),
         '#suffix' => '</h1>',
-        '#weight' => -1000
+        '#weight' => -1000,
       ];
       $text = $this->renderer->renderPlain($build);
 
