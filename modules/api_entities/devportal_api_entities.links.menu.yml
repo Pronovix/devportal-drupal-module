@@ -1,13 +1,13 @@
 devportal_api_entities.content.api_doc:
   title: 'API Documentation'
   route_name: entity.api_doc.collection
-  parent: system.admin_content
+  parent: system.admin_devportal
   description: 'List API Documentations.'
 devportal_api_entities.structure.api_doc:
   title: 'API Documentation'
   route_name: entity.api_doc_type.collection
   description: 'List API Documentation types (bundles)'
-  parent: system.admin_structure
+  parent: system.admin_devportal_config
 
 entity.api_doc.collection:
   title: 'API Documentations'
