@@ -20,7 +20,7 @@ function devportal_api_entities_requirements($phase) {
     if (empty($tmp_file_path) || empty($private_file_path)) {
       $requirements['devportal_api_entities'] = [
         'title' => t('Temporary and private file paths'),
-        'description' => t('The temporary and private file paths must be set for the Devportal Docs module.'),
+        'description' => t('The temporary and private file paths must be set for the Devportal entities module.'),
         'severity' => REQUIREMENT_ERROR,
       ];
     }
