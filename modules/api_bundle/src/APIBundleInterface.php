@@ -45,67 +45,31 @@ interface APIBundleInterface extends ContentEntityInterface, EntityChangedInterf
   public function setDescription($description);
 
   /**
-   * Gets the API Bundle image.
-   *
-   * @return integer
-   *   The API Bundle image.
-   */
-  public function getImage();
-
-  /**
-   * Sets the API Bundle image.
-   *
-   * @param $image
-   *   The API Bundle image.
-   * @return \Drupal\devportal_api_bundle\APIBundleInterface
-   *   The called API Bundle entity.
-   */
-  public function setImage($image);
-
-  /**
    * Gets the API reference list.
    *
    * @return array
    *   An array of API IDs.
    */
-  public function getAPIs();
+  public function getAPIRefs();
 
   /**
    * Sets the API reference list.
    *
-   * @param $apis
-   *   An array of API IDs.
+   * @param $api_refs
+   *   An array of API Reference IDs.
    * @return \Drupal\devportal_api_bundle\APIBundleInterface
    *   The called API Bundle entity.
    */
-  public function setAPIs($apis);
+  public function setAPIRefs($api_refs);
 
   /**
    * Adds an API reference.
    *
-   * @param $api
-   *   An API ID.
+   * @param $api_ref
+   *   An API Reference ID.
    * @return \Drupal\devportal_api_bundle\APIBundleInterface
    *   The called API Bundle entity.
    */
-  public function addAPI($api);
-
-  /**
-   * Gets the API Bundle author.
-   *
-   * @return string
-   *   The API Bundle author.
-   */
-  public function getAuthor();
-
-  /**
-   * Sets the API Bundle author.
-   *
-   * @param $author
-   *   The API Bundle author.
-   * @return \Drupal\devportal_api_bundle\APIBundleInterface
-   *   The called API Bundle entity.
-   */
-  public function setAuthor($author);
+  public function addAPIRef($api_ref);
 
 }

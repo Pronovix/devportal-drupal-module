@@ -111,54 +111,26 @@ class APIBundle extends RevisionableContentEntityBase implements APIBundleInterf
   /**
    * {@inheritdoc}
    */
-  public function getImage() {
-    return $this->get('image')->value;
+  public function getAPIRefs() {
+    // TODO: This is a multi-value ER field!
+    return $this->get('api_ref')->value;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function setImage($image) {
-    $this->set('image', $image);
+  public function setAPIRefs($api_refs) {
+    // TODO: This is a multi-value ER field!
+    $this->set('api_ref', $api_refs);
     return $this;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getAPIs() {
-    // TODO: !!!
-    return $this->get('api')->value;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function setAPIs($apis) {
-    $this->set('api', $apis);
-    return $this;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function addAPI($api) {
-    $this->set('api', $api);
-    return $this;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getAuthor() {
-    return $this->get('author')->value;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function setAuthor($author) {
-    $this->set('author', $author);
+  public function addAPIRef($api_ref) {
+    // TODO: This is a multi-value ER field!
+    $this->set('api_ref', $api_ref);
     return $this;
   }
 
