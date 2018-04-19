@@ -327,12 +327,8 @@ abstract class RepositorySource extends SourcePluginBase implements MigrateSourc
    *
    * @param string $path
    *
-   * @return array
-   *   Keys are 'type', which can be either 'file' or 'directory'.
-   *   If the type is file, then the 'content' key contains the file's content.
-   *   If the type is directory, then the 'content' key contains a list of items.
-   *   In case of a file, a 'modified' key contains the last modification date,
-   *   in ISO8601 format.
+   * @return string
+   *   Contents of the file.
    */
   abstract protected function loadFile($path);
 
