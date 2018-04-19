@@ -1,14 +1,21 @@
 <?php
 
 /**
+ * @file
+ * Main module file for DHL.
+ */
+
+use Drupal\Core\Entity\ContentEntityType;
+
+/**
  * Implements hook_theme().
  */
-function devportal_api_reference_theme($existing, $type, $theme, $path) {
+function devportal_api_bundle_theme($existing, $type, $theme, $path) {
   $theme = [];
-  $theme['api_ref'] = [
+  $theme['api_bundle'] = [
     'render element' => 'elements',
-    'file' => 'api_ref.page.inc',
-    'template' => 'api-ref',
+    'file' => 'api_bundle.page.inc',
+    'template' => 'api-bundle',
   ];
   return $theme;
 }
@@ -16,14 +23,14 @@ function devportal_api_reference_theme($existing, $type, $theme, $path) {
 /**
  * Implements hook_menu_links_discovered_alter().
  */
-function devportal_api_reference_menu_links_discovered_alter(&$links) {
-  // Add menu links for bundles.
-  foreach (\Drupal::entityTypeManager()->getStorage("api_ref_type")->loadMultiple() as $type) {
-    $links["entity.api_ref.add." . $type->id()] = [
+function devportal_api_bundle_menu_links_discovered_alter(&$links) {
+  // Add links to each entity type.
+  foreach (\Drupal::entityTypeManager()->getStorage("api_bundle_type")->loadMultiple() as $type) {
+    $links["entity.api_bundle.add." . $type->id()] = [
       'title' => t($type->label()),
-      'route_name' => "entity.api_ref.add_form",
-      'parent' => "entity.api_ref.add_page",
-      'route_parameters' => ["api_ref_type" => $type->id()],
+      'route_name' => "entity.api_bundle.add_form",
+      'parent' => "entity.api_bundle.add_page",
+      'route_parameters' => ["api_bundle_type" => $type->id()],
     ];
   }
 }
@@ -31,10 +38,10 @@ function devportal_api_reference_menu_links_discovered_alter(&$links) {
 /**
  * Implements hook_theme_suggestions_HOOK().
  */
-function devportal_api_reference_theme_suggestions_api_ref(array $variables) {
+function devportal_api_bundle_theme_suggestions_api_bundle(array $variables) {
   $suggestions = [];
-  /** @var \Drupal\devportal_api_reference\Entity\APIRef $entity */
-  $entity = $variables['elements']['#api_ref'];
+  /** @var \Drupal\devportal_api_bundle\Entity\APIBundle $entity */
+  $entity = $variables['elements']['#api_bundle'];
   $sanitized_view_mode = strtr($variables['elements']['#view_mode'], '.', '_');
 
   $suggestions[] = $entity->getEntityTypeId() . '__' . $sanitized_view_mode;
@@ -49,7 +56,7 @@ function devportal_api_reference_theme_suggestions_api_ref(array $variables) {
 /**
  * Implements hook_views_data_alter().
  */
-function devportal_api_reference_views_data_alter(array &$data) {
+function devportal_api_bundle_views_data_alter(array &$data) {
   // Entity reference base fields should have a reverse relationship in Views
   // (just like the sitebuilder-added entity reference fields have), not only
   // a forward relationship.
@@ -60,7 +67,7 @@ function devportal_api_reference_views_data_alter(array &$data) {
   $entity_types = $entity_type_manager->getDefinitions();
   foreach ($entity_types as $source_entity_type_id => $source_entity_type) {
     // Handle only our own entity types as source.
-    if ($source_entity_type->getProvider() != 'devportal_api_reference') {
+    if ($source_entity_type->getProvider() != 'devportal_api_bundle') {
       continue;
     }
     // Handle only content entity types as source.
@@ -80,7 +87,7 @@ function devportal_api_reference_views_data_alter(array &$data) {
       $target_entity_type_id = $field_storage->getSetting('target_type');
       $target_entity_type = $entity_type_manager->getDefinition($target_entity_type_id);
       // Handle only our own entity types as target.
-      if ($target_entity_type->getProvider() != 'devportal_api_reference') {
+      if ($target_entity_type->getProvider() != 'devportal_api_bundle') {
         continue;
       }
       // Handle only content entity types as target.
