@@ -173,7 +173,7 @@ class GitHubSource extends RepositorySource {
    * {@inheritdoc}
    */
   protected function loadFile($path) {
-    return (array) $this->errorHandler(function () use ($path) {
+    return (string) $this->errorHandler(function () use ($path) {
       $linkRawPattern = $this->pluginDefinition['linkRawPattern'];
       $url = strtr($linkRawPattern, [
         '{repository}' => $this->repository,
