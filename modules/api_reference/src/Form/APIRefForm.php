@@ -16,6 +16,9 @@ class APIRefForm extends ContentEntityForm {
 
   /**
    * {@inheritdoc}
+   * @throws \Drupal\devportal_api_reference\Plugin\Swagger20ValidationException
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
     // Store the current source file reference internally to be able to copy it
@@ -80,6 +83,8 @@ class APIRefForm extends ContentEntityForm {
    * Collects previously referenced file entities.
    *
    * @return \Drupal\file\Entity\File[]
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
   protected function previousFiles() {
     $entity = $this->getEntity();
@@ -96,6 +101,7 @@ class APIRefForm extends ContentEntityForm {
 
   /**
    * {@inheritdoc}
+   * @throws \Drupal\Core\Entity\EntityMalformedException
    */
   public function save(array $form, FormStateInterface $form_state) {
     /** @var \Drupal\devportal_api_reference\Entity\APIRef $api_ref */

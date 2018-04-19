@@ -20,6 +20,7 @@ class APIMethodNavigationBlock extends BlockBase {
 
   /**
    * {@inheritdoc}
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    */
   public function build() {
     $api_ref = \Drupal::routeMatch()->getParameter('api_ref');

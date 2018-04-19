@@ -28,6 +28,7 @@ class EntityAlwaysNewRevisionDestination extends EntityContentBase {
 
   /**
    * {@inheritdoc}
+   * @throws \Drupal\migrate\MigrateSkipRowException
    */
   protected function getEntity(Row $row, array $old_destination_id_values) {
     /** @var \Drupal\Core\Entity\ContentEntityBase $entity */

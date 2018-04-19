@@ -53,6 +53,8 @@ class ImportQueueWorker extends QueueWorkerBase implements ContainerFactoryPlugi
    *   Service container.
    * @param array $context
    *   For internal use only, do not set.
+   *
+   * @throws \Drupal\Component\Plugin\Exception\PluginException
    */
   public static function createItem(MigrationGeneratorInterface $generator, ContainerInterface $container = NULL, array $context = NULL) {
     if ($container === NULL) {

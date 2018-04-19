@@ -145,6 +145,7 @@ class APIRef extends RevisionableContentEntityBase implements APIRefInterface {
    * Returns all file IDs that are referenced by any revision of this entity.
    *
    * @return string[]
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
   public function getAllSources() {
     $definition = \Drupal::entityTypeManager()->getDefinition($this->entityTypeId);
@@ -158,6 +159,7 @@ class APIRef extends RevisionableContentEntityBase implements APIRefInterface {
 
   /**
    * {@inheritdoc}
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    */
   public function validate() {
     $validation = parent::validate();
@@ -389,6 +391,7 @@ class APIRef extends RevisionableContentEntityBase implements APIRefInterface {
 
   /**
    * {@inheritdoc}
+   * @throws \Drupal\devportal_api_reference\Plugin\Swagger20ValidationException
    */
   public function getMigrationAfterCallbacks() {
     $id = $this->id();
@@ -413,6 +416,8 @@ class APIRef extends RevisionableContentEntityBase implements APIRefInterface {
    *   The current API Reference id.
    * @param string $api_version
    *   Imported API version.
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
    */
   public static function updateEntityAfterMigration(int $api_ref_id, string $api_version) {
     /** @var \Drupal\devportal_api_reference\Entity\APIRef $api_ref */

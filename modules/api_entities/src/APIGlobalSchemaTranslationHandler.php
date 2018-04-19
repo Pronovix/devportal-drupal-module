@@ -36,11 +36,13 @@ class APIGlobalSchemaTranslationHandler extends ContentTranslationHandler {
   }
 
   /**
-   * Form submission handler for APIGlobalSchemaTranslationHandler::entityFormAlter().
+   * Form submission handler for
+   * APIGlobalSchemaTranslationHandler::entityFormAlter().
    *
    * This handles the save action.
    *
    * @see \Drupal\Core\Entity\EntityForm::build()
+   * @throws \Drupal\Core\Entity\EntityMalformedException
    */
   public function entityFormSave(array $form, FormStateInterface $form_state) {
     if ($this->getSourceLangcode($form_state)) {

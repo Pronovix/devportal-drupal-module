@@ -74,6 +74,7 @@ class APIMetaParamSwagger20 extends Swagger20Source implements Swagger20SourceIn
 
   /**
    * {@inheritdoc}
+   * @throws \Drupal\migrate\MigrateException
    */
   public function initializeIterator() {
     $data = $this->getSourceData();

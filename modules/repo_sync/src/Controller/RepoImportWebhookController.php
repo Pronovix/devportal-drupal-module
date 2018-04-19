@@ -62,6 +62,7 @@ class RepoImportWebhookController extends ControllerBase {
    * @param Request $request
    *
    * @return Response
+   * @throws \Drupal\Component\Plugin\Exception\PluginException
    */
   public function ping(RepoImport $repo_import, $repo_import_webhook, Request $request) {
     if (!$repo_import->webhook || $repo_import->webhook !== $repo_import_webhook) {

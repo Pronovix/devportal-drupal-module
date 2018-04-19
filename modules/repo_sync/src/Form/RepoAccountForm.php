@@ -190,6 +190,7 @@ class RepoAccountForm extends EntityForm {
 
   /**
    * {@inheritdoc}
+   * @throws \Drupal\Component\Plugin\Exception\PluginException
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
     parent::validateForm($form, $form_state);
@@ -240,6 +241,7 @@ class RepoAccountForm extends EntityForm {
 
   /**
    * {@inheritdoc}
+   * @throws \Drupal\Core\Entity\EntityStorageException
    */
   public function save(array $form, FormStateInterface $form_state) {
     $status = $this->getEntity()->save();

@@ -126,6 +126,7 @@ class APIEndpointSet extends RevisionableContentEntityBase implements APIEndpoin
 
   /**
    * {@inheritdoc}
+   * @throws \Drupal\Core\TypedData\Exception\MissingDataException
    */
   public function generateAutoLabel() {
     // Get the ID of the referenced API Reference entity.
@@ -185,6 +186,7 @@ class APIEndpointSet extends RevisionableContentEntityBase implements APIEndpoin
 
   /**
    * {@inheritdoc}
+   * @throws \Drupal\Core\TypedData\Exception\MissingDataException
    */
   public function label() {
     $label = parent::label();

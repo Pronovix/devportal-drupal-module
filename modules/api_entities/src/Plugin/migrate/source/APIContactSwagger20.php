@@ -56,6 +56,7 @@ class APIContactSwagger20 extends Swagger20Source implements Swagger20SourceInte
 
   /**
    * {@inheritdoc}
+   * @throws \Drupal\migrate\MigrateException
    */
   public function initializeIterator() {
     $data = $this->getSourceData();

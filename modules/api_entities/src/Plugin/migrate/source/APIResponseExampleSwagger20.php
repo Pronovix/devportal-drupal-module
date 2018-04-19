@@ -69,6 +69,7 @@ class APIResponseExampleSwagger20 extends Swagger20Source implements Swagger20So
 
   /**
    * {@inheritdoc}
+   * @throws \Drupal\migrate\MigrateException
    */
   public function initializeIterator() {
     $data = $this->getSourceData();

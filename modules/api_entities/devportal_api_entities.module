@@ -42,6 +42,14 @@ function devportal_api_entities_entity_base_field_info(EntityTypeInterface $enti
   return $fields;
 }
 
+/**
+ * Implements hook_ENTITY_TYPE_predelete().
+ *
+ * @param \Drupal\Core\Entity\EntityInterface $entity
+ *
+ * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+ * @throws \Drupal\Core\Entity\EntityStorageException
+ */
 function devportal_api_entities_entity_api_ref_predelete(EntityInterface $entity) {
   // Delete all API Documentation related entities.
   foreach (devportal_api_entities_get_api_content_entity_types() as $entity_type) {
@@ -76,6 +84,8 @@ function devportal_api_entities_entity_api_ref_predelete(EntityInterface $entity
 
 /**
  * Implements hook_api_ref_migration_after_callbacks().
+ *
+ * @throws \Drupal\devportal_api_reference\Plugin\Swagger20ValidationException
  */
 function devportal_api_entities_api_ref_migration_after_callbacks($id): array {
   /** @var \Drupal\devportal_api_reference\Entity\APIRef $ref */
@@ -98,6 +108,8 @@ function devportal_api_entities_api_ref_migration_after_callbacks($id): array {
  *   The current API Reference id.
  * @param string $api_version
  *   Imported API version.
+ *
+ * @throws \Drupal\Core\Entity\EntityStorageException
  */
 function _devportal_api_entities_update_api_ref_after_migration(int $api_ref_id, string $api_version) {
   /** @var \Drupal\devportal_api_reference\Entity\APIRef $api_ref */
@@ -240,6 +252,8 @@ function devportal_api_entities_get_api_content_entity_types() {
 
 /**
  * Implements hook_menu_links_discovered_alter().
+ *
+ * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
  */
 function devportal_api_entities_menu_links_discovered_alter(&$links) {
   foreach (devportal_api_entities_get_api_content_entity_types() as $entity_type) {
@@ -259,6 +273,10 @@ function devportal_api_entities_menu_links_discovered_alter(&$links) {
 
 /**
  * Implements hook_entity_bundle_create().
+ *
+ * @throws \Drupal\Core\Entity\EntityStorageException
+ * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+ * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
  */
 function devportal_api_entities_entity_bundle_create($entity_type_id, $bundle) {
   // When an API Doc bundle is created, we should create such a bundle in all
@@ -843,6 +861,8 @@ function devportal_api_entities_theme_suggestions_api_info(array $variables) {
 
 /**
  * Implements hook_views_data_alter().
+ *
+ * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
  */
 function devportal_api_entities_views_data_alter(array &$data) {
   // Entity reference base fields should have a reverse relationship in Views

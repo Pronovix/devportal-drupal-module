@@ -69,6 +69,7 @@ class APIParamSwagger20 extends Swagger20Source implements Swagger20SourceInterf
 
   /**
    * {@inheritdoc}
+   * @throws \Drupal\migrate\MigrateException
    */
   public function initializeIterator() {
     $data = $this->getSourceData();

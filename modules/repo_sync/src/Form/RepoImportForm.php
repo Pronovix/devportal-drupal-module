@@ -135,6 +135,7 @@ class RepoImportForm extends EntityForm {
    * @param array $config
    *
    * @return \Drupal\devportal_repo_sync\Plugin\migrate\source\RepositorySource
+   * @throws \Drupal\Component\Plugin\Exception\PluginException
    */
   protected function createPlugin(FormStateInterface $form_state, $config = []) {
     /** @var RepoAccount $repo_account */
@@ -153,6 +154,7 @@ class RepoImportForm extends EntityForm {
 
   /**
    * {@inheritdoc}
+   * @throws \Drupal\Component\Plugin\Exception\PluginException
    */
   public function form(array $form, FormStateInterface $form_state) {
     $form = parent::form($form, $form_state);
@@ -250,6 +252,8 @@ class RepoImportForm extends EntityForm {
 
   /**
    * {@inheritdoc}
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   * @throws \Drupal\Component\Plugin\Exception\PluginException
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     if ($this->entity->isNew()) {
@@ -332,6 +336,8 @@ class RepoImportForm extends EntityForm {
    *
    * @param array $form
    * @param FormStateInterface $form_state
+   *
+   * @throws \Drupal\Component\Plugin\Exception\PluginException
    */
   public function selectAccountStepValidate(array &$form, FormStateInterface $form_state) {
     if ($form_state->getValue('repo_account_id') === 'new' && isset($form['newaccount'])) {
@@ -348,6 +354,8 @@ class RepoImportForm extends EntityForm {
    *
    * @param array $form
    * @param FormStateInterface $form_state
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
    */
   public function selectAccountStepSubmit(array &$form, FormStateInterface $form_state) {
     $form_state->setRebuild();
@@ -367,6 +375,8 @@ class RepoImportForm extends EntityForm {
    * @param FormStateInterface $form_state
    *
    * @return array
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   * @throws \Drupal\Component\Plugin\Exception\PluginException
    */
   protected function selectRepositoryStepForm(array $form, FormStateInterface $form_state) {
     $plugin = $this->createPlugin($form_state);
@@ -553,6 +563,7 @@ class RepoImportForm extends EntityForm {
    * @param bool $editing
    *
    * @return array
+   * @throws \Drupal\Component\Plugin\Exception\PluginException
    */
   protected function selectFilesStepForm(array $form, FormStateInterface $form_state, $editing = FALSE) {
     $this->ensureProcessPlugins();
@@ -751,6 +762,9 @@ class RepoImportForm extends EntityForm {
    *
    * @param array $form
    * @param FormStateInterface $form_state
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   * @throws \Drupal\Component\Plugin\Exception\PluginException
    */
   public function selectFilesStepSubmit(array &$form, FormStateInterface $form_state) {
     /** @var RepoImport $import */
@@ -837,6 +851,7 @@ class RepoImportForm extends EntityForm {
    * @param FormStateInterface $form_state
    *
    * @return array
+   * @throws \Drupal\Component\Plugin\Exception\PluginException
    */
   protected function reconstructRepoContentTree(FormStateInterface $form_state) {
     $directories = $this->getEntity()->directories;
@@ -942,6 +957,8 @@ class RepoImportForm extends EntityForm {
    *
    * @param array $element
    * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *
+   * @throws \Drupal\Component\Plugin\Exception\PluginException
    */
   public function reponameValidate(array $element, FormStateInterface $form_state) {
     $reponame = $element['#value'];
@@ -1017,6 +1034,8 @@ class RepoImportForm extends EntityForm {
    *
    * @param array $form
    * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *
+   * @throws \Drupal\Component\Plugin\Exception\PluginException
    */
   public function expandRepository(array $form, FormStateInterface $form_state) {
     $form_state->setRebuild();
@@ -1030,8 +1049,10 @@ class RepoImportForm extends EntityForm {
    * Loads the repo content into the form state.
    *
    * @param FormStateInterface $form_state
+   *
    * @return array
    *   The loaded repo content.
+   * @throws \Drupal\Component\Plugin\Exception\PluginException
    */
   protected function getRepoContent(FormStateInterface $form_state) {
     $repo_content = $form_state->getValue('repo_content');
@@ -1051,6 +1072,8 @@ class RepoImportForm extends EntityForm {
    *
    * @param array $repo_content
    * @param FormStateInterface $form_state
+   *
+   * @throws \Drupal\Component\Plugin\Exception\PluginException
    */
   protected function expandDirectory(array &$repo_content, FormStateInterface $form_state) {
     $path =  [];
@@ -1064,6 +1087,7 @@ class RepoImportForm extends EntityForm {
    * @param FormStateInterface $form_state
    *
    * @return array
+   * @throws \Drupal\Component\Plugin\Exception\PluginException
    */
   protected function getDirectoryContents(FormStateInterface $form_state) {
     $contents = [];
@@ -1116,6 +1140,7 @@ class RepoImportForm extends EntityForm {
    * @param FormStateInterface $form_state
    *
    * @return bool
+   * @throws \Drupal\Component\Plugin\Exception\PluginException
    */
   private function isBranch(FormStateInterface $form_state) {
     $isBranch = $form_state->getValue('is_branch');
@@ -1284,6 +1309,7 @@ class RepoImportForm extends EntityForm {
    * @param string $repo
    *
    * @return array
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    */
   protected function existingImportedVersions($repo) {
     $result = $this->entityTypeManager->getStorage('repo_import')->getQuery()

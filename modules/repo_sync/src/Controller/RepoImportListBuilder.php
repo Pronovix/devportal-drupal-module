@@ -26,6 +26,7 @@ class RepoImportListBuilder extends ConfigEntityListBuilder {
 
   /**
    * {@inheritdoc}
+   * @throws \Drupal\Core\Entity\EntityMalformedException
    */
   public function buildRow(EntityInterface $entity) {
     $row = [];

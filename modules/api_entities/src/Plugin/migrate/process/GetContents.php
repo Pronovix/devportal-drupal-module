@@ -46,6 +46,17 @@ class GetContents extends ProcessPluginBase implements MigrateProcessInterface, 
     );
   }
 
+  /**
+   * {@inheritdoc}
+   *
+   * @param mixed $value
+   * @param \Drupal\migrate\MigrateExecutableInterface $migrate_executable
+   * @param \Drupal\migrate\Row $row
+   * @param string $destination_property
+   *
+   * @return array|bool|null|string
+   * @throws \Drupal\migrate\MigrateException
+   */
   public function transform($value, MigrateExecutableInterface $migrate_executable, Row $row, $destination_property) {
     if ($row->isStub()) {
       return NULL;

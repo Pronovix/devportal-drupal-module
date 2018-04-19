@@ -80,6 +80,7 @@ class APIContactController extends ControllerBase {
    *
    * @return array
    *   An array suitable for drupal_render().
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    */
   public function revisionShow($api_contact_revision) {
     $api_contact = $this->entityTypeManager()->getStorage('api_contact')->loadRevision($api_contact_revision);
@@ -95,6 +96,7 @@ class APIContactController extends ControllerBase {
    *
    * @return string
    *   The page title.
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    */
   public function revisionPageTitle($api_contact_revision) {
     /** @var \Drupal\devportal_api_entities\Entity\APIContact $api_contact */
@@ -110,6 +112,8 @@ class APIContactController extends ControllerBase {
    *
    * @return array
    *   An array as expected by drupal_render().
+   * @throws \Drupal\Core\Entity\EntityMalformedException
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    */
   public function revisionOverview(APIContactInterface $api_contact) {
     $account = $this->currentUser();
@@ -260,6 +264,8 @@ class APIContactController extends ControllerBase {
    * - ControllerBase::entityTypeManager() should be used through this method,
    *   whilst EntityController->entityTypeManager is dependency-injected, so it
    *   can be used directly there.
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    */
   public function addPage($entity_type_id) {
     $entity_type = $this->entityTypeManager()->getDefinition($entity_type_id);
@@ -330,10 +336,11 @@ class APIContactController extends ControllerBase {
    *   The expanded array of bundle information.
    *
    * @see \Drupal\Core\Entity\Controller\EntityController::loadBundleDescriptions()
-   * The only changes to that method is:
+   *   The only change to that method is:
    * - ControllerBase::entityTypeManager() should be used through this method,
    *   whilst EntityController->entityTypeManager is dependency-injected, so it
    *   can be used directly there.
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    */
   protected function loadBundleDescriptions(array $bundles, EntityTypeInterface $bundle_entity_type) {
     if (!$bundle_entity_type->entityClassImplements(EntityDescriptionInterface::class)) {
