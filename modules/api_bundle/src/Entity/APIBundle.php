@@ -135,7 +135,6 @@ class APIBundle extends RevisionableContentEntityBase implements APIBundleInterf
    * {@inheritdoc}
    */
   public function setAPIs($apis) {
-    // TODO: !!!
     $this->set('api', $apis);
     return $this;
   }
@@ -144,7 +143,6 @@ class APIBundle extends RevisionableContentEntityBase implements APIBundleInterf
    * {@inheritdoc}
    */
   public function addAPI($api) {
-    // TODO: !!!
     $this->set('api', $api);
     return $this;
   }
