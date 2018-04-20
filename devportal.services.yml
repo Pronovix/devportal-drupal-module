@@ -1,0 +1,6 @@
+services:
+  devportal.admin_path.route_subscriber:
+    class: Drupal\devportal\EventSubscriber\DevportalAdminEventSubscriber
+    arguments: ['@config.factory']
+    tags:
+      - { name: event_subscriber }
