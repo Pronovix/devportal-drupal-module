@@ -36,10 +36,10 @@ use Drupal\devportal_api_entities\APITagTypeInterface;
  *     "label"
  *   },
  *   links = {
- *     "add-form" = "/admin/structure/api_tag/add",
- *     "edit-form" = "/admin/structure/api_tag/manage/{api_tag_type}",
- *     "delete-form" = "/admin/structure/api_tag/manage/{api_tag_type}/delete",
- *     "collection" = "/admin/structure/api_tag"
+ *     "add-form" = "/admin/devportal/config/api_tag/add",
+ *     "edit-form" = "/admin/devportal/config/api_tag/manage/{api_tag_type}",
+ *     "delete-form" = "/admin/devportal/config/api_tag/manage/{api_tag_type}/delete",
+ *     "collection" = "/admin/devportal/config/api_tag"
  *   },
  * )
  */

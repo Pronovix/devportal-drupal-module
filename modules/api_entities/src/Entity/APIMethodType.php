@@ -36,10 +36,10 @@ use Drupal\devportal_api_entities\APIMethodTypeInterface;
  *     "label"
  *   },
  *   links = {
- *     "add-form" = "/admin/structure/api_method/add",
- *     "edit-form" = "/admin/structure/api_method/manage/{api_method_type}",
- *     "delete-form" = "/admin/structure/api_method/manage/{api_method_type}/delete",
- *     "collection" = "/admin/structure/api_method"
+ *     "add-form" = "/admin/devportal/config/api_method/add",
+ *     "edit-form" = "/admin/devportal/config/api_method/manage/{api_method_type}",
+ *     "delete-form" = "/admin/devportal/config/api_method/manage/{api_method_type}/delete",
+ *     "collection" = "/admin/devportal/config/api_method"
  *   },
  * )
  */

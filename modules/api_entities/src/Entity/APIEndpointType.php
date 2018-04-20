@@ -36,10 +36,10 @@ use Drupal\devportal_api_entities\APIEndpointTypeInterface;
  *     "label"
  *   },
  *   links = {
- *     "add-form" = "/admin/structure/api_endpoint/add",
- *     "edit-form" = "/admin/structure/api_endpoint/manage/{api_endpoint_type}",
- *     "delete-form" = "/admin/structure/api_endpoint/manage/{api_endpoint_type}/delete",
- *     "collection" = "/admin/structure/api_endpoint"
+ *     "add-form" = "/admin/devportal/config/api_endpoint/add",
+ *     "edit-form" = "/admin/devportal/config/api_endpoint/manage/{api_endpoint_type}",
+ *     "delete-form" = "/admin/devportal/config/api_endpoint/manage/{api_endpoint_type}/delete",
+ *     "collection" = "/admin/devportal/config/api_endpoint"
  *   },
  * )
  */

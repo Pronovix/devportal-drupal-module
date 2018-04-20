@@ -36,10 +36,10 @@ use Drupal\devportal_api_entities\APIDocTypeInterface;
  *     "label"
  *   },
  *   links = {
- *     "add-form" = "/admin/structure/api_doc/add",
- *     "edit-form" = "/admin/structure/api_doc/manage/{api_doc_type}",
- *     "delete-form" = "/admin/structure/api_doc/manage/{api_doc_type}/delete",
- *     "collection" = "/admin/structure/api_doc"
+ *     "add-form" = "/admin/devportal/config/api_doc/add",
+ *     "edit-form" = "/admin/devportal/config/api_doc/manage/{api_doc_type}",
+ *     "delete-form" = "/admin/devportal/config/api_doc/manage/{api_doc_type}/delete",
+ *     "collection" = "/admin/devportal/config/api_doc"
  *   },
  * )
  */

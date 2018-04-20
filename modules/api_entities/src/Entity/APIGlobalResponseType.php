@@ -36,10 +36,10 @@ use Drupal\devportal_api_entities\APIGlobalResponseTypeInterface;
  *     "label"
  *   },
  *   links = {
- *     "add-form" = "/admin/structure/api_global_response/add",
- *     "edit-form" = "/admin/structure/api_global_response/manage/{api_global_response_type}",
- *     "delete-form" = "/admin/structure/api_global_response/manage/{api_global_response_type}/delete",
- *     "collection" = "/admin/structure/api_global_response"
+ *     "add-form" = "/admin/devportal/config/api_global_response/add",
+ *     "edit-form" = "/admin/devportal/config/api_global_response/manage/{api_global_response_type}",
+ *     "delete-form" = "/admin/devportal/config/api_global_response/manage/{api_global_response_type}/delete",
+ *     "collection" = "/admin/devportal/config/api_global_response"
  *   },
  * )
  */
