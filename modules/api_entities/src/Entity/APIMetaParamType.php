@@ -36,10 +36,10 @@ use Drupal\devportal_api_entities\APIMetaParamTypeInterface;
  *     "label"
  *   },
  *   links = {
- *     "add-form" = "/admin/structure/api_meta_param/add",
- *     "edit-form" = "/admin/structure/api_meta_param/manage/{api_meta_param_type}",
- *     "delete-form" = "/admin/structure/api_meta_param/manage/{api_meta_param_type}/delete",
- *     "collection" = "/admin/structure/api_meta_param"
+ *     "add-form" = "/admin/devportal/config/api_meta_param/add",
+ *     "edit-form" = "/admin/devportal/config/api_meta_param/manage/{api_meta_param_type}",
+ *     "delete-form" = "/admin/devportal/config/api_meta_param/manage/{api_meta_param_type}/delete",
+ *     "collection" = "/admin/devportal/config/api_meta_param"
  *   },
  * )
  */

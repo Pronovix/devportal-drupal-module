@@ -36,10 +36,10 @@ use Drupal\devportal_api_entities\APILicenseTypeInterface;
  *     "label"
  *   },
  *   links = {
- *     "add-form" = "/admin/structure/api_license/add",
- *     "edit-form" = "/admin/structure/api_license/manage/{api_license_type}",
- *     "delete-form" = "/admin/structure/api_license/manage/{api_license_type}/delete",
- *     "collection" = "/admin/structure/api_license"
+ *     "add-form" = "/admin/devportal/config/api_license/add",
+ *     "edit-form" = "/admin/devportal/config/api_license/manage/{api_license_type}",
+ *     "delete-form" = "/admin/devportal/config/api_license/manage/{api_license_type}/delete",
+ *     "collection" = "/admin/devportal/config/api_license"
  *   },
  * )
  */
