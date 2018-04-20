@@ -11,6 +11,8 @@ class DevportalAPIBundleContentEntityDeleteForm extends ContentEntityDeleteForm 
 
   /**
    * {@inheritdoc}
+   *
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    */
   public function getDeletionMessage() {
     /** @var \Drupal\Core\Entity\ContentEntityInterface $entity */
@@ -48,6 +50,8 @@ class DevportalAPIBundleContentEntityDeleteForm extends ContentEntityDeleteForm 
 
   /**
    * {@inheritdoc}
+   *
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    */
   public function getQuestion() {
     /** @var \Drupal\Core\Entity\ContentEntityInterface $entity */

@@ -22,6 +22,8 @@ function devportal_api_bundle_theme($existing, $type, $theme, $path) {
 
 /**
  * Implements hook_menu_links_discovered_alter().
+ *
+ * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
  */
 function devportal_api_bundle_menu_links_discovered_alter(&$links) {
   // Add links to each entity type.
@@ -55,6 +57,8 @@ function devportal_api_bundle_theme_suggestions_api_bundle(array $variables) {
 
 /**
  * Implements hook_views_data_alter().
+ *
+ * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
  */
 function devportal_api_bundle_views_data_alter(array &$data) {
   // Entity reference base fields should have a reverse relationship in Views
