@@ -36,10 +36,10 @@ use Drupal\devportal_api_entities\APIExtDocTypeInterface;
  *     "label"
  *   },
  *   links = {
- *     "add-form" = "/admin/structure/api_ext_doc/add",
- *     "edit-form" = "/admin/structure/api_ext_doc/manage/{api_ext_doc_type}",
- *     "delete-form" = "/admin/structure/api_ext_doc/manage/{api_ext_doc_type}/delete",
- *     "collection" = "/admin/structure/api_ext_doc"
+ *     "add-form" = "/admin/devportal/config/api_ext_doc/add",
+ *     "edit-form" = "/admin/devportal/config/api_ext_doc/manage/{api_ext_doc_type}",
+ *     "delete-form" = "/admin/devportal/config/api_ext_doc/manage/{api_ext_doc_type}/delete",
+ *     "collection" = "/admin/devportal/config/api_ext_doc"
  *   },
  * )
  */

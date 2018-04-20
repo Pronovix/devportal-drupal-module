@@ -36,10 +36,10 @@ use Drupal\devportal_api_entities\APIBodyParamTypeInterface;
  *     "label"
  *   },
  *   links = {
- *     "add-form" = "/admin/structure/api_body_param/add",
- *     "edit-form" = "/admin/structure/api_body_param/manage/{api_body_param_type}",
- *     "delete-form" = "/admin/structure/api_body_param/manage/{api_body_param_type}/delete",
- *     "collection" = "/admin/structure/api_body_param"
+ *     "add-form" = "/admin/devportal/config/api_body_param/add",
+ *     "edit-form" = "/admin/devportal/config/api_body_param/manage/{api_body_param_type}",
+ *     "delete-form" = "/admin/devportal/config/api_body_param/manage/{api_body_param_type}/delete",
+ *     "collection" = "/admin/devportal/config/api_body_param"
  *   },
  * )
  */

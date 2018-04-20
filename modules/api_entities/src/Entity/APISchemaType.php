@@ -36,10 +36,10 @@ use Drupal\devportal_api_entities\APISchemaTypeInterface;
  *     "label"
  *   },
  *   links = {
- *     "add-form" = "/admin/structure/api_schema/add",
- *     "edit-form" = "/admin/structure/api_schema/manage/{api_schema_type}",
- *     "delete-form" = "/admin/structure/api_schema/manage/{api_schema_type}/delete",
- *     "collection" = "/admin/structure/api_schema"
+ *     "add-form" = "/admin/devportal/config/api_schema/add",
+ *     "edit-form" = "/admin/devportal/config/api_schema/manage/{api_schema_type}",
+ *     "delete-form" = "/admin/devportal/config/api_schema/manage/{api_schema_type}/delete",
+ *     "collection" = "/admin/devportal/config/api_schema"
  *   },
  * )
  */

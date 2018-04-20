@@ -36,10 +36,10 @@ use Drupal\devportal_api_entities\APIContactTypeInterface;
  *     "label"
  *   },
  *   links = {
- *     "add-form" = "/admin/structure/api_contact/add",
- *     "edit-form" = "/admin/structure/api_contact/manage/{api_contact_type}",
- *     "delete-form" = "/admin/structure/api_contact/manage/{api_contact_type}/delete",
- *     "collection" = "/admin/structure/api_contact"
+ *     "add-form" = "/admin/devportal/config/api_contact/add",
+ *     "edit-form" = "/admin/devportal/config/api_contact/manage/{api_contact_type}",
+ *     "delete-form" = "/admin/devportal/config/api_contact/manage/{api_contact_type}/delete",
+ *     "collection" = "/admin/devportal/config/api_contact"
  *   },
  * )
  */

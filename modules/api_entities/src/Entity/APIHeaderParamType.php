@@ -36,10 +36,10 @@ use Drupal\devportal_api_entities\APIHeaderParamTypeInterface;
  *     "label"
  *   },
  *   links = {
- *     "add-form" = "/admin/structure/api_header_param/add",
- *     "edit-form" = "/admin/structure/api_header_param/manage/{api_header_param_type}",
- *     "delete-form" = "/admin/structure/api_header_param/manage/{api_header_param_type}/delete",
- *     "collection" = "/admin/structure/api_header_param"
+ *     "add-form" = "/admin/devportal/config/api_header_param/add",
+ *     "edit-form" = "/admin/devportal/config/api_header_param/manage/{api_header_param_type}",
+ *     "delete-form" = "/admin/devportal/config/api_header_param/manage/{api_header_param_type}/delete",
+ *     "collection" = "/admin/devportal/config/api_header_param"
  *   },
  * )
  */

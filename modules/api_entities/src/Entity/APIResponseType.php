@@ -36,10 +36,10 @@ use Drupal\devportal_api_entities\APIResponseTypeInterface;
  *     "label"
  *   },
  *   links = {
- *     "add-form" = "/admin/structure/api_response/add",
- *     "edit-form" = "/admin/structure/api_response/manage/{api_response_type}",
- *     "delete-form" = "/admin/structure/api_response/manage/{api_response_type}/delete",
- *     "collection" = "/admin/structure/api_response"
+ *     "add-form" = "/admin/devportal/config/api_response/add",
+ *     "edit-form" = "/admin/devportal/config/api_response/manage/{api_response_type}",
+ *     "delete-form" = "/admin/devportal/config/api_response/manage/{api_response_type}/delete",
+ *     "collection" = "/admin/devportal/config/api_response"
  *   },
  * )
  */

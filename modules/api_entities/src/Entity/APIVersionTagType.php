@@ -36,10 +36,10 @@ use Drupal\devportal_api_entities\APIVersionTagTypeInterface;
  *     "label"
  *   },
  *   links = {
- *     "add-form" = "/admin/structure/api_version_tag/add",
- *     "edit-form" = "/admin/structure/api_version_tag/manage/{api_version_tag_type}",
- *     "delete-form" = "/admin/structure/api_version_tag/manage/{api_version_tag_type}/delete",
- *     "collection" = "/admin/structure/api_version_tag"
+ *     "add-form" = "/admin/devportal/config/api_version_tag/add",
+ *     "edit-form" = "/admin/devportal/config/api_version_tag/manage/{api_version_tag_type}",
+ *     "delete-form" = "/admin/devportal/config/api_version_tag/manage/{api_version_tag_type}/delete",
+ *     "collection" = "/admin/devportal/config/api_version_tag"
  *   },
  * )
  */
