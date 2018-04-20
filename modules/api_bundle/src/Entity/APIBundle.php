@@ -19,13 +19,13 @@ use Drupal\devportal_api_bundle\Traits\URLRouteParametersTrait;
  *   handlers = {
  *     "storage" = "Drupal\devportal_api_bundle\APIBundleStorage",
  *     "list_builder" = "Drupal\devportal_api_bundle\APIBundleListBuilder",
- *     "view_builder" = "Drupal\devportal_api_bundle\DHLAPIEntitiesContentEntityViewBuilder",
+ *     "view_builder" = "Drupal\devportal_api_bundle\DevportalAPIBundleContentEntityViewBuilder",
  *     "views_data" = "Drupal\devportal_api_bundle\APIBundleViewsData",
  *     "form" = {
- *       "default" = "Drupal\devportal_api_bundle\Form\DHLAPIEntitiesContentEntityForm",
- *       "add" = "Drupal\devportal_api_bundle\Form\DHLAPIEntitiesContentEntityForm",
- *       "edit" = "Drupal\devportal_api_bundle\Form\DHLAPIEntitiesContentEntityForm",
- *       "delete" = "Drupal\devportal_api_bundle\Form\DHLAPIEntitiesContentEntityDeleteForm",
+ *       "default" = "Drupal\devportal_api_bundle\Form\DevportalAPIBundleContentEntityForm",
+ *       "add" = "Drupal\devportal_api_bundle\Form\DevportalAPIBundleContentEntityForm",
+ *       "edit" = "Drupal\devportal_api_bundle\Form\DevportalAPIBundleContentEntityForm",
+ *       "delete" = "Drupal\devportal_api_bundle\Form\DevportalAPIBundleContentEntityDeleteForm",
  *     },
  *     "route_provider" = {
  *       "html" = "Drupal\devportal_api_bundle\APIBundleHtmlRouteProvider",
@@ -199,8 +199,8 @@ class APIBundle extends RevisionableContentEntityBase implements APIBundleInterf
       ->setDisplayConfigurable('form', TRUE);
 
     $fields['api_ref'] = BaseFieldDefinition::create('entity_reference')
-      ->setLabel(t('API Reference'))
-      ->setDescription(t('API References referenced from API Bundle.'))
+      ->setLabel(t('API Reference(s)'))
+      ->setDescription(t('API Reference(s) referenced from API Bundle.'))
       ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED)
       ->setRevisionable(TRUE)
       ->setSettings([

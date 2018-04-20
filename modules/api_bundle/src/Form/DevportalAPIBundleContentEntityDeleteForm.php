@@ -5,9 +5,9 @@ namespace Drupal\devportal_api_bundle\Form;
 use Drupal\Core\Entity\ContentEntityDeleteForm;
 
 /**
- * Provides a confirmation form for deleting a DHL content entity.
+ * Provides a confirmation form for deleting API Bundle content entity.
  */
-class DHLAPIEntitiesContentEntityDeleteForm extends ContentEntityDeleteForm {
+class DevportalAPIBundleContentEntityDeleteForm extends ContentEntityDeleteForm {
 
   /**
    * {@inheritdoc}

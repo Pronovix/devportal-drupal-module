@@ -7,9 +7,9 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityViewBuilder;
 
 /**
- * View builder handler for DHL content entities.
+ * View builder handler for API Bundle entity.
  */
-class DHLAPIEntitiesContentEntityViewBuilder extends EntityViewBuilder {
+class DevportalAPIBundleContentEntityViewBuilder extends EntityViewBuilder {
 
   /**
    * {@inheritdoc}

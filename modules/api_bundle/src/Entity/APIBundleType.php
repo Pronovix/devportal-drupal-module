@@ -18,7 +18,7 @@ use Drupal\devportal_api_bundle\APIBundleTypeInterface;
  *       "default" = "Drupal\devportal_api_bundle\APIBundleTypeForm",
  *       "add" = "Drupal\devportal_api_bundle\APIBundleTypeForm",
  *       "edit" = "Drupal\devportal_api_bundle\APIBundleTypeForm",
- *       "delete" = "Drupal\devportal_api_bundle\Form\DHLAPIEntitiesEntityDeleteForm"
+ *       "delete" = "Drupal\devportal_api_bundle\Form\DevportalAPIBundleEntityDeleteForm"
  *     },
  *     "route_provider" = {
  *       "html" = "Drupal\Core\Entity\Routing\DefaultHtmlRouteProvider",
