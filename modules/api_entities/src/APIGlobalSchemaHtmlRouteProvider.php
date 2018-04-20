@@ -68,16 +68,18 @@ class APIGlobalSchemaHtmlRouteProvider extends AdminHtmlRouteProvider {
     if ($entity_type->hasLinkTemplate('add-page') && $entity_type->getKey('bundle')) {
       $entity_type_id = $entity_type->id();
       $route = new Route($entity_type->getLinkTemplate('add-page'));
-      $route->setDefaults([
-        '_controller' => '\Drupal\devportal_api_entities\Controller\APIGlobalSchemaController::addPage',
-        '_title' => "Add {$entity_type->getLabel()}",
-        'entity_type_id' => $entity_type_id,
-      ])
+      $route
+        ->setDefaults([
+          '_controller' => '\Drupal\devportal_api_entities\Controller\APIGlobalSchemaController::addPage',
+          '_title' => "Add {$entity_type->getLabel()}",
+          'entity_type_id' => $entity_type_id,
+        ])
         ->setRequirement('_entity_create_any_access', $entity_type->id())
         ->setOption('_admin_route', TRUE);
 
       return $route;
     }
+    return NULL;
   }
 
   /**
@@ -97,6 +99,7 @@ class APIGlobalSchemaHtmlRouteProvider extends AdminHtmlRouteProvider {
 
       return $route;
     }
+    return NULL;
   }
 
   /**
@@ -121,6 +124,7 @@ class APIGlobalSchemaHtmlRouteProvider extends AdminHtmlRouteProvider {
 
       return $route;
     }
+    return NULL;
   }
 
   /**
@@ -145,6 +149,7 @@ class APIGlobalSchemaHtmlRouteProvider extends AdminHtmlRouteProvider {
 
       return $route;
     }
+    return NULL;
   }
 
   /**
@@ -169,6 +174,7 @@ class APIGlobalSchemaHtmlRouteProvider extends AdminHtmlRouteProvider {
 
       return $route;
     }
+    return NULL;
   }
 
   /**
@@ -193,6 +199,7 @@ class APIGlobalSchemaHtmlRouteProvider extends AdminHtmlRouteProvider {
 
       return $route;
     }
+    return NULL;
   }
 
   /**
@@ -217,6 +224,7 @@ class APIGlobalSchemaHtmlRouteProvider extends AdminHtmlRouteProvider {
 
       return $route;
     }
+    return NULL;
   }
 
   /**
@@ -241,6 +249,7 @@ class APIGlobalSchemaHtmlRouteProvider extends AdminHtmlRouteProvider {
 
       return $route;
     }
+    return NULL;
   }
 
 }

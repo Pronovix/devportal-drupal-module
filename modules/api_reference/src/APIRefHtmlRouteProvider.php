@@ -68,7 +68,8 @@ class APIRefHtmlRouteProvider extends DefaultHtmlRouteProvider {
     if ($entity_type->hasLinkTemplate('add-page') && $entity_type->getKey('bundle')) {
       $entity_type_id = $entity_type->id();
       $route = new Route($entity_type->getLinkTemplate('add-page'));
-      $route->setDefaults([
+      $route
+        ->setDefaults([
           '_controller' => '\Drupal\devportal_api_reference\Controller\APIRefController::addPage',
           '_title' => "Add {$entity_type->getLabel()}",
           'entity_type_id' => $entity_type_id,
@@ -77,6 +78,7 @@ class APIRefHtmlRouteProvider extends DefaultHtmlRouteProvider {
 
       return $route;
     }
+    return NULL;
   }
 
   /**
@@ -95,6 +97,7 @@ class APIRefHtmlRouteProvider extends DefaultHtmlRouteProvider {
 
       return $route;
     }
+    return NULL;
   }
 
   /**
@@ -119,6 +122,7 @@ class APIRefHtmlRouteProvider extends DefaultHtmlRouteProvider {
 
       return $route;
     }
+    return NULL;
   }
 
   /**
@@ -143,6 +147,7 @@ class APIRefHtmlRouteProvider extends DefaultHtmlRouteProvider {
 
       return $route;
     }
+    return NULL;
   }
 
   /**
@@ -167,6 +172,7 @@ class APIRefHtmlRouteProvider extends DefaultHtmlRouteProvider {
 
       return $route;
     }
+    return NULL;
   }
 
   /**
@@ -191,6 +197,7 @@ class APIRefHtmlRouteProvider extends DefaultHtmlRouteProvider {
 
       return $route;
     }
+    return NULL;
   }
 
   /**
@@ -215,6 +222,7 @@ class APIRefHtmlRouteProvider extends DefaultHtmlRouteProvider {
 
       return $route;
     }
+    return NULL;
   }
 
   /**
@@ -239,6 +247,7 @@ class APIRefHtmlRouteProvider extends DefaultHtmlRouteProvider {
 
       return $route;
     }
+    return NULL;
   }
 
 }
