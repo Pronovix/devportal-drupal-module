@@ -49,8 +49,16 @@ class Swagger20ValidationException extends \Exception {
    * @return static
    */
   public static function fromErrors(array $errors, \Throwable $previous = NULL) {
-    return new static(implode(PHP_EOL, array_map(function($error) {
-      return "[{$error['property']}] {$error['message']}";
+    return new static(implode(PHP_EOL, array_map(function ($error) {
+      $msg = "";
+
+      if ($error['property']) {
+        $msg .= " [{$error['property']}]";
+      }
+
+      $msg .= " {$error['message']}";
+
+      return $msg;
     }, $errors)), 0, $previous, $errors);
   }
 
