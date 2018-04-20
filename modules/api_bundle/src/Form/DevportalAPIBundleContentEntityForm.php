@@ -6,9 +6,9 @@ use Drupal\Core\Entity\ContentEntityForm;
 use Drupal\Core\Form\FormStateInterface;
 
 /**
- * Generic form controller for the DHL content entity forms.
+ * Generic form controller for the API Bundle content entity forms.
  */
-class DHLAPIEntitiesContentEntityForm extends ContentEntityForm {
+class DevportalAPIBundleContentEntityForm extends ContentEntityForm {
 
   /**
    * {@inheritdoc}

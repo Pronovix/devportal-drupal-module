@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Main module file for DHL.
+ * Main module file for Devportal API Bundle.
  */
 
 use Drupal\Core\Entity\ContentEntityType;

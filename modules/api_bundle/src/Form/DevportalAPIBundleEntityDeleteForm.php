@@ -5,9 +5,9 @@ namespace Drupal\devportal_api_bundle\Form;
 use Drupal\Core\Entity\EntityDeleteForm;
 
 /**
- * Provides a confirmation form for deleting a DHL entity type.
+ * Provides a confirmation form for deleting an API Bundle entity type.
  */
-class DHLAPIEntitiesEntityDeleteForm extends EntityDeleteForm {
+class DevportalAPIBundleEntityDeleteForm extends EntityDeleteForm {
 
   /**
    * {@inheritdoc}
