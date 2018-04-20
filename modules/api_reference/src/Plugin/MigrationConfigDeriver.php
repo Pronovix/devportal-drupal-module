@@ -126,7 +126,7 @@ class MigrationConfigDeriver extends DeriverBase {
         throw new \Exception("Can not parse YAML source file ({$file_path}).");
       }
     }
-    else if ($file_ext === 'json') {
+    elseif ($file_ext === 'json') {
       // Parse the Swagger definition but DO NOT convert it to an array yet!
       $swagger = json_decode(file_get_contents($file_path));
       if ($swagger === NULL) {
@@ -158,7 +158,7 @@ class MigrationConfigDeriver extends DeriverBase {
    */
   public static function validateSwagger($swagger) {
     $validator = new Validator();
-    $validator->validate($swagger, (object)[
+    $validator->validate($swagger, (object) [
       '$ref' => 'file://' . ($_SERVER['DOCUMENT_ROOT'] ?: getcwd()) . '/' . drupal_get_path('module', 'devportal_api_reference') . '/data/swagger20-schema.json',
     ]);
     if (!$validator->isValid()) {

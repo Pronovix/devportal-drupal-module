@@ -10,6 +10,7 @@ use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\devportal_api_reference\APIRefInterface;
 use Drupal\devportal_api_reference\Plugin\MigrationConfigDeriver;
 use Drupal\devportal\Traits\URLRouteParametersTrait;
+use Drupal\devportal_api_reference\Plugin\Swagger20ValidationException;
 use Drupal\file\Entity\File;
 use Drupal\user\UserInterface;
 use Symfony\Component\Validator\ConstraintViolation;
@@ -168,6 +169,16 @@ class APIRef extends RevisionableContentEntityBase implements APIRefInterface {
     try {
       $version = MigrationConfigDeriver::getVersionFromAPIRef($this);
       $file_ids = $this->getAllSources();
+    }
+    catch (Swagger20ValidationException $ex) {
+      $validation->add(new ConstraintViolation(
+        $ex->getMessage(),
+        $ex->getMessage(),
+        [],
+        $this,
+        'source',
+        NULL
+      ));
     }
     catch (\Exception $ex) {
       $msg = 'Invalid file.';
