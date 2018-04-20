@@ -36,7 +36,7 @@ class DevportalAdminEventSubscriber extends RouteSubscriberBase {
     if ($this->configFactory->get('node.settings')->get('use_admin_theme')) {
       /** @var \Symfony\Component\Routing\Route $route */
       foreach ($collection->all() as $name => $route) {
-        if (preg_match('^entity\.api_[a-z0-9_]+\.(add|edit)_form$', $name)) {
+        if (preg_match('/^entity\.api_[a-z0-9_]+\.(add|edit)_form$/i', $name)) {
           $route->setOption('_admin_route', TRUE);
         }
       }
