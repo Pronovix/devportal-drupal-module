@@ -1,7 +1,7 @@
 entity.api_ref.collection:
   title: 'API References'
   route_name: entity.api_ref.collection
-  description: 'List API References'
+  description: 'List API References.'
   parent: system.admin_devportal
   weight: -5
 entity.api_ref.add_page:
