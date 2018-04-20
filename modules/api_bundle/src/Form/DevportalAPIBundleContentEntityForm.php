@@ -47,6 +47,8 @@ class DevportalAPIBundleContentEntityForm extends ContentEntityForm {
 
   /**
    * {@inheritdoc}
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
    */
   public function save(array $form, FormStateInterface $form_state) {
     $insert = $this->entity->isNew();
