@@ -51,8 +51,10 @@ class DeleteMultipleAPIRefs extends ConfirmFormBase {
    *   The tempstore factory.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $manager
    *   The entity manager.
-   * @param \Drupal\Core\Session\AccountProxyInterface
+   * @param \Drupal\Core\Session\AccountProxyInterface $current_user
    *   The current user.
+   *
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    */
   public function __construct(PrivateTempStoreFactory $temp_store_factory, EntityTypeManagerInterface $manager, AccountProxyInterface $current_user) {
     $this->tempStoreFactory = $temp_store_factory;
@@ -62,13 +64,15 @@ class DeleteMultipleAPIRefs extends ConfirmFormBase {
 
   /**
    * {@inheritdoc}
+   *
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    */
   public static function create(ContainerInterface $container) {
-    /** @var PrivateTempStoreFactory $temp_store_factory */
+    /** @var \Drupal\user\PrivateTempStoreFactory $temp_store_factory */
     $temp_store_factory = $container->get('user.private_tempstore');
-    /** @var EntityTypeManagerInterface $manager */
+    /** @var \Drupal\Core\Entity\EntityTypeManagerInterface $manager */
     $manager = $container->get('entity_type.manager');
-    /** @var AccountProxyInterface $current_user */
+    /** @var \Drupal\Core\Session\AccountProxyInterface $current_user */
     $current_user = $container->get('current_user');
     return new static(
       $temp_store_factory,
@@ -159,6 +163,9 @@ class DeleteMultipleAPIRefs extends ConfirmFormBase {
 
   /**
    * {@inheritdoc}
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   * @throws \Drupal\Core\TempStore\TempStoreException
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     if ($form_state->getValue('confirm') && !empty($this->apiRefInfo)) {
