@@ -2,7 +2,7 @@
 
 namespace Drupal\devportal_api_entities\Plugin\views\field;
 
-use Drupal\system\Plugin\views\field\BulkForm;
+use Drupal\views\Plugin\views\field\BulkForm;
 
 /**
  * Defines an API Path Param operations bulk form element.
