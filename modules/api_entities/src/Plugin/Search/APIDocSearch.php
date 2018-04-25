@@ -7,7 +7,7 @@ use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Config\Config;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Database\StatementInterface;
-use Drupal\Core\Entity\EntityManagerInterface;
+use Drupal\Core\Entity\EntityTypeManager;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Language\LanguageInterface;
@@ -42,11 +42,11 @@ class APIDocSearch extends ConfigurableSearchPluginBase implements AccessibleInt
   protected $database;
 
   /**
-   * An entity manager object.
+   * An entity type manager object.
    *
-   * @var \Drupal\Core\Entity\EntityManagerInterface
+   * @var \Drupal\Core\Entity\EntityTypeManager
    */
-  protected $entityManager;
+  protected $entityTypeManager;
 
   /**
    * A module manager object.
@@ -121,8 +121,8 @@ class APIDocSearch extends ConfigurableSearchPluginBase implements AccessibleInt
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
     /** @var \Drupal\Core\Database\Connection $database */
     $database = $container->get('database');
-    /** @var \Drupal\Core\Entity\EntityManagerInterface $entity_manager */
-    $entity_manager = $container->get('entity.manager');
+    /** @var \Drupal\Core\Entity\EntityTypeManager $entity_type_manager */
+    $entity_type_manager = $container->get('entity_type.manager');
     /** @var \Drupal\Core\Extension\ModuleHandlerInterface $module_handler */
     $module_handler = $container->get('module_handler');
     /** @var \Drupal\Core\Config\Config $search_settings */
@@ -140,7 +140,7 @@ class APIDocSearch extends ConfigurableSearchPluginBase implements AccessibleInt
       $plugin_id,
       $plugin_definition,
       $database,
-      $entity_manager,
+      $entity_type_manager,
       $module_handler,
       $search_settings,
       $language_manager,
@@ -162,8 +162,8 @@ class APIDocSearch extends ConfigurableSearchPluginBase implements AccessibleInt
    *   The plugin implementation definition.
    * @param \Drupal\Core\Database\Connection $database
    *   A database connection object.
-   * @param \Drupal\Core\Entity\EntityManagerInterface $entity_manager
-   *   An entity manager object.
+   * @param \Drupal\Core\Entity\EntityTypeManager $entity_type_manager
+   *   An entity type manager object.
    * @param \Drupal\Core\Extension\ModuleHandlerInterface $module_handler
    *   A module manager object.
    * @param \Drupal\Core\Config\Config $search_settings
@@ -177,9 +177,9 @@ class APIDocSearch extends ConfigurableSearchPluginBase implements AccessibleInt
    * @param \Drupal\Core\Session\AccountInterface $account
    *   The $account object to use for checking for access to advanced search.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, Connection $database, EntityManagerInterface $entity_manager, ModuleHandlerInterface $module_handler, Config $search_settings, LanguageManagerInterface $language_manager, RendererInterface $renderer, MessengerInterface $messenger, AccountInterface $account = NULL) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, Connection $database, EntityTypeManager $entity_type_manager, ModuleHandlerInterface $module_handler, Config $search_settings, LanguageManagerInterface $language_manager, RendererInterface $renderer, MessengerInterface $messenger, AccountInterface $account = NULL) {
     $this->database = $database;
-    $this->entityManager = $entity_manager;
+    $this->entityTypeManager = $entity_type_manager;
     $this->moduleHandler = $module_handler;
     $this->searchSettings = $search_settings;
     $this->languageManager = $language_manager;
@@ -338,8 +338,8 @@ class APIDocSearch extends ConfigurableSearchPluginBase implements AccessibleInt
   protected function prepareResults(StatementInterface $found) {
     $results = [];
 
-    $api_doc_storage = $this->entityManager->getStorage('api_doc');
-    $api_doc_render = $this->entityManager->getViewBuilder('api_doc');
+    $api_doc_storage = $this->entityTypeManager->getStorage('api_doc');
+    $api_doc_render = $this->entityTypeManager->getViewBuilder('api_doc');
     $keys = $this->keywords;
 
     foreach ($found as $item) {
@@ -349,7 +349,7 @@ class APIDocSearch extends ConfigurableSearchPluginBase implements AccessibleInt
       $build = $api_doc_render->view($api_doc, 'search_result', $item->langcode);
 
       /** @var \Drupal\devportal_api_entities\APIDocTypeInterface $type */
-      $type = $this->entityManager->getStorage('api_doc_type')->load($api_doc->bundle());
+      $type = $this->entityTypeManager->getStorage('api_doc_type')->load($api_doc->bundle());
 
       unset($build['#theme']);
       $build['#pre_render'][] = [$this, 'removeSubmittedInfo'];
@@ -455,7 +455,7 @@ class APIDocSearch extends ConfigurableSearchPluginBase implements AccessibleInt
       return;
     }
 
-    $api_doc_storage = $this->entityManager->getStorage('api_doc');
+    $api_doc_storage = $this->entityTypeManager->getStorage('api_doc');
     foreach ($api_doc_storage->loadMultiple($api_doc_ids) as $api_doc) {
       /** @var \Drupal\devportal_api_entities\APIDocInterface $api_doc */
       $this->indexAPIDoc($api_doc);
@@ -470,7 +470,7 @@ class APIDocSearch extends ConfigurableSearchPluginBase implements AccessibleInt
    */
   protected function indexAPIDoc(APIDocInterface $api_doc) {
     $languages = $api_doc->getTranslationLanguages();
-    $api_doc_render = $this->entityManager->getViewBuilder('api_doc');
+    $api_doc_render = $this->entityTypeManager->getViewBuilder('api_doc');
 
     foreach ($languages as $language) {
       $api_doc = $api_doc->getTranslation($language->getId());

@@ -80,6 +80,7 @@ class APITagController extends ControllerBase {
    *
    * @return array
    *   An array suitable for drupal_render().
+   *
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    */
   public function revisionShow($api_tag_revision) {
@@ -96,6 +97,7 @@ class APITagController extends ControllerBase {
    *
    * @return string
    *   The page title.
+   *
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    */
   public function revisionPageTitle($api_tag_revision) {
@@ -112,6 +114,7 @@ class APITagController extends ControllerBase {
    *
    * @return array
    *   An array as expected by drupal_render().
+   *
    * @throws \Drupal\Core\Entity\EntityMalformedException
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    */
@@ -264,6 +267,7 @@ class APITagController extends ControllerBase {
    * - ControllerBase::entityTypeManager() should be used through this method,
    *   whilst EntityController->entityTypeManager is dependency-injected, so it
    *   can be used directly there.
+   *
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    */
@@ -340,6 +344,7 @@ class APITagController extends ControllerBase {
    * - ControllerBase::entityTypeManager() should be used through this method,
    *   whilst EntityController->entityTypeManager is dependency-injected, so it
    *   can be used directly there.
+   *
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    */
   protected function loadBundleDescriptions(array $bundles, EntityTypeInterface $bundle_entity_type) {

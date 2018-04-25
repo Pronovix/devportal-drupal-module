@@ -73,7 +73,7 @@ class RepoImportViewBuilder extends EntityViewBuilder {
     /** @var EntityManagerInterface $entity_manager */
     $entity_manager = $container->get('entity.manager');
 
-    /** @var LanguageManagerInterface $language_manager */
+    /** @var \Drupal\Core\Language\LanguageManagerInterface $language_manager */
     $language_manager = $container->get('language_manager');
 
     /** @var ThemeRegistry $theme_registry */

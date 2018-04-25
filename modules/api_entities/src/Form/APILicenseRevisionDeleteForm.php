@@ -64,15 +64,18 @@ class APILicenseRevisionDeleteForm extends ConfirmFormBase {
 
   /**
    * {@inheritdoc}
+   *
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    */
   public static function create(ContainerInterface $container) {
-    $entity_manager = $container->get('entity.manager');
-    /** @var Connection $connection */
+    /** @var \Drupal\Core\Entity\EntityTypeManager $entity_type_manager */
+    $entity_type_manager = $container->get('entity_type.manager');
+    /** @var \Drupal\Core\Database\Connection $connection */
     $connection = $container->get('database');
-    /** @var DateFormatterInterface $date_formatter */
+    /** @var \Drupal\Core\Datetime\DateFormatterInterface $date_formatter */
     $date_formatter = $container->get('date.formatter');
     return new static(
-      $entity_manager->getStorage('api_license'),
+      $entity_type_manager->getStorage('api_license'),
       $connection,
       $date_formatter
     );

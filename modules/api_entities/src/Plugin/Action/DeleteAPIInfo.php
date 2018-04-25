@@ -60,7 +60,7 @@ class DeleteAPIInfo extends ActionBase implements ContainerFactoryPluginInterfac
    */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
     /** @var PrivateTempStoreFactory $temp_store_factory */
-    $temp_store_factory = $container->get('user.private_tempstore');
+    $temp_store_factory = $container->get('tempstore.private');
     /** @var AccountInterface $current_user */
     $current_user = $container->get('current_user');
     return new static(

@@ -80,6 +80,7 @@ class APIMethodController extends ControllerBase {
    *
    * @return array
    *   An array suitable for drupal_render().
+   *
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    */
   public function revisionShow($api_method_revision) {
@@ -96,6 +97,7 @@ class APIMethodController extends ControllerBase {
    *
    * @return string
    *   The page title.
+   *
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    * @throws \Drupal\Core\TypedData\Exception\MissingDataException
    */
@@ -113,6 +115,7 @@ class APIMethodController extends ControllerBase {
    *
    * @return array
    *   An array as expected by drupal_render().
+   *
    * @throws \Drupal\Core\Entity\EntityMalformedException
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    */

@@ -69,7 +69,7 @@ class DeleteMultipleAPIBundles extends ConfirmFormBase {
    */
   public static function create(ContainerInterface $container) {
     /** @var PrivateTempStoreFactory $temp_store_factory */
-    $temp_store_factory = $container->get('user.private_tempstore');
+    $temp_store_factory = $container->get('tempstore.private');
     /** @var EntityTypeManagerInterface $manager */
     $manager = $container->get('entity_type.manager');
     /** @var AccountProxyInterface $current_user */

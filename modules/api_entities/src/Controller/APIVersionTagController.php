@@ -89,6 +89,7 @@ class APIVersionTagController extends ControllerBase {
    * - ControllerBase::entityTypeManager() should be used through this method,
    *   whilst EntityController->entityTypeManager is dependency-injected, so it
    *   can be used directly there.
+   *
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    */
@@ -165,6 +166,7 @@ class APIVersionTagController extends ControllerBase {
    * - ControllerBase::entityTypeManager() should be used through this method,
    *   whilst EntityController->entityTypeManager is dependency-injected, so it
    *   can be used directly there.
+   *
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    */
   protected function loadBundleDescriptions(array $bundles, EntityTypeInterface $bundle_entity_type) {

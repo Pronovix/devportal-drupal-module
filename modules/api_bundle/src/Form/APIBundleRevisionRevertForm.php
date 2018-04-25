@@ -64,13 +64,16 @@ class APIBundleRevisionRevertForm extends ConfirmFormBase {
 
   /**
    * {@inheritdoc}
+   *
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    */
   public static function create(ContainerInterface $container) {
-    $entity_storage = $container->get('entity.manager')
+    /** @var \Drupal\Core\Entity\EntityStorageInterface $entity_storage */
+    $entity_storage = $container->get('entity_type.manager')
       ->getStorage('api_bundle');
-    /** @var DateFormatterInterface $date_formatter */
+    /** @var \Drupal\Core\Datetime\DateFormatterInterface $date_formatter */
     $date_formatter = $container->get('date.formatter');
-    /** @var TimeInterface $time_service */
+    /** @var \Drupal\Component\Datetime\TimeInterface $time_service */
     $time_service = $container->get('datetime.time');
     return new static(
       $entity_storage,
