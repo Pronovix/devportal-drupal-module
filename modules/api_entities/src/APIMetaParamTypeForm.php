@@ -80,6 +80,7 @@ class APIMetaParamTypeForm extends EntityForm {
 
   /**
    * {@inheritdoc}
+   *
    * @throws \Drupal\Core\Entity\EntityMalformedException
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
@@ -89,13 +90,13 @@ class APIMetaParamTypeForm extends EntityForm {
 
     switch ($status) {
       case SAVED_NEW:
-        drupal_set_message($this->t('Created the %label API Meta Parameter type.', [
+        $this->messenger()->addMessage($this->t('Created the %label API Meta Parameter type.', [
           '%label' => $api_meta_param_type->label(),
         ]));
         break;
 
       default:
-        drupal_set_message($this->t('Saved the %label API Meta Parameter type.', [
+        $this->messenger()->addMessage($this->t('Saved the %label API Meta Parameter type.', [
           '%label' => $api_meta_param_type->label(),
         ]));
     }

@@ -213,7 +213,7 @@ class DeleteMultipleAPIBundles extends ConfirmFormBase {
       }
 
       if ($total_count) {
-        drupal_set_message($this->formatPlural($total_count, 'Deleted 1 API Bundle.', 'Deleted @count API Bundles.'));
+        $this->messenger()->addMessage($this->formatPlural($total_count, 'Deleted 1 API Bundle.', 'Deleted @count API Bundles.'));
       }
 
       $this->tempStoreFactory->get('api_bundle_multiple_delete_confirm')->delete($this->currentUser->id());

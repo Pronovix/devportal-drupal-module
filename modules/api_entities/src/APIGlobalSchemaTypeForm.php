@@ -89,13 +89,13 @@ class APIGlobalSchemaTypeForm extends EntityForm {
 
     switch ($status) {
       case SAVED_NEW:
-        drupal_set_message($this->t('Created the %label API Global Schema type.', [
+        $this->messenger()->addMessage($this->t('Created the %label API Global Schema type.', [
           '%label' => $api_global_schema_type->label(),
         ]));
         break;
 
       default:
-        drupal_set_message($this->t('Saved the %label API Global Schema type.', [
+        $this->messenger()->addMessage($this->t('Saved the %label API Global Schema type.', [
           '%label' => $api_global_schema_type->label(),
         ]));
     }

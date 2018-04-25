@@ -89,13 +89,13 @@ class APIExtDocTypeForm extends EntityForm {
 
     switch ($status) {
       case SAVED_NEW:
-        drupal_set_message($this->t('Created the %label API External Documentation type.', [
+        $this->messenger()->addMessage($this->t('Created the %label API External Documentation type.', [
           '%label' => $api_ext_doc_type->label(),
         ]));
         break;
 
       default:
-        drupal_set_message($this->t('Saved the %label API External Documentation type.', [
+        $this->messenger()->addMessage($this->t('Saved the %label API External Documentation type.', [
           '%label' => $api_ext_doc_type->label(),
         ]));
     }

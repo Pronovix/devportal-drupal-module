@@ -89,13 +89,13 @@ class APIBodyParamTypeForm extends EntityForm {
 
     switch ($status) {
       case SAVED_NEW:
-        drupal_set_message($this->t('Created the %label API HTTP Method Body Parameter type.', [
+        $this->messenger()->addMessage($this->t('Created the %label API HTTP Method Body Parameter type.', [
           '%label' => $api_body_param_type->label(),
         ]));
         break;
 
       default:
-        drupal_set_message($this->t('Saved the %label API HTTP Method Body Parameter type.', [
+        $this->messenger()->addMessage($this->t('Saved the %label API HTTP Method Body Parameter type.', [
           '%label' => $api_body_param_type->label(),
         ]));
     }

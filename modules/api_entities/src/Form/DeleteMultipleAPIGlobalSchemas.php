@@ -162,6 +162,7 @@ class DeleteMultipleAPIGlobalSchemas extends ConfirmFormBase {
 
   /**
    * {@inheritdoc}
+   *
    * @throws \Drupal\Core\TempStore\TempStoreException
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
@@ -211,7 +212,7 @@ class DeleteMultipleAPIGlobalSchemas extends ConfirmFormBase {
       }
 
       if ($total_count) {
-        drupal_set_message($this->formatPlural($total_count, 'Deleted 1 API Global Schema.', 'Deleted @count API Global Schemas.'));
+        $this->messenger()->addMessage($this->formatPlural($total_count, 'Deleted 1 API Global Schema.', 'Deleted @count API Global Schemas.'));
       }
 
       $this->tempStoreFactory->get('api_global_schema_multiple_delete_confirm')->delete($this->currentUser->id());

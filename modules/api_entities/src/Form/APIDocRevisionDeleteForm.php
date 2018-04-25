@@ -128,7 +128,7 @@ class APIDocRevisionDeleteForm extends ConfirmFormBase {
       '%title' => $this->revision->label(),
       '%revision' => $this->revision->getRevisionId(),
     ]);
-    drupal_set_message(t('Revision from %revision-date of API Documentation %title has been deleted.', [
+    $this->messenger()->addMessage($this->t('Revision from %revision-date of API Documentation %title has been deleted.', [
       '%revision-date' => $this->dateFormatter->format($this->revision->getRevisionCreationTime()),
       '%title' => $this->revision->label(),
     ]));

@@ -213,7 +213,7 @@ class DeleteMultipleAPIRefs extends ConfirmFormBase {
       }
 
       if ($total_count) {
-        drupal_set_message($this->formatPlural($total_count, 'Deleted 1 API Reference.', 'Deleted @count API References.'));
+        $this->messenger()->addMessage($this->formatPlural($total_count, 'Deleted 1 API Reference.', 'Deleted @count API References.'));
       }
 
       $this->tempStoreFactory->get('api_ref_multiple_delete_confirm')->delete($this->currentUser->id());

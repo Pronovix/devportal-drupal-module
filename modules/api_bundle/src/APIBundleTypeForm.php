@@ -90,13 +90,13 @@ class APIBundleTypeForm extends EntityForm {
 
     switch ($status) {
       case SAVED_NEW:
-        drupal_set_message($this->t('Created the %label API Bundle type.', [
+        $this->messenger()->addMessage($this->t('Created the %label API Bundle type.', [
           '%label' => $api_bundle_type->label(),
         ]));
         break;
 
       default:
-        drupal_set_message($this->t('Saved the %label API Bundle type.', [
+        $this->messenger()->addMessage($this->t('Saved the %label API Bundle type.', [
           '%label' => $api_bundle_type->label(),
         ]));
     }

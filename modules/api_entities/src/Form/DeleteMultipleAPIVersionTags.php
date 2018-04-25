@@ -162,6 +162,7 @@ class DeleteMultipleAPIVersionTags extends ConfirmFormBase {
 
   /**
    * {@inheritdoc}
+   *
    * @throws \Drupal\Core\TempStore\TempStoreException
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
@@ -211,7 +212,7 @@ class DeleteMultipleAPIVersionTags extends ConfirmFormBase {
       }
 
       if ($total_count) {
-        drupal_set_message($this->formatPlural($total_count, 'Deleted 1 API Version Tag.', 'Deleted @count API Version Tags.'));
+        $this->messenger()->addMessage($this->formatPlural($total_count, 'Deleted 1 API Version Tag.', 'Deleted @count API Version Tags.'));
       }
 
       $this->tempStoreFactory->get('api_version_tag_multiple_delete_confirm')->delete($this->currentUser->id());

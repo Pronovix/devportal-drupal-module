@@ -190,6 +190,7 @@ class RepoAccountForm extends EntityForm {
 
   /**
    * {@inheritdoc}
+   *
    * @throws \Drupal\Component\Plugin\Exception\PluginException
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
@@ -241,6 +242,7 @@ class RepoAccountForm extends EntityForm {
 
   /**
    * {@inheritdoc}
+   *
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
   public function save(array $form, FormStateInterface $form_state) {
@@ -250,7 +252,7 @@ class RepoAccountForm extends EntityForm {
       '%label' => $this->getEntity()->getLabel(),
     ];
 
-    drupal_set_message($status ?
+    $this->messenger()->addMessage($status ?
       $this->t('Saved the %label repository account.', $params) :
       $this->t('The %label repository account was not saved.', $params)
     );

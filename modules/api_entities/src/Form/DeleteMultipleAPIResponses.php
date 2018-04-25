@@ -162,6 +162,7 @@ class DeleteMultipleAPIResponses extends ConfirmFormBase {
 
   /**
    * {@inheritdoc}
+   *
    * @throws \Drupal\Core\TempStore\TempStoreException
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
@@ -211,7 +212,7 @@ class DeleteMultipleAPIResponses extends ConfirmFormBase {
       }
 
       if ($total_count) {
-        drupal_set_message($this->formatPlural($total_count, 'Deleted 1 API Response.', 'Deleted @count API Responses.'));
+        $this->messenger()->addMessage($this->formatPlural($total_count, 'Deleted 1 API Response.', 'Deleted @count API Responses.'));
       }
 
       $this->tempStoreFactory->get('api_response_multiple_delete_confirm')->delete($this->currentUser->id());

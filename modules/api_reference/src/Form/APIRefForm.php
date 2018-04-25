@@ -101,6 +101,7 @@ class APIRefForm extends ContentEntityForm {
 
   /**
    * {@inheritdoc}
+   *
    * @throws \Drupal\Core\Entity\EntityMalformedException
    */
   public function save(array $form, FormStateInterface $form_state) {
@@ -122,12 +123,12 @@ class APIRefForm extends ContentEntityForm {
     $status = parent::save($form, $form_state);
 
     if ($status === SAVED_UPDATED) {
-      drupal_set_message($this->t('API Reference %api_ref has been updated.', [
+      $this->messenger()->addMessage($this->t('API Reference %api_ref has been updated.', [
         '%api_ref' => $api_ref->toLink()->toString(),
       ]));
     }
     else {
-      drupal_set_message($this->t('API Reference %api_ref has been added.', [
+      $this->messenger()->addMessage($this->t('API Reference %api_ref has been added.', [
         '%api_ref' => $api_ref->toLink()->toString(),
       ]));
     }

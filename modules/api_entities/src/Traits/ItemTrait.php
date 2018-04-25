@@ -16,8 +16,12 @@ trait ItemTrait {
    * @see \Drupal\Core\Entity\FieldableEntityInterface::baseFieldDefinitions()
    * @see \Drupal\devportal_api_entities\Traits\ItemInterface::itemBaseFieldDefinitions()
    *
-   * @param $allow_file bool
+   * @param bool $allow_file
    *   TRUE for allowing file items. Defaults to FALSE.
+   *
+   * @param \Drupal\Core\Entity\EntityTypeInterface $entity_type
+   *
+   * @return array
    */
   public static function itemBaseFieldDefinitions(EntityTypeInterface $entity_type, $allow_file = FALSE) {
     $fields = [];
@@ -39,7 +43,7 @@ trait ItemTrait {
         ->setRequired(TRUE)
         ->setRevisionable(TRUE)
         ->setSettings([
-          'allowed_values' => $allowed_values
+          'allowed_values' => $allowed_values,
         ])
         ->setDisplayOptions('view', [
           'label' => 'hidden',
@@ -119,7 +123,7 @@ trait ItemTrait {
             'tsv' => 'tab separated values',
             'pipes' => 'pipe separated values',
             'multi' => 'corresponds to multiple parameter instances instead of multiple values for a single instance',
-          ]
+          ],
         ])
         ->setDisplayOptions('view', [
           'label' => 'hidden',
