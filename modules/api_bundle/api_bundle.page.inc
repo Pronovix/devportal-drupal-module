@@ -27,6 +27,7 @@ function template_preprocess_api_bundle(array &$variables) {
   $variables['attributes']['class'][] = $entity->getEntityTypeId() . '--' . $entity->bundle();
   $variables['attributes']['class'][] = $entity->bundle();
   $variables['attributes']['class'][] = $entity->getEntityTypeId();
+  $variables['attributes']['class'][] = "view-mode--{$variables['elements']['#view_mode']}";
 
   // Helpful $content variable for templates.
   foreach (Element::children($variables['elements']) as $key) {
