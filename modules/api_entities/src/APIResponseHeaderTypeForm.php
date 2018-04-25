@@ -80,6 +80,7 @@ class APIResponseHeaderTypeForm extends EntityForm {
 
   /**
    * {@inheritdoc}
+   *
    * @throws \Drupal\Core\Entity\EntityMalformedException
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
@@ -89,13 +90,13 @@ class APIResponseHeaderTypeForm extends EntityForm {
 
     switch ($status) {
       case SAVED_NEW:
-        drupal_set_message($this->t('Created the %label API Response Header type.', [
+        $this->messenger()->addMessage($this->t('Created the %label API Response Header type.', [
           '%label' => $api_response_header_type->label(),
         ]));
         break;
 
       default:
-        drupal_set_message($this->t('Saved the %label API Response Header type.', [
+        $this->messenger()->addMessage($this->t('Saved the %label API Response Header type.', [
           '%label' => $api_response_header_type->label(),
         ]));
     }

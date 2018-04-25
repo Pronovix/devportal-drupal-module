@@ -825,7 +825,7 @@ class RepoImportForm extends EntityForm {
         }
       }
       catch (\Exception $ex) {
-        \drupal_set_message($this->t('Failed to create a webhook automatically.'));
+        $this->messenger()->addMessage($this->t('Failed to create a webhook automatically.'));
         watchdog_exception('devportal_repo_sync_webhook', $ex);
       }
     }

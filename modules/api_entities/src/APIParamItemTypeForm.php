@@ -89,13 +89,13 @@ class APIParamItemTypeForm extends EntityForm {
 
     switch ($status) {
       case SAVED_NEW:
-        drupal_set_message($this->t('Created the %label API HTTP Method Parameter Item type.', [
+        $this->messenger()->addMessage($this->t('Created the %label API HTTP Method Parameter Item type.', [
           '%label' => $api_param_item_type->label(),
         ]));
         break;
 
       default:
-        drupal_set_message($this->t('Saved the %label API HTTP Method Parameter Item type.', [
+        $this->messenger()->addMessage($this->t('Saved the %label API HTTP Method Parameter Item type.', [
           '%label' => $api_param_item_type->label(),
         ]));
     }

@@ -80,6 +80,7 @@ class APIParamTypeForm extends EntityForm {
 
   /**
    * {@inheritdoc}
+   *
    * @throws \Drupal\Core\Entity\EntityMalformedException
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
@@ -89,13 +90,13 @@ class APIParamTypeForm extends EntityForm {
 
     switch ($status) {
       case SAVED_NEW:
-        drupal_set_message($this->t('Created the %label API Parameter type.', [
+        $this->messenger()->addMessage($this->t('Created the %label API Parameter type.', [
           '%label' => $api_param_type->label(),
         ]));
         break;
 
       default:
-        drupal_set_message($this->t('Saved the %label API Parameter type.', [
+        $this->messenger()->addMessage($this->t('Saved the %label API Parameter type.', [
           '%label' => $api_param_type->label(),
         ]));
     }

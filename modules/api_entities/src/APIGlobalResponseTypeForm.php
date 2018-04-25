@@ -89,13 +89,13 @@ class APIGlobalResponseTypeForm extends EntityForm {
 
     switch ($status) {
       case SAVED_NEW:
-        drupal_set_message($this->t('Created the %label API Global Response type.', [
+        $this->messenger()->addMessage($this->t('Created the %label API Global Response type.', [
           '%label' => $api_global_response_type->label(),
         ]));
         break;
 
       default:
-        drupal_set_message($this->t('Saved the %label API Global Response type.', [
+        $this->messenger()->addMessage($this->t('Saved the %label API Global Response type.', [
           '%label' => $api_global_response_type->label(),
         ]));
     }

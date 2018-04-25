@@ -89,13 +89,13 @@ class APIHeaderParamTypeForm extends EntityForm {
 
     switch ($status) {
       case SAVED_NEW:
-        drupal_set_message($this->t('Created the %label API HTTP Method Header Parameter type.', [
+        $this->messenger()->addMessage($this->t('Created the %label API HTTP Method Header Parameter type.', [
           '%label' => $api_header_param_type->label(),
         ]));
         break;
 
       default:
-        drupal_set_message($this->t('Saved the %label API HTTP Method Header Parameter type.', [
+        $this->messenger()->addMessage($this->t('Saved the %label API HTTP Method Header Parameter type.', [
           '%label' => $api_header_param_type->label(),
         ]));
     }

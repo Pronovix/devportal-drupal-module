@@ -12,6 +12,7 @@ use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
+use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Access\AccessibleInterface;
 use Drupal\Core\Database\Query\Condition;
@@ -76,6 +77,13 @@ class APIDocSearch extends ConfigurableSearchPluginBase implements AccessibleInt
   protected $account;
 
   /**
+   * The messenger service.
+   *
+   * @var \Drupal\Core\Messenger\MessengerInterface
+   */
+  protected $messenger;
+
+  /**
    * The Renderer service to format the username and API Documentation.
    *
    * @var \Drupal\Core\Render\RendererInterface
@@ -110,7 +118,7 @@ class APIDocSearch extends ConfigurableSearchPluginBase implements AccessibleInt
   /**
    * {@inheritdoc}
    */
-  static public function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
     /** @var \Drupal\Core\Database\Connection $database */
     $database = $container->get('database');
     /** @var \Drupal\Core\Entity\EntityManagerInterface $entity_manager */
@@ -125,6 +133,8 @@ class APIDocSearch extends ConfigurableSearchPluginBase implements AccessibleInt
     $renderer = $container->get('renderer');
     /** @var \Drupal\Core\Session\AccountInterface $account */
     $account = $container->get('current_user');
+    /** @var \Drupal\Core\Messenger\MessengerInterface $messenger */
+    $messenger = $container->get('messenger');
     return new static(
       $configuration,
       $plugin_id,
@@ -135,7 +145,8 @@ class APIDocSearch extends ConfigurableSearchPluginBase implements AccessibleInt
       $search_settings,
       $language_manager,
       $renderer,
-      $account
+      $account,
+      $messenger
     );
   }
 
@@ -161,16 +172,19 @@ class APIDocSearch extends ConfigurableSearchPluginBase implements AccessibleInt
    *   The language manager.
    * @param \Drupal\Core\Render\RendererInterface $renderer
    *   The renderer.
+   * @param \Drupal\Core\Messenger\MessengerInterface $messenger
+   *   The messenger service.
    * @param \Drupal\Core\Session\AccountInterface $account
    *   The $account object to use for checking for access to advanced search.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, Connection $database, EntityManagerInterface $entity_manager, ModuleHandlerInterface $module_handler, Config $search_settings, LanguageManagerInterface $language_manager, RendererInterface $renderer, AccountInterface $account = NULL) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, Connection $database, EntityManagerInterface $entity_manager, ModuleHandlerInterface $module_handler, Config $search_settings, LanguageManagerInterface $language_manager, RendererInterface $renderer, MessengerInterface $messenger, AccountInterface $account = NULL) {
     $this->database = $database;
     $this->entityManager = $entity_manager;
     $this->moduleHandler = $module_handler;
     $this->searchSettings = $search_settings;
     $this->languageManager = $language_manager;
     $this->renderer = $renderer;
+    $this->messenger = $messenger;
     $this->account = $account;
     parent::__construct($configuration, $plugin_id, $plugin_definition);
 
@@ -205,6 +219,7 @@ class APIDocSearch extends ConfigurableSearchPluginBase implements AccessibleInt
 
   /**
    * {@inheritdoc}
+   *
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    */
   public function execute() {
@@ -295,15 +310,15 @@ class APIDocSearch extends ConfigurableSearchPluginBase implements AccessibleInt
     $status = $query->getStatus();
 
     if ($status & SearchQuery::EXPRESSIONS_IGNORED) {
-      drupal_set_message($this->t('Your search used too many AND/OR expressions. Only the first @count terms were included in this search.', ['@count' => $this->searchSettings->get('and_or_limit')]), 'warning');
+      $this->messenger->addWarning($this->t('Your search used too many AND/OR expressions. Only the first @count terms were included in this search.', ['@count' => $this->searchSettings->get('and_or_limit')]));
     }
 
     if ($status & SearchQuery::LOWER_CASE_OR) {
-      drupal_set_message($this->t('Search for either of the two terms with uppercase <strong>OR</strong>. For example, <strong>cats OR dogs</strong>.'), 'warning');
+      $this->messenger->addWarning($this->t('Search for either of the two terms with uppercase <strong>OR</strong>. For example, <strong>cats OR dogs</strong>.'));
     }
 
     if ($status & SearchQuery::NO_POSITIVE_KEYWORDS) {
-      drupal_set_message($this->formatPlural($this->searchSettings->get('index.minimum_word_size'), 'You must include at least one keyword to match in the content, and punctuation is ignored.', 'You must include at least one keyword to match in the content. Keywords must be at least @count characters, and punctuation is ignored.'), 'warning');
+      $this->messenger->addWarning($this->formatPlural($this->searchSettings->get('index.minimum_word_size'), 'You must include at least one keyword to match in the content, and punctuation is ignored.', 'You must include at least one keyword to match in the content. Keywords must be at least @count characters, and punctuation is ignored.'));
     }
 
     return $find;
@@ -317,6 +332,7 @@ class APIDocSearch extends ConfigurableSearchPluginBase implements AccessibleInt
    *
    * @return array
    *   Array of search result item render arrays (empty array if no results).
+   *
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    */
   protected function prepareResults(StatementInterface $found) {
@@ -332,7 +348,7 @@ class APIDocSearch extends ConfigurableSearchPluginBase implements AccessibleInt
       $api_doc = $api_doc_storage->load($item->sid)->getTranslation($item->langcode);
       $build = $api_doc_render->view($api_doc, 'search_result', $item->langcode);
 
-      /** @var \Drupal\devportal_api_entities\APIDocTypeInterface $type*/
+      /** @var \Drupal\devportal_api_entities\APIDocTypeInterface $type */
       $type = $this->entityManager->getStorage('api_doc_type')->load($api_doc->bundle());
 
       unset($build['#theme']);
@@ -410,6 +426,7 @@ class APIDocSearch extends ConfigurableSearchPluginBase implements AccessibleInt
 
   /**
    * {@inheritdoc}
+   *
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    */
   public function updateIndex() {

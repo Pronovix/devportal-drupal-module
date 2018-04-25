@@ -7,7 +7,6 @@ use Drupal\Core\Datetime\DateFormatterInterface;
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Form\ConfirmFormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Url;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -67,9 +66,9 @@ class APIBodyParamRevisionDeleteForm extends ConfirmFormBase {
    */
   public static function create(ContainerInterface $container) {
     $entity_manager = $container->get('entity.manager');
-    /** @var Connection $connection */
+    /** @var \Drupal\Core\Database\Connection $connection */
     $connection = $container->get('database');
-    /** @var DateFormatterInterface $date_formatter */
+    /** @var \Drupal\Core\Datetime\DateFormatterInterface $date_formatter */
     $date_formatter = $container->get('date.formatter');
     return new static(
       $entity_manager->getStorage('api_body_param'),
@@ -128,7 +127,7 @@ class APIBodyParamRevisionDeleteForm extends ConfirmFormBase {
       '%title' => $this->revision->label(),
       '%revision' => $this->revision->getRevisionId(),
     ]);
-    drupal_set_message(t('Revision from %revision-date of API HTTP Method Body Parameter %title has been deleted.', [
+    $this->messenger()->addMessage($this->t('Revision from %revision-date of API HTTP Method Body Parameter %title has been deleted.', [
       '%revision-date' => $this->dateFormatter->format($this->revision->getRevisionCreationTime()),
       '%title' => $this->revision->label(),
     ]));

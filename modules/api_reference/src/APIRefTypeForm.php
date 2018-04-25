@@ -80,6 +80,7 @@ class APIRefTypeForm extends EntityForm {
 
   /**
    * {@inheritdoc}
+   *
    * @throws \Drupal\Core\Entity\EntityMalformedException
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
@@ -89,13 +90,13 @@ class APIRefTypeForm extends EntityForm {
 
     switch ($status) {
       case SAVED_NEW:
-        drupal_set_message($this->t('Created the %label API Reference type.', [
+        $this->messenger()->addMessage($this->t('Created the %label API Reference type.', [
           '%label' => $api_ref_type->label(),
         ]));
         break;
 
       default:
-        drupal_set_message($this->t('Saved the %label API Reference type.', [
+        $this->messenger()->addMessage($this->t('Saved the %label API Reference type.', [
           '%label' => $api_ref_type->label(),
         ]));
     }

@@ -162,6 +162,7 @@ class DeleteMultipleAPIPathParams extends ConfirmFormBase {
 
   /**
    * {@inheritdoc}
+   *
    * @throws \Drupal\Core\TempStore\TempStoreException
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
@@ -211,7 +212,7 @@ class DeleteMultipleAPIPathParams extends ConfirmFormBase {
       }
 
       if ($total_count) {
-        drupal_set_message($this->formatPlural($total_count, 'Deleted 1 API HTTP Method Path Parameter.', 'Deleted @count API HTTP Method Path Parameters.'));
+        $this->messenger()->addMessage($this->formatPlural($total_count, 'Deleted 1 API HTTP Method Path Parameter.', 'Deleted @count API HTTP Method Path Parameters.'));
       }
 
       $this->tempStoreFactory->get('api_path_param_multiple_delete_confirm')->delete($this->currentUser->id());

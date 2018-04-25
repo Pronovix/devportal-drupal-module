@@ -36,11 +36,12 @@ class RepoAccountDeleteForm extends EntityConfirmFormBase {
 
   /**
    * {@inheritdoc}
+   *
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $this->entity->delete();
-    drupal_set_message($this->t('Repository account %label has been deleted.', [
+    $this->messenger()->addMessage($this->t('Repository account %label has been deleted.', [
       '%label' => $this->entity->getLabel(),
     ]));
     $form_state->setRedirectUrl($this->getCancelUrl());
