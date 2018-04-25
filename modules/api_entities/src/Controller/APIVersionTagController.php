@@ -2,7 +2,7 @@
 
 namespace Drupal\devportal_api_entities\Controller;
 
-use Drupal\Component\Utility\Xss;
+
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Datetime\DateFormatterInterface;
 use Drupal\Core\Entity\EntityDescriptionInterface;
@@ -10,8 +10,8 @@ use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Render\RendererInterface;
-use Drupal\Core\Url;
-use Drupal\devportal_api_entities\APIVersionTagInterface;
+
+
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**

@@ -7,7 +7,7 @@ use Drupal\Core\Datetime\DateFormatterInterface;
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Form\ConfirmFormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\StringTranslation\StringTranslationTrait;
+
 use Drupal\Core\Url;
 use Drupal\devportal_api_entities\APIQueryParamInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
