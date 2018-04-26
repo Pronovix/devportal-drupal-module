@@ -2,7 +2,7 @@
 
 namespace Drupal\devportal_api_entities\Controller;
 
-use Drupal\Component\Utility\Xss;
+
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Datetime\DateFormatterInterface;
 use Drupal\Core\Entity\EntityDescriptionInterface;
@@ -10,8 +10,8 @@ use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Render\RendererInterface;
-use Drupal\Core\Url;
-use Drupal\devportal_api_entities\APIVersionTagInterface;
+
+
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -89,6 +89,7 @@ class APIVersionTagController extends ControllerBase {
    * - ControllerBase::entityTypeManager() should be used through this method,
    *   whilst EntityController->entityTypeManager is dependency-injected, so it
    *   can be used directly there.
+   *
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    */
@@ -165,6 +166,7 @@ class APIVersionTagController extends ControllerBase {
    * - ControllerBase::entityTypeManager() should be used through this method,
    *   whilst EntityController->entityTypeManager is dependency-injected, so it
    *   can be used directly there.
+   *
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    */
   protected function loadBundleDescriptions(array $bundles, EntityTypeInterface $bundle_entity_type) {

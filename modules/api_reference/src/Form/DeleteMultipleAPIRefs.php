@@ -69,7 +69,7 @@ class DeleteMultipleAPIRefs extends ConfirmFormBase {
    */
   public static function create(ContainerInterface $container) {
     /** @var \Drupal\user\PrivateTempStoreFactory $temp_store_factory */
-    $temp_store_factory = $container->get('user.private_tempstore');
+    $temp_store_factory = $container->get('tempstore.private');
     /** @var \Drupal\Core\Entity\EntityTypeManagerInterface $manager */
     $manager = $container->get('entity_type.manager');
     /** @var \Drupal\Core\Session\AccountProxyInterface $current_user */

@@ -63,15 +63,18 @@ class APIBodyParamRevisionDeleteForm extends ConfirmFormBase {
 
   /**
    * {@inheritdoc}
+   *
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    */
   public static function create(ContainerInterface $container) {
-    $entity_manager = $container->get('entity.manager');
+    /** @var \Drupal\Core\Entity\EntityTypeManager $entity_type_manager */
+    $entity_type_manager = $container->get('entity_type.manager');
     /** @var \Drupal\Core\Database\Connection $connection */
     $connection = $container->get('database');
     /** @var \Drupal\Core\Datetime\DateFormatterInterface $date_formatter */
     $date_formatter = $container->get('date.formatter');
     return new static(
-      $entity_manager->getStorage('api_body_param'),
+      $entity_type_manager->getStorage('api_body_param'),
       $connection,
       $date_formatter
     );
