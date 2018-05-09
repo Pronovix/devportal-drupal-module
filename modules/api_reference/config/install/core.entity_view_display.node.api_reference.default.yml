@@ -1,0 +1,50 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.api_reference_swagger.swagger_source
+    - node.type.api_reference_swagger
+  module:
+    - swagger_ui_formatter
+    - user
+id: node.api_reference_swagger.default
+targetEntityType: node
+bundle: api_reference_swagger
+mode: default
+content:
+#  description:
+#    type: text_default
+#    weight: 1
+#    region: content
+#    label: inline
+#    settings: {  }
+#    third_party_settings: {  }
+  source:
+    type: swagger_ui
+    weight: 101
+    label: hidden
+    settings:
+      validator: default
+      validator_url: ''
+      doc_expansion: list
+      show_top_bar: false
+      sort_tags_by_name: false
+    third_party_settings: {  }
+    region: content
+#  title:
+#    type: string
+#    weight: 0
+#    region: content
+#    label: hidden
+#    settings:
+#      link_to_entity: false
+#    third_party_settings: {  }
+#  version:
+#    type: string
+#    weight: 2
+#    region: content
+#    label: inline
+#    settings:
+#      link_to_entity: false
+#    third_party_settings: {  }
+hidden: {  }

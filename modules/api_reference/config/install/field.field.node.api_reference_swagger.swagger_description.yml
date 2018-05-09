@@ -1,0 +1,21 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.swagger_description
+    - node.type.api_reference_swagger
+  module:
+    - text
+id: node.api_reference_swagger.swagger_description
+field_name: description
+entity_type: node
+bundle: api_reference_swagger
+label: Description
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  display_summary: true
+field_type: text_with_summary
