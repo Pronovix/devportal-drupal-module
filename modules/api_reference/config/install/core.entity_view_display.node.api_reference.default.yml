@@ -12,13 +12,6 @@ targetEntityType: node
 bundle: api_reference_swagger
 mode: default
 content:
-#  description:
-#    type: text_default
-#    weight: 1
-#    region: content
-#    label: inline
-#    settings: {  }
-#    third_party_settings: {  }
   source:
     type: swagger_ui
     weight: 101
@@ -31,20 +24,4 @@ content:
       sort_tags_by_name: false
     third_party_settings: {  }
     region: content
-#  title:
-#    type: string
-#    weight: 0
-#    region: content
-#    label: hidden
-#    settings:
-#      link_to_entity: false
-#    third_party_settings: {  }
-#  version:
-#    type: string
-#    weight: 2
-#    region: content
-#    label: inline
-#    settings:
-#      link_to_entity: false
-#    third_party_settings: {  }
 hidden: {  }
