@@ -1,0 +1,23 @@
+uuid: 13c947fa-4d05-45a3-8fae-5ff3fa1a4990
+langcode: en
+status: true
+dependencies:
+  module:
+    - file
+    - node
+id: node.field_source_file
+field_name: field_source_file
+entity_type: node
+type: file
+settings:
+  display_field: false
+  display_default: false
+  uri_scheme: public
+  target_type: file
+module: file
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

@@ -1,19 +1,18 @@
+uuid: c0901fe4-62b9-44ea-978a-50f95ee1d023
 langcode: en
 status: true
 dependencies:
   module:
-    - file
     - node
-id: node.swagger_source
-field_name: source
+id: node.field_project_id
+field_name: field_project_id
 entity_type: node
-type: file
+type: string
 settings:
-  display_field: false
-  display_default: false
-  uri_scheme: public
-  target_type: file
-module: file
+  max_length: 255
+  is_ascii: false
+  case_sensitive: false
+module: core
 locked: false
 cardinality: 1
 translatable: true

@@ -1,0 +1,39 @@
+uuid: f7dfca47-7d92-401d-9fc1-0a8222d7cbf9
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.api_ref_swagger_20.field_description
+    - field.field.node.api_ref_swagger_20.field_project_id
+    - field.field.node.api_ref_swagger_20.field_source_file
+    - field.field.node.api_ref_swagger_20.field_version
+    - node.type.api_ref_swagger_20
+  module:
+    - swagger_ui_formatter
+    - user
+id: node.api_ref_swagger_20.default
+targetEntityType: node
+bundle: api_ref_swagger_20
+mode: default
+content:
+  field_source_file:
+    weight: 1
+    label: hidden
+    settings:
+      validator: default
+      validator_url: ''
+      doc_expansion: list
+      show_top_bar: false
+      sort_tags_by_name: false
+    third_party_settings: {  }
+    type: swagger_ui
+    region: content
+  links:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  field_description: true
+  field_project_id: true
+  field_version: true

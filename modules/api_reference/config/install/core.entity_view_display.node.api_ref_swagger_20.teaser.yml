@@ -1,14 +1,15 @@
+uuid: 9f8d6960-3e57-4e89-901f-cd46d5612ff1
 langcode: en
 status: true
 dependencies:
   config:
     - core.entity_view_mode.node.teaser
-    - node.type.api_reference_swagger
+    - node.type.api_ref_swagger_20
   module:
     - user
-id: node.api_reference_swagger.teaser
+id: node.api_ref_swagger_20.teaser
 targetEntityType: node
-bundle: api_reference_swagger
+bundle: api_ref_swagger_20
 mode: teaser
 content:
   links:

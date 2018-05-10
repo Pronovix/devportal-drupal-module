@@ -1,0 +1,22 @@
+uuid: 82fa71c6-7328-433b-a7f1-cc8b508d9d46
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.api_ref_swagger_20
+id: node.api_ref_swagger_20.promote
+field_name: promote
+entity_type: node
+bundle: api_ref_swagger_20
+label: 'Promoted to front page'
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

@@ -1,15 +1,16 @@
+uuid: 1704af8a-5eed-44c0-b6cc-6ca7743cdce1
 langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.swagger_source
-    - node.type.api_reference_swagger
+    - field.storage.node.field_source_file
+    - node.type.api_ref_swagger_20
   module:
     - file
-id: node.api_reference_swagger.swagger_source
-field_name: source
+id: node.api_ref_swagger_20.field_source_file
+field_name: field_source_file
 entity_type: node
-bundle: api_reference_swagger
+bundle: api_ref_swagger_20
 label: 'Source file'
 description: ''
 required: true

@@ -1,0 +1,18 @@
+uuid: b7a7a19f-3094-4f39-8597-83019f0c59be
+langcode: en
+status: true
+dependencies:
+  module:
+    - menu_ui
+third_party_settings:
+  menu_ui:
+    available_menus:
+      - main
+    parent: 'main:'
+name: 'API Reference Swagger 2.0'
+type: api_ref_swagger_20
+description: 'Content type for <em>Swagger 2.0</em> type API References.'
+help: ''
+new_revision: true
+preview_mode: 1
+display_submitted: false

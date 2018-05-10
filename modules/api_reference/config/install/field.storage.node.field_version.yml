@@ -1,15 +1,18 @@
+uuid: 00174555-6c4d-41bc-96f2-b17c7e98ddb3
 langcode: en
 status: true
 dependencies:
   module:
     - node
-    - text
-id: node.swagger_description
-field_name: description
+id: node.field_version
+field_name: field_version
 entity_type: node
-type: text_with_summary
-settings: {  }
-module: text
+type: string
+settings:
+  max_length: 255
+  is_ascii: false
+  case_sensitive: false
+module: core
 locked: false
 cardinality: 1
 translatable: true

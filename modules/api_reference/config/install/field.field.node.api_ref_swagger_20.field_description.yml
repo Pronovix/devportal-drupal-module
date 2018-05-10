@@ -1,15 +1,16 @@
+uuid: 26be7880-4e6f-460e-98c8-b29550dafc68
 langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.swagger_description
-    - node.type.api_reference_swagger
+    - field.storage.node.field_description
+    - node.type.api_ref_swagger_20
   module:
     - text
-id: node.api_reference_swagger.swagger_description
-field_name: description
+id: node.api_ref_swagger_20.field_description
+field_name: field_description
 entity_type: node
-bundle: api_reference_swagger
+bundle: api_ref_swagger_20
 label: Description
 description: ''
 required: false
