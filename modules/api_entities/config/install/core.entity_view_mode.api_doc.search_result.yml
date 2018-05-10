@@ -1,9 +1,0 @@
-langcode: en
-status: false
-dependencies:
-  module:
-    - devportal_api_entities
-id: api_doc.search_result
-label: 'Search result highlighting input'
-targetEntityType: api_doc
-cache: true
