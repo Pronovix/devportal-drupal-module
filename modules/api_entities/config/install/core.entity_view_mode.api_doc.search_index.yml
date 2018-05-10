@@ -1,9 +1,0 @@
-langcode: en
-status: false
-dependencies:
-  module:
-    - devportal_api_entities
-id: api_doc.search_index
-label: 'Search index'
-targetEntityType: api_doc
-cache: true

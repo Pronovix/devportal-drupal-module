@@ -1,0 +1,14 @@
+# node.type.api_reference_swagger.yml
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - devportal_api_reference
+name: 'API Reference Swagger 2.0'
+type: api_reference_swagger
+description: 'Content type that can be used to provide additional information on <em>API References</em>'
+help: ''
+new_revision: true
+preview_mode: 1
+display_submitted: true

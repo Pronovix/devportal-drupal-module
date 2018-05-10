@@ -1,0 +1,27 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.api_reference_swagger.swagger_source
+    - node.type.api_reference_swagger
+  module:
+    - swagger_ui_formatter
+    - user
+id: node.api_reference_swagger.default
+targetEntityType: node
+bundle: api_reference_swagger
+mode: default
+content:
+  source:
+    type: swagger_ui
+    weight: 101
+    label: hidden
+    settings:
+      validator: default
+      validator_url: ''
+      doc_expansion: list
+      show_top_bar: false
+      sort_tags_by_name: false
+    third_party_settings: {  }
+    region: content
+hidden: {  }

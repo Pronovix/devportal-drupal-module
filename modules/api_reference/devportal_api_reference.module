@@ -1,5 +1,10 @@
 <?php
 
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\devportal_api_reference\Plugin\MigrationConfigDeriver;
+use Drupal\file\Entity\File;
+use Drupal\Component\Utility\Html;
+
 /**
  * Implements hook_theme().
  */
@@ -151,4 +156,167 @@ function devportal_api_reference_views_data_alter(array &$data) {
       }
     }
   }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function devportal_api_reference_form_node_api_reference_swagger_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $form['#validate'][] = 'devportal_api_reference_swagger_save';
+}
+
+/**
+ * Validation function api_reference_swagger.
+ *
+ * @param array $form
+ *   The form array.
+ * @param Drupal\Core\Form\FormStateInterface $form_state
+ *   The form_state object.
+ */
+function devportal_api_reference_swagger_save(array $form, FormStateInterface $form_state) {
+  try {
+    $swagger = NULL;
+    $source = $form_state->getValue('source');
+    if ($fid = isset($source[0]["fids"][0]) ? $source[0]["fids"][0] : NULL) {
+      $file = File::load($fid);
+      $swagger = MigrationConfigDeriver::parseSwagger($file->getFileUri());
+      $form_state->setValue('title', $swagger['info']['title']);
+      $form_state->setValue('version', $swagger['info']['version']);
+      $form_state->setValue('description', $swagger['info']['description']);
+    }
+  }
+  catch (\Exception $e) {
+    \Drupal::messenger()->addError($e->getMessage());
+    $form_state->unsetValue('source');
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ *
+ * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+ * @throws \Drupal\devportal_api_reference\Plugin\Swagger20ValidationException
+ */
+function devportal_api_reference_form_node_api_reference_swagger_edit_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $form['#validate'][] = 'devportal_api_reference_swagger_edit_form_validate';
+
+  // Load node and get node ID. This information will be useful later.
+  $node = $form_state->getFormObject()->getEntity();
+  $node_id = $node->nid->value;
+
+  // Check the triggering element. If the triggering element is a link the
+  // triggering element property will be set to null. If it is from an AJAX
+  // request (in this case clicking the 'browse' button and uploading a file) it
+  // will have an object assigned to it. By default set the default_value to
+  // null.
+  $triggering_element = $form_state->getTriggeringElement();
+  if ($triggering_element === NULL) {
+    $form["source"]["widget"][0]["#default_value"] = NULL;
+  }
+
+  // Get the revisions of this node, and create an array of the files contained
+  // in these revisions. This array will be used to populate the 'Previously
+  // uploaded files' fieldset.
+  $previous_files = devportal_api_reference_get_previous_files($node_id);
+
+  // Create the 'Previously uploaded files' fieldset and populate it with the
+  // files from the $previous_files array.
+  $form['previous_files'] = [
+    '#type' => 'details',
+    '#weight' => -2,
+    '#title' => t('Previously uploaded files'),
+    '#open' => TRUE,
+  ];
+  /** @var \Drupal\file\FileInterface $file */
+  foreach ($previous_files as $file) {
+    $swagger = MigrationConfigDeriver::parseSwagger($file->getFileUri());
+    $form['previous_files'][] = [
+      '#theme' => 'file_link',
+      '#file' => $file,
+      '#description' => Html::escape("{$file->getFilename()} ({$swagger['info']['version']})"),
+      '#cache' => [
+        'tags' => $file->getCacheTags(),
+      ],
+    ];
+  }
+}
+
+/**
+ * Validation function for api_reference_swagger_edit_form.
+ *
+ * @param array $form
+ *   The form array.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   The form_state object.
+ */
+function devportal_api_reference_swagger_edit_form_validate(array $form, FormStateInterface $form_state) {
+  // Load node and get node ID. This information will be useful later.
+  $node = $form_state->getFormObject()->getEntity();
+  $node_id = $node->nid->value;
+
+  $source = $form_state->getValue('source');
+  $swagger = NULL;
+  try {
+    if ($fid = isset($source[0]["fids"][0]) ? $source[0]["fids"][0] : NULL) {
+      $file = File::load($fid);
+      $swagger = MigrationConfigDeriver::parseSwagger($file->getFileUri());
+    }
+
+    $previous_files = devportal_api_reference_get_previous_files($node_id);
+    foreach ($previous_files as $file) {
+      $previous_swagger_file = MigrationConfigDeriver::parseSwagger($file->getFileUri());
+      if ($swagger['info']['version'] === $previous_swagger_file['info']['version']) {
+        \Drupal::messenger()->addError('This version has been added before.');
+        $form_state->unsetValue('source');
+        return NULL;
+      }
+    }
+  }
+  catch (\Exception $e) {
+    \Drupal::messenger()->addError($e->getMessage());
+    $form_state->unsetValue('source');
+  }
+
+  try {
+    if ($fid = isset($source[0]["fids"][0]) ? $source[0]["fids"][0] : NULL) {
+      $file = File::load($fid);
+      $swagger = MigrationConfigDeriver::parseSwagger($file->getFileUri());
+      $form_state->setValue('title', $swagger['info']['title']);
+      $form_state->setValue('version', $swagger['info']['version']);
+      $form_state->setValue('description', $swagger['info']['description']);
+    }
+  }
+  catch (\Exception $e) {
+    \Drupal::messenger()->addError($e->getMessage());
+    $form_state->unsetValue('source');
+  }
+}
+
+/**
+ * Returns the files previously added to the node.
+ *
+ * @param int $node_id
+ *   The node ID.
+ *
+ * @return array|null
+ *   An array of objects containing the previously added files.
+ *
+ * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+ */
+function devportal_api_reference_get_previous_files($node_id) {
+  $previous_files = NULL;
+  $query = \Drupal::entityQuery('node');
+  $revision_ids = $query
+    ->condition('nid', $node_id)
+    ->allRevisions()
+    ->execute();
+  foreach ($revision_ids as $vid => $nid) {
+    /** @var \Drupal\node\NodeInterface $revision */
+    $revision = \Drupal::entityTypeManager()
+      ->getStorage('node')
+      ->loadRevision($vid);
+    $source = $revision->get('source')->getValue();
+    $previous_files[] = File::load($source[0]["target_id"]);
+  }
+  return $previous_files;
 }

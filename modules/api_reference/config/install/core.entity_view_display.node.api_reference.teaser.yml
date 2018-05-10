@@ -1,0 +1,17 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - node.type.api_reference_swagger
+  module:
+    - user
+id: node.api_reference_swagger.teaser
+targetEntityType: node
+bundle: api_reference_swagger
+mode: teaser
+content:
+  links:
+    weight: 100
+    region: content
+hidden: {  }
