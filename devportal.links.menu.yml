@@ -10,3 +10,4 @@ system.admin_devportal_config:
   route_name: 'devportal.admin_config_page'
   parent: 'system.admin_devportal'
   description: 'Manage Devportal configurations.'
+

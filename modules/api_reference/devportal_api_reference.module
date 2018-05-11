@@ -6,54 +6,6 @@ use Drupal\file\Entity\File;
 use Drupal\Component\Utility\Html;
 
 /**
- * Implements hook_theme().
- */
-function devportal_api_reference_theme($existing, $type, $theme, $path) {
-  $theme = [];
-  $theme['api_ref'] = [
-    'render element' => 'elements',
-    'file' => 'api_ref.page.inc',
-    'template' => 'api-ref',
-  ];
-  return $theme;
-}
-
-/**
- * Implements hook_menu_links_discovered_alter().
- *
- * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
- */
-function devportal_api_reference_menu_links_discovered_alter(&$links) {
-  // Add menu links for bundles.
-  foreach (\Drupal::entityTypeManager()->getStorage("api_ref_type")->loadMultiple() as $type) {
-    $links["entity.api_ref.add." . $type->id()] = [
-      'title' => t($type->label()),
-      'route_name' => "entity.api_ref.add_form",
-      'parent' => "entity.api_ref.add_page",
-      'route_parameters' => ["api_ref_type" => $type->id()],
-    ];
-  }
-}
-
-/**
- * Implements hook_theme_suggestions_HOOK().
- */
-function devportal_api_reference_theme_suggestions_api_ref(array $variables) {
-  $suggestions = [];
-  /** @var \Drupal\devportal_api_reference\Entity\APIRef $entity */
-  $entity = $variables['elements']['#api_ref'];
-  $sanitized_view_mode = strtr($variables['elements']['#view_mode'], '.', '_');
-
-  $suggestions[] = $entity->getEntityTypeId() . '__' . $sanitized_view_mode;
-  $suggestions[] = $entity->getEntityTypeId() . '__' . $entity->bundle();
-  $suggestions[] = $entity->getEntityTypeId() . '__' . $entity->bundle() . '__' . $sanitized_view_mode;
-  $suggestions[] = $entity->getEntityTypeId() . '__' . $entity->id();
-  $suggestions[] = $entity->getEntityTypeId() . '__' . $entity->id() . '__' . $sanitized_view_mode;
-
-  return $suggestions;
-}
-
-/**
  * Implements hook_views_data_alter().
  *
  * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
