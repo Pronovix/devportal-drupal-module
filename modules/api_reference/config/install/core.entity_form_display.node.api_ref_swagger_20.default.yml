@@ -2,28 +2,27 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.node.api_reference_swagger.swagger_description
-    - field.field.node.api_reference_swagger.swagger_project_id
-    - field.field.node.api_reference_swagger.swagger_version
-    - field.field.node.api_reference_swagger.swagger_source
-    - node.type.api_reference_swagger
+    - field.field.node.api_ref_swagger_20.field_description
+    - field.field.node.api_ref_swagger_20.field_project_id
+    - field.field.node.api_ref_swagger_20.field_source_file
+    - field.field.node.api_ref_swagger_20.field_version
+    - node.type.api_ref_swagger_20
   module:
     - file
-    - text
     - path
-id: node.api_reference_swagger.default
+id: node.api_ref_swagger_20.default
 targetEntityType: node
-bundle: api_reference_swagger
+bundle: api_ref_swagger_20
 mode: default
 content:
   created:
     type: datetime_timestamp
-    weight: 10
+    weight: 1
     region: content
     settings: {  }
     third_party_settings: {  }
-  source:
-    weight: 121
+  field_source_file:
+    weight: 6
     settings:
       progress_indicator: throbber
     third_party_settings: {  }
@@ -31,7 +30,7 @@ content:
     region: content
   path:
     type: path
-    weight: 30
+    weight: 4
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -39,26 +38,26 @@ content:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 15
+    weight: 2
     region: content
     third_party_settings: {  }
   status:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 120
+    weight: 5
     region: content
     third_party_settings: {  }
   sticky:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 16
+    weight: 3
     region: content
     third_party_settings: {  }
   uid:
     type: entity_reference_autocomplete
-    weight: 5
+    weight: 0
     settings:
       match_operator: CONTAINS
       size: 60
@@ -66,15 +65,7 @@ content:
     region: content
     third_party_settings: {  }
 hidden:
-  description: true
-  version: true
-  created: true
-  path: true
-  promote: true
-  status: true
-  sticky: true
+  field_description: true
+  field_project_id: true
+  field_version: true
   title: true
-  uid: true
-  project_id: true
-
-

@@ -2,12 +2,12 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.swagger_project_id
-    - node.type.api_reference_swagger
-id: node.api_reference_swagger.swagger_project_id
-field_name: project_id
+    - field.storage.node.field_project_id
+    - node.type.api_ref_swagger_20
+id: node.api_ref_swagger_20.field_project_id
+field_name: field_project_id
 entity_type: node
-bundle: api_reference_swagger
+bundle: api_ref_swagger_20
 label: 'Project ID'
 description: ''
 required: false

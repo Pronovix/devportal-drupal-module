@@ -2,16 +2,18 @@ langcode: en
 status: true
 dependencies:
   module:
+    - file
     - node
-id: node.swagger_version
-field_name: version
+id: node.field_source_file
+field_name: field_source_file
 entity_type: node
-type: string
+type: file
 settings:
-  max_length: 255
-  is_ascii: false
-  case_sensitive: false
-module: core
+  display_field: false
+  display_default: false
+  uri_scheme: public
+  target_type: file
+module: file
 locked: false
 cardinality: 1
 translatable: true
