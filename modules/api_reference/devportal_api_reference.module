@@ -4,36 +4,21 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\devportal_api_reference\Plugin\MigrationConfigDeriver;
 use Drupal\file\Entity\File;
 use Drupal\Component\Utility\Html;
+use Drupal\Core\Render\Element;
 
 /**
  * Implements hook_theme().
  */
-function devportal_api_reference_theme($existing, $type, $theme, $path) {
-  $theme = [];
-  $theme['api_ref'] = [
-    'render element' => 'elements',
-    'file' => 'api_ref.page.inc',
-    'template' => 'api-ref',
-  ];
-  return $theme;
-}
+//function devportal_api_reference_theme($existing, $type, $theme, $path) {
+//  $theme = [];
+//  $theme['api_ref'] = [
+//    'render element' => 'elements',
+//    'file' => 'api_ref.page.inc',
+//    'template' => 'api-ref',
+//  ];
+//  return $theme;
+//}
 
-/**
- * Implements hook_menu_links_discovered_alter().
- *
- * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
- */
-function devportal_api_reference_menu_links_discovered_alter(&$links) {
-  // Add menu links for bundles.
-  foreach (\Drupal::entityTypeManager()->getStorage("api_ref_type")->loadMultiple() as $type) {
-    $links["entity.api_ref.add." . $type->id()] = [
-      'title' => t($type->label()),
-      'route_name' => "entity.api_ref.add_form",
-      'parent' => "entity.api_ref.add_page",
-      'route_parameters' => ["api_ref_type" => $type->id()],
-    ];
-  }
-}
 
 /**
  * Implements hook_theme_suggestions_HOOK().
@@ -320,3 +305,21 @@ function devportal_api_reference_get_previous_files($node_id) {
   }
   return $previous_files;
 }
+
+///**
+// * Implements hook_preprocess_HOOK().
+// */
+//function devportal_api_reference_preprocess_node(&$variables) {
+//  /** @var \Drupal\node\NodeInterface $entity */
+//  $entity = $variables['elements']['#node'];
+
+//  $variables['attributes']['class'][] = $entity->getEntityTypeId() . '--' . $entity->bundle();
+//  $variables['attributes']['class'][] = $entity->bundle();
+//  $variables['attributes']['class'][] = $entity->getEntityTypeId();
+//  $variables['attributes']['class'][] = "view-mode--{$variables['elements']['#view_mode']}";
+
+  // Helpful $content variable for templates.
+//  foreach (Element::children($variables['elements']) as $key) {
+//    $variables['content'][$key] = $variables['elements'][$key];
+//  }
+//}
