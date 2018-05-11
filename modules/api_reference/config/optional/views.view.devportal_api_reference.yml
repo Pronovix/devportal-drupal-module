@@ -2,9 +2,9 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.description
-    - field.storage.node.version
-    - node.type.api_reference_swagger
+    - field.storage.node.field_description
+    - field.storage.node.field_version
+    - node.type.api_ref_swagger_20
   module:
     - node
     - text
@@ -239,8 +239,8 @@ display:
           plugin_id: field
         version:
           id: version
-          table: node__version
-          field: version
+          table: node__field_version
+          field: field_version
           relationship: none
           group_type: group
           admin_label: ''
@@ -302,8 +302,8 @@ display:
           plugin_id: field
         description:
           id: description
-          table: node__description
-          field: description
+          table: node__field_description
+          field: field_description
           relationship: none
           group_type: group
           admin_label: ''
@@ -431,7 +431,7 @@ display:
           table: node_field_data
           field: type
           value:
-            api_reference_swagger: api_reference_swagger
+            api_ref_swagger_20: api_ref_swagger_20
           entity_type: node
           entity_field: type
           plugin_id: bundle
@@ -467,8 +467,8 @@ display:
         - 'user.node_grants:view'
         - user.permissions
       tags:
-        - 'config:field.storage.node.description'
-        - 'config:field.storage.node.version'
+        - 'config:field.storage.node.field_description'
+        - 'config:field.storage.node.field_version'
   page_1:
     display_plugin: page
     id: page_1
@@ -486,5 +486,5 @@ display:
         - 'user.node_grants:view'
         - user.permissions
       tags:
-        - 'config:field.storage.node.description'
-        - 'config:field.storage.node.version'
+        - 'config:field.storage.node.field_description'
+        - 'config:field.storage.node.field_version'

@@ -4,39 +4,6 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\devportal_api_reference\Plugin\MigrationConfigDeriver;
 use Drupal\file\Entity\File;
 use Drupal\Component\Utility\Html;
-use Drupal\Core\Render\Element;
-
-/**
- * Implements hook_theme().
- */
-//function devportal_api_reference_theme($existing, $type, $theme, $path) {
-//  $theme = [];
-//  $theme['api_ref'] = [
-//    'render element' => 'elements',
-//    'file' => 'api_ref.page.inc',
-//    'template' => 'api-ref',
-//  ];
-//  return $theme;
-//}
-
-
-/**
- * Implements hook_theme_suggestions_HOOK().
- */
-function devportal_api_reference_theme_suggestions_api_ref(array $variables) {
-  $suggestions = [];
-  /** @var \Drupal\devportal_api_reference\Entity\APIRef $entity */
-  $entity = $variables['elements']['#api_ref'];
-  $sanitized_view_mode = strtr($variables['elements']['#view_mode'], '.', '_');
-
-  $suggestions[] = $entity->getEntityTypeId() . '__' . $sanitized_view_mode;
-  $suggestions[] = $entity->getEntityTypeId() . '__' . $entity->bundle();
-  $suggestions[] = $entity->getEntityTypeId() . '__' . $entity->bundle() . '__' . $sanitized_view_mode;
-  $suggestions[] = $entity->getEntityTypeId() . '__' . $entity->id();
-  $suggestions[] = $entity->getEntityTypeId() . '__' . $entity->id() . '__' . $sanitized_view_mode;
-
-  return $suggestions;
-}
 
 /**
  * Implements hook_views_data_alter().
@@ -305,21 +272,3 @@ function devportal_api_reference_get_previous_files($node_id) {
   }
   return $previous_files;
 }
-
-///**
-// * Implements hook_preprocess_HOOK().
-// */
-//function devportal_api_reference_preprocess_node(&$variables) {
-//  /** @var \Drupal\node\NodeInterface $entity */
-//  $entity = $variables['elements']['#node'];
-
-//  $variables['attributes']['class'][] = $entity->getEntityTypeId() . '--' . $entity->bundle();
-//  $variables['attributes']['class'][] = $entity->bundle();
-//  $variables['attributes']['class'][] = $entity->getEntityTypeId();
-//  $variables['attributes']['class'][] = "view-mode--{$variables['elements']['#view_mode']}";
-
-  // Helpful $content variable for templates.
-//  foreach (Element::children($variables['elements']) as $key) {
-//    $variables['content'][$key] = $variables['elements'][$key];
-//  }
-//}
