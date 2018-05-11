@@ -3,8 +3,8 @@ status: true
 dependencies:
   module:
     - node
-id: node.swagger_project_id
-field_name: project_id
+id: node.field_version
+field_name: field_version
 entity_type: node
 type: string
 settings:
