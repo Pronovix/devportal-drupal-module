@@ -5,3 +5,7 @@ services:
       - { name: cache.bin }
     factory: cache_factory:get
     arguments: [apifiles]
+  access_check.api_ref_bundle:
+    class: Drupal\devportal_api_reference\Access\APIRefBundleAccessCheck
+    tags:
+      - { name: access_check, applies_to: _api_ref_bundle_access }

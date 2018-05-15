@@ -6,6 +6,16 @@ use Drupal\file\Entity\File;
 use Drupal\Component\Utility\Html;
 
 /**
+ * Provides the list of API Reference related node bundles.
+ *
+ * @return array
+ *   An array of node bundles.
+ */
+function devportal_api_reference_bundles() {
+  return ['api_ref_swagger_20'];
+}
+
+/**
  * Implements hook_views_data_alter().
  *
  * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
