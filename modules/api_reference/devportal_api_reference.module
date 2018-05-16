@@ -208,11 +208,12 @@ function devportal_api_reference_form_node_api_ref_swagger_20_edit_form_alter(&$
  *   The form array.
  * @param \Drupal\Core\Form\FormStateInterface $form_state
  *   The form_state object.
+ *
+ * @return void|boolean
  */
 function devportal_api_reference_api_ref_swagger_20_edit_form_validate(array $form, FormStateInterface $form_state) {
-  // Load node and get node ID. This information will be useful later.
+  /** @var \Drupal\node\Entity\Node $node */
   $node = $form_state->getFormObject()->getEntity();
-  $node_id = $node->nid->value;
 
   $source = $form_state->getValue('field_source_file');
   $swagger = NULL;
@@ -222,14 +223,10 @@ function devportal_api_reference_api_ref_swagger_20_edit_form_validate(array $fo
       $swagger = MigrationConfigDeriver::parseSwagger($file->getFileUri());
     }
 
-    $previous_files = devportal_api_reference_get_previous_files($node_id);
-    foreach ($previous_files as $file) {
-      $previous_swagger_file = MigrationConfigDeriver::parseSwagger($file->getFileUri());
-      if ($swagger['info']['version'] === $previous_swagger_file['info']['version']) {
-        \Drupal::messenger()->addError('This version has been added before.');
-        $form_state->unsetValue('field_source_file');
-        return NULL;
-      }
+    if (devportal_api_reference_check_api_version($node, $swagger['info']['version'])) {
+      \Drupal::messenger()->addError('This version has been added before.');
+      $form_state->unsetValue('field_source_file');
+      return NULL;
     }
   }
   catch (\Exception $e) {
@@ -250,6 +247,32 @@ function devportal_api_reference_api_ref_swagger_20_edit_form_validate(array $fo
     \Drupal::messenger()->addError($e->getMessage());
     $form_state->unsetValue('field_source_file');
   }
+}
+
+/**
+ * Checks whether a given API documentation version already exist or not.
+ *
+ * @param \Drupal\node\Entity\Node $node
+ *   The API Reference node entity.
+ * @param $version
+ *   The API version to check.
+ *
+ * @return boolean
+ *   Returns TRUE if the given API version already exist. Returns FALSE
+ *   otherwise.
+ *
+ * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+ * @throws \Drupal\devportal_api_reference\Plugin\Swagger20ValidationException
+ */
+function devportal_api_reference_check_api_version(\Drupal\node\Entity\Node $node, $version) {
+  $previous_files = devportal_api_reference_get_previous_files($node->id());
+  foreach ($previous_files as $file) {
+    $previous_file = MigrationConfigDeriver::parseSwagger($file->getFileUri());
+    if ($version === $previous_file['info']['version']) {
+      return TRUE;
+    }
+  }
+  return FALSE;
 }
 
 /**
