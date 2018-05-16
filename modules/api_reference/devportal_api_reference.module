@@ -161,10 +161,8 @@ function devportal_api_reference_api_ref_swagger_20_validate(array $form, FormSt
  */
 function devportal_api_reference_form_node_api_ref_swagger_20_edit_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   $form['#validate'][] = 'devportal_api_reference_api_ref_swagger_20_edit_form_validate';
-
-  // Load node and get node ID. This information will be useful later.
+  /** @var \Drupal\node\Entity\Node $node */
   $node = $form_state->getFormObject()->getEntity();
-  $node_id = $node->nid->value;
 
   // Check the triggering element. If the triggering element is a link the
   // triggering element property will be set to null. If it is from an AJAX
@@ -179,7 +177,7 @@ function devportal_api_reference_form_node_api_ref_swagger_20_edit_form_alter(&$
   // Get the revisions of this node, and create an array of the files contained
   // in these revisions. This array will be used to populate the 'Previously
   // uploaded files' fieldset.
-  $previous_files = devportal_api_reference_get_previous_files($node_id);
+  $previous_files = devportal_api_reference_get_previous_files($node->id());
 
   // Create the 'Previously uploaded files' fieldset and populate it with the
   // files from the $previous_files array.
@@ -257,7 +255,7 @@ function devportal_api_reference_api_ref_swagger_20_edit_form_validate(array $fo
 /**
  * Returns the files previously added to the node.
  *
- * @param int $node_id
+ * @param int $nid
  *   The node ID.
  *
  * @return array|null
@@ -265,11 +263,11 @@ function devportal_api_reference_api_ref_swagger_20_edit_form_validate(array $fo
  *
  * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
  */
-function devportal_api_reference_get_previous_files($node_id) {
+function devportal_api_reference_get_previous_files($nid) {
   $previous_files = NULL;
   $query = \Drupal::entityQuery('node');
   $revision_ids = $query
-    ->condition('nid', $node_id)
+    ->condition('nid', $nid)
     ->allRevisions()
     ->execute();
   foreach ($revision_ids as $vid => $nid) {
@@ -278,7 +276,9 @@ function devportal_api_reference_get_previous_files($node_id) {
       ->getStorage('node')
       ->loadRevision($vid);
     $source = $revision->get('field_source_file')->getValue();
-    $previous_files[] = File::load($source[0]["target_id"]);
+    if (!empty($source)) {
+      $previous_files[] = File::load($source[0]["target_id"]);
+    }
   }
   return $previous_files;
 }
