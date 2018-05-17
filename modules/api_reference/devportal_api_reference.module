@@ -39,7 +39,10 @@ function devportal_api_reference_api_ref_swagger_20_validate(array $form, FormSt
       $swagger = MigrationConfigDeriver::parseSwagger($file->getFileUri());
       $form_state->setValue('title', $swagger['info']['title']);
       $form_state->setValue('field_version', $swagger['info']['version']);
-      $form_state->setValue('field_description', $swagger['info']['description']);
+      $form_state->setValue('field_description', [
+        'value' => $swagger['info']['description'],
+        'format' => 'github_flavored_markdown'
+      ]);
     }
   }
   catch (\Exception $e) {
@@ -50,9 +53,6 @@ function devportal_api_reference_api_ref_swagger_20_validate(array $form, FormSt
 
 /**
  * Implements hook_form_FORM_ID_alter().
- *
- * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
- * @throws \Drupal\devportal_api_reference\Plugin\Swagger20ValidationException
  */
 function devportal_api_reference_form_node_api_ref_swagger_20_edit_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   $form['#validate'][] = 'devportal_api_reference_api_ref_swagger_20_edit_form_validate';
@@ -135,7 +135,10 @@ function devportal_api_reference_api_ref_swagger_20_edit_form_validate(array $fo
       $swagger = MigrationConfigDeriver::parseSwagger($file->getFileUri());
       $form_state->setValue('title', $swagger['info']['title']);
       $form_state->setValue('field_version', $swagger['info']['version']);
-      $form_state->setValue('field_description', $swagger['info']['description']);
+      $form_state->setValue('field_description', [
+        'value' => $swagger['info']['description'],
+        'format' => 'github_flavored_markdown'
+      ]);
     }
   }
   catch (\Exception $e) {
@@ -157,7 +160,6 @@ function devportal_api_reference_api_ref_swagger_20_edit_form_validate(array $fo
  *   otherwise.
  *
  * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
- * @throws \Drupal\devportal_api_reference\Plugin\Swagger20ValidationException
  */
 function devportal_api_reference_check_api_version(\Drupal\node\Entity\Node $node, $version) {
   $previous_files = devportal_api_reference_get_previous_files($node->id());
