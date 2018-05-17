@@ -19,7 +19,6 @@ entity.api_ref.settings:
   route_name: entity.ref.settings
   base_route: entity.ref.settings
 entity.api_ref_type.edit_form:
-  title: 'Edit'
+  title: Edit
   route_name: entity.api_ref_type.edit_form
   base_route: entity.api_ref_type.edit_form
-
