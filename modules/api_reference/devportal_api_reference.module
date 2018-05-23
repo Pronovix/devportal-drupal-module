@@ -4,6 +4,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\devportal_api_reference\Plugin\MigrationConfigDeriver;
 use Drupal\file\Entity\File;
 use Drupal\Component\Utility\Html;
+use Drupal\Core\Entity\ContentEntityInterface;
 
 /**
  * Provides the list of API Reference related node bundles.
@@ -124,6 +125,7 @@ function devportal_api_reference_views_data_alter(array &$data) {
  * Implements hook_form_FORM_ID_alter().
  */
 function devportal_api_reference_form_node_api_ref_swagger_20_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $form["field_source_file"]["widget"][0]["#required"] = TRUE;
   $form['#validate'][] = 'devportal_api_reference_api_ref_swagger_20_validate';
 }
 
@@ -171,6 +173,7 @@ function devportal_api_reference_form_node_api_ref_swagger_20_edit_form_alter(&$
   // null.
   $triggering_element = $form_state->getTriggeringElement();
   if ($triggering_element === NULL) {
+    $form['temp_save'] = $form["field_source_file"]["widget"][0]["#default_value"];
     $form["field_source_file"]["widget"][0]["#default_value"] = NULL;
   }
 
@@ -210,9 +213,9 @@ function devportal_api_reference_form_node_api_ref_swagger_20_edit_form_alter(&$
  *   The form_state object.
  */
 function devportal_api_reference_api_ref_swagger_20_edit_form_validate(array $form, FormStateInterface $form_state) {
-  // Load node and get node ID. This information will be useful later.
+  // Load node. This will be useful later.
+  /** @var \Drupal\node\Entity\Node $node */
   $node = $form_state->getFormObject()->getEntity();
-  $node_id = $node->nid->value;
 
   $source = $form_state->getValue('field_source_file');
   $swagger = NULL;
@@ -222,7 +225,7 @@ function devportal_api_reference_api_ref_swagger_20_edit_form_validate(array $fo
       $swagger = MigrationConfigDeriver::parseSwagger($file->getFileUri());
     }
 
-    $previous_files = devportal_api_reference_get_previous_files($node_id);
+    $previous_files = devportal_api_reference_get_previous_files($node->id());
     foreach ($previous_files as $file) {
       $previous_swagger_file = MigrationConfigDeriver::parseSwagger($file->getFileUri());
       if ($swagger['info']['version'] === $previous_swagger_file['info']['version']) {
@@ -231,19 +234,18 @@ function devportal_api_reference_api_ref_swagger_20_edit_form_validate(array $fo
         return NULL;
       }
     }
-  }
-  catch (\Exception $e) {
-    \Drupal::messenger()->addError($e->getMessage());
-    $form_state->unsetValue('field_source_file');
-  }
 
-  try {
     if ($fid = isset($source[0]["fids"][0]) ? $source[0]["fids"][0] : NULL) {
       $file = File::load($fid);
       $swagger = MigrationConfigDeriver::parseSwagger($file->getFileUri());
       $form_state->setValue('title', $swagger['info']['title']);
       $form_state->setValue('field_version', $swagger['info']['version']);
       $form_state->setValue('field_description', $swagger['info']['description']);
+    }
+    else {
+      // If no source file was uploaded use the last uploaded source file.
+      $source[0]["fids"][0] = $form["temp_save"]["fids"][0];
+      $form_state->setValue('field_source_file', $source);
     }
   }
   catch (\Exception $e) {
@@ -280,5 +282,51 @@ function devportal_api_reference_get_previous_files($nid) {
       $previous_files[] = File::load($source[0]["target_id"]);
     }
   }
+  // If, for example, the published setting is toggled Drupal will create a new
+  // revision. In this case Drupal will list that revision in the revisions
+  // list, thus it will be deletable or revertable through the UI.
+  // But... we still have the same number of flies uploaded. We need to remove
+  // the duplicate files from the list of previous files.
+  $previous_files = devportal_api_reference_get_unique_files($previous_files);
   return $previous_files;
+}
+
+
+/**
+ * Return objects with unique files from the previous_files array.
+ *
+ * @param array $array
+ *   The array of objects to be checked.
+ *
+ * @return array
+ *   Returns an array of unique objects.
+ */
+function devportal_api_reference_get_unique_files(array $array) {
+  $duplicate_keys = [];
+  $tmp = [];
+  foreach ($array as $key => $val) {
+    $uri = $val->getFileUri();
+    if (!in_array($uri, $tmp) && file_exists($uri)) {
+      $tmp[] = $uri;
+    }
+    else {
+      $duplicate_keys[] = $key;
+    }
+  }
+  foreach ($duplicate_keys as $key) {
+    unset($array[$key]);
+  }
+  return $array;
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_presave().
+ */
+function devportal_api_reference_node_presave(ContentEntityInterface $entity) {
+  if ($entity->bundle() === 'api_ref_swagger_20') {
+    // Force set revision_translation_affected column in node_field_revision
+    // table to TRUE, so that all revisions in the database will be viewable on
+    // the /node/{nid}/revisions page.
+    $entity->setRevisionTranslationAffected(TRUE);
+  }
 }
