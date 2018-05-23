@@ -1,5 +1,0 @@
-id: devportal_api_reference
-deriver: Drupal\devportal_api_reference\Plugin\MigrationConfigDeriver
-# @todo: https://www.drupal.org/node/2797421
-source:
-  plugin: embedded_data

@@ -17,111 +17,6 @@ function devportal_api_reference_bundles() {
 }
 
 /**
- * Implements hook_views_data_alter().
- *
- * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
- */
-function devportal_api_reference_views_data_alter(array &$data) {
-  // Entity reference base fields should have a reverse relationship in Views
-  // (just like the sitebuilder-added entity reference fields have), not only
-  // a forward relationship.
-  // @see core_field_views_data()
-  $entity_type_manager = \Drupal::entityTypeManager();
-  /** @var \Drupal\Core\Entity\EntityFieldManager $entity_field_manager */
-  $entity_field_manager = \Drupal::service('entity_field.manager');
-  $entity_types = $entity_type_manager->getDefinitions();
-  foreach ($entity_types as $source_entity_type_id => $source_entity_type) {
-    // Handle only our own entity types as source.
-    if ($source_entity_type->getProvider() != 'devportal_api_reference') {
-      continue;
-    }
-    // Handle only content entity types as source.
-    if (!($source_entity_type instanceof ContentEntityType)) {
-      continue;
-    }
-    $base_field_definitions = $entity_field_manager->getBaseFieldDefinitions($source_entity_type_id);
-    foreach ($base_field_definitions as $base_field_id => $base_field_definition) {
-      // Handle only entity reference fields.
-      if ($base_field_definition->getType() != 'entity_reference') {
-        continue;
-      }
-      /** @var \Drupal\Core\Field\TypedData\FieldItemDataDefinition $item_definition */
-      $item_definition = $base_field_definition->getItemDefinition();
-      $field_definition = $item_definition->getFieldDefinition();
-      $field_storage = $field_definition->getFieldStorageDefinition();
-      $target_entity_type_id = $field_storage->getSetting('target_type');
-      $target_entity_type = $entity_type_manager->getDefinition($target_entity_type_id);
-      // Handle only our own entity types as target.
-      if ($target_entity_type->getProvider() != 'devportal_api_reference') {
-        continue;
-      }
-      // Handle only content entity types as target.
-      if (!($target_entity_type instanceof ContentEntityType)) {
-        continue;
-      }
-
-      // Here comes the heart of the dance.
-      $pseudo_field_name = 'reverse__' . $source_entity_type_id . '__' . $base_field_id;
-      $args = [
-        '@label' => $target_entity_type->getLabel(),
-        '@field_name' => $base_field_definition->getName(),
-        '@entity' => $source_entity_type->getLabel(),
-      ];
-      // The sitebuilder-added entity reference fields have the same storage
-      // schema regardless their cardinality. Sadly, this is not true for entity
-      // reference base fields: multi-value fields (ones with cardinality != 1)
-      // have a link table between the source and the target entities (just like
-      // sitebuilder-added fields have one regardless their cardinality).
-      if ($base_field_definition->isMultiple()) {
-        $views_table = $target_entity_type->getDataTable();
-        $field_table = $source_entity_type_id . '__' . $base_field_id;
-        $field_field = $base_field_id . '_' . $base_field_definition->getMainPropertyName();
-        $data[$views_table][$pseudo_field_name]['relationship'] = [
-          'title' => t('@entity using @field_name', $args),
-          'label' => t('Rev: @entity', $args),
-          'group' => $target_entity_type->getLabel(),
-          'help' => t('Relate each @entity with the @field_name field set to the @label.', $args),
-          'id' => 'entity_reverse',
-          'base' => $source_entity_type->getDataTable(),
-          //'entity_type' => $source_entity_type_id,
-          'base field' => $source_entity_type->getKey('id'),
-          //'base field' => 'entity_id',
-          'field_name' => $source_entity_type_id . '_' . $base_field_id,
-          'field table' => $field_table,
-          'field field' => $field_field,
-          'join_extra' => [
-            [
-              'field' => 'deleted',
-              'value' => 0,
-              'numeric' => TRUE,
-            ],
-          ],
-        ];
-      }
-      else {
-        $field_table = $target_entity_type->getDataTable();
-        $field_field = $base_field_id;
-        // Cannot use the `entity_reverse` @ViewsRelationship handler plugin here,
-        // since it always creates two JOINS, which is totally unneeded for
-        // single-value baseFields, because their value is available right away on
-        // the entity_type_field_data table.
-        $data[$field_table][$pseudo_field_name]['relationship'] = [
-          'title' => t('@entity using @field_name', $args),
-          'label' => t('Rev: @entity', $args),
-          'group' => $target_entity_type->getLabel(),
-          'help' => t('Relate each @entity with the @field_name field set to the @label.', $args),
-          'id' => 'standard',
-          'base' => $source_entity_type->getDataTable() ?: $source_entity_type->getBaseTable(),
-          'entity type' => $target_entity_type_id,
-          'base field' => $base_field_id,
-          'relationship field' => $target_entity_type->getKey('id'),
-        ];
-      }
-    }
-  }
-}
-
-/**
  * Implements hook_form_FORM_ID_alter().
  */
 function devportal_api_reference_form_node_api_ref_swagger_20_form_alter(&$form, FormStateInterface $form_state, $form_id) {
@@ -146,7 +41,10 @@ function devportal_api_reference_api_ref_swagger_20_validate(array $form, FormSt
       $swagger = MigrationConfigDeriver::parseSwagger($file->getFileUri());
       $form_state->setValue('title', $swagger['info']['title']);
       $form_state->setValue('field_version', $swagger['info']['version']);
-      $form_state->setValue('field_description', $swagger['info']['description']);
+      $form_state->setValue('field_description', [
+        'value' => $swagger['info']['description'],
+        'format' => 'github_flavored_markdown',
+      ]);
     }
   }
   catch (\Exception $e) {
@@ -159,7 +57,7 @@ function devportal_api_reference_api_ref_swagger_20_validate(array $form, FormSt
  * Implements hook_form_FORM_ID_alter().
  *
  * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
- * @throws \Drupal\devportal_api_reference\Plugin\Swagger20ValidationException
+ * @throws \Exception
  */
 function devportal_api_reference_form_node_api_ref_swagger_20_edit_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   $form['#validate'][] = 'devportal_api_reference_api_ref_swagger_20_edit_form_validate';
@@ -211,9 +109,10 @@ function devportal_api_reference_form_node_api_ref_swagger_20_edit_form_alter(&$
  *   The form array.
  * @param \Drupal\Core\Form\FormStateInterface $form_state
  *   The form_state object.
+ *
+ * @return void|boolean
  */
 function devportal_api_reference_api_ref_swagger_20_edit_form_validate(array $form, FormStateInterface $form_state) {
-  // Load node. This will be useful later.
   /** @var \Drupal\node\Entity\Node $node */
   $node = $form_state->getFormObject()->getEntity();
 
@@ -225,14 +124,10 @@ function devportal_api_reference_api_ref_swagger_20_edit_form_validate(array $fo
       $swagger = MigrationConfigDeriver::parseSwagger($file->getFileUri());
     }
 
-    $previous_files = devportal_api_reference_get_previous_files($node->id());
-    foreach ($previous_files as $file) {
-      $previous_swagger_file = MigrationConfigDeriver::parseSwagger($file->getFileUri());
-      if ($swagger['info']['version'] === $previous_swagger_file['info']['version']) {
-        \Drupal::messenger()->addError('This version has been added before.');
-        $form_state->unsetValue('field_source_file');
-        return NULL;
-      }
+    if (devportal_api_reference_check_api_version($node, $swagger['info']['version'])) {
+      \Drupal::messenger()->addError('This version has been added before.');
+      $form_state->unsetValue('field_source_file');
+      return NULL;
     }
 
     if ($fid = isset($source[0]["fids"][0]) ? $source[0]["fids"][0] : NULL) {
@@ -240,7 +135,10 @@ function devportal_api_reference_api_ref_swagger_20_edit_form_validate(array $fo
       $swagger = MigrationConfigDeriver::parseSwagger($file->getFileUri());
       $form_state->setValue('title', $swagger['info']['title']);
       $form_state->setValue('field_version', $swagger['info']['version']);
-      $form_state->setValue('field_description', $swagger['info']['description']);
+      $form_state->setValue('field_description', [
+        'value' => $swagger['info']['description'],
+        'format' => 'github_flavored_markdown',
+      ]);
     }
     else {
       // If no source file was uploaded use the last uploaded source file.
@@ -252,6 +150,32 @@ function devportal_api_reference_api_ref_swagger_20_edit_form_validate(array $fo
     \Drupal::messenger()->addError($e->getMessage());
     $form_state->unsetValue('field_source_file');
   }
+}
+
+/**
+ * Checks whether a given API documentation version already exist or not.
+ *
+ * @param \Drupal\node\Entity\Node $node
+ *   The API Reference node entity.
+ * @param $version
+ *   The API version to check.
+ *
+ * @return boolean
+ *   Returns TRUE if the given API version already exist. Returns FALSE
+ *   otherwise.
+ *
+ * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+ * @throws \Exception
+ */
+function devportal_api_reference_check_api_version(\Drupal\node\Entity\Node $node, $version) {
+  $previous_files = devportal_api_reference_get_previous_files($node->id());
+  foreach ($previous_files as $file) {
+    $previous_file = MigrationConfigDeriver::parseSwagger($file->getFileUri());
+    if ($version === $previous_file['info']['version']) {
+      return TRUE;
+    }
+  }
+  return FALSE;
 }
 
 /**
@@ -290,7 +214,6 @@ function devportal_api_reference_get_previous_files($nid) {
   $previous_files = devportal_api_reference_get_unique_files($previous_files);
   return $previous_files;
 }
-
 
 /**
  * Return objects with unique files from the previous_files array.
