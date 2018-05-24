@@ -11,8 +11,6 @@
         "erusev/parsedown": "^1.6.3",
         "drupal/swagger_ui_formatter": "^1.0@beta",
         "justinrainbow/json-schema": "^5.2",
-        "drupal/entity_reference_revisions": "^1.4",
-        "drupal/inline_entity_form": "^1.0@beta",
         "drupal/migrate_plus": "^4.0"
     }
 }

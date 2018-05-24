@@ -12,7 +12,7 @@ entity_type: node
 bundle: api_ref_swagger_20
 label: 'Source file'
 description: ''
-required: true
+required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''
