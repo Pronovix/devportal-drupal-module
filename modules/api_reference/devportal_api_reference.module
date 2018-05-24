@@ -65,13 +65,12 @@ function devportal_api_reference_form_node_api_ref_swagger_20_edit_form_alter(&$
   $node = $form_state->getFormObject()->getEntity();
 
   // Check the triggering element. If the triggering element is a link the
-  // triggering element property will be set to null. If it is from an AJAX
+  // triggering element property will be set to NULL. If it is from an AJAX
   // request (in this case clicking the 'browse' button and uploading a file) it
   // will have an object assigned to it. By default set the default_value to
-  // null.
-  $triggering_element = $form_state->getTriggeringElement();
-  if ($triggering_element === NULL) {
-    $form['temp_save'] = $form["field_source_file"]["widget"][0]["#default_value"];
+  // NULL.
+  if ($form_state->getTriggeringElement() === NULL) {
+    $form_state->set('field_source_file_tmp', $form["field_source_file"]["widget"][0]["#default_value"]);
     $form["field_source_file"]["widget"][0]["#default_value"] = NULL;
   }
 
@@ -142,7 +141,7 @@ function devportal_api_reference_api_ref_swagger_20_edit_form_validate(array $fo
     }
     else {
       // If no source file was uploaded use the last uploaded source file.
-      $source[0]["fids"][0] = $form["temp_save"]["fids"][0];
+      $source[0]["fids"][0] = $form_state->get('field_source_file_tmp')["fids"][0];
       $form_state->setValue('field_source_file', $source);
     }
   }
