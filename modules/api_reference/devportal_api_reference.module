@@ -184,13 +184,14 @@ function devportal_api_reference_check_api_version(\Drupal\node\Entity\Node $nod
  * @param int $nid
  *   The node ID.
  *
- * @return array|null
+ * @return array
  *   An array of objects containing the previously added files.
  *
  * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
  */
 function devportal_api_reference_get_previous_files($nid) {
-  $previous_files = NULL;
+  $previous_files = [];
+
   $query = \Drupal::entityQuery('node');
   $revision_ids = $query
     ->condition('nid', $nid)
@@ -211,8 +212,7 @@ function devportal_api_reference_get_previous_files($nid) {
   // list, thus it will be deletable or revertable through the UI.
   // But... we still have the same number of flies uploaded. We need to remove
   // the duplicate files from the list of previous files.
-  $previous_files = devportal_api_reference_get_unique_files($previous_files);
-  return $previous_files;
+  return devportal_api_reference_get_unique_files($previous_files);
 }
 
 /**
