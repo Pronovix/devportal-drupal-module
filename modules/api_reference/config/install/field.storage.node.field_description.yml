@@ -4,6 +4,10 @@ dependencies:
   module:
     - node
     - text
+    - devportal_api_reference
+  enforced:
+    module:
+      - devportal_api_reference
 id: node.field_description
 field_name: field_description
 entity_type: node
