@@ -3,6 +3,10 @@ status: true
 dependencies:
   module:
     - node
+    - devportal_api_reference
+  enforced:
+    module:
+      - devportal_api_reference
 id: node.field_project_id
 field_name: field_project_id
 entity_type: node

@@ -4,6 +4,10 @@ dependencies:
   module:
     - file
     - node
+    - devportal_api_reference
+  enforced:
+    module:
+      - devportal_api_reference
 id: node.field_source_file
 field_name: field_source_file
 entity_type: node
