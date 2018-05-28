@@ -84,7 +84,7 @@ function devportal_api_reference_form_node_api_ref_swagger_20_edit_form_alter(&$
   $form['previous_files'] = [
     '#type' => 'details',
     '#weight' => -2,
-    '#title' => t('Previously uploaded files'),
+    '#title' => t('All uploaded files'),
     '#open' => TRUE,
   ];
   /** @var \Drupal\file\FileInterface $file */
