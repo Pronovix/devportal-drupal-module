@@ -1,0 +1,52 @@
+<?php
+
+/**
+ * @file
+ * Install, update, and uninstall functions for devportal_api_reference module.
+ */
+
+use Drupal\filter\Entity\FilterFormat;
+
+/**
+ * Implements hook_install().
+ */
+function devportal_api_reference_install() {
+  // The devportal module only provides the github_flavored_markdown filter
+  // format, devportal_api_reference enables it during install.
+  FilterFormat::load('github_flavored_markdown')->enable()->save();
+}
+
+/**
+ * Implements hook_uninstall().
+ *
+ * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+ * @throws \Drupal\Core\Entity\EntityStorageException
+ */
+function devportal_api_reference_uninstall() {
+  // Get all node bundles dependent on devportal_api_reference, then get all
+  // their nodes and delete them.
+  // https://www.drupal.org/project/drupal/issues/874000
+  $node_types = \Drupal::entityTypeManager()
+    ->getStorage('node_type')
+    ->loadMultiple();
+  /** @var \Drupal\node\Entity\NodeType $node_type */
+  foreach ($node_types as $node_type) {
+    // If the node type is dependent on devportal_api_reference, then get all
+    // its nodes and delete them.
+    if ($node_type->onDependencyRemoval(['module' => 'devportal_api_reference'])) {
+      // Get all nodes of $node_type->id() type.
+      $nodes = \Drupal::entityTypeManager()
+        ->getStorage('node')
+        ->loadByProperties(['type' => $node_type->id()]);
+
+      // Delete all nodes of $node_type->id() type.
+      /** @var \Drupal\node\Entity\Node $node */
+      foreach ($nodes as $node) {
+        $node->delete();
+      }
+    }
+  }
+
+  // Disable the github_flavored_markdown filter format.
+  FilterFormat::load('github_flavored_markdown')->disable()->save();
+}
