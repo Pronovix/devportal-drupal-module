@@ -1,0 +1,6 @@
+devportal_repo_sync.devportal_repo_sync_config_form:
+  title: 'Repo sync configuration'
+  route_name: devportal_repo_sync.devportal_repo_sync_config_form
+  description: 'Add description of the menu entry'
+  parent: system.admin_devportal_config
+  weight: 99

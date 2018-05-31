@@ -1,0 +1,9 @@
+devportal_repo_sync.devportal_repo_sync_config_form:
+  path: '/admin/devportal/repo_sync/config'
+  defaults:
+    _form: '\Drupal\devportal_repo_sync\Form\RepoSyncConfigForm'
+    _title: 'Repo sync configuration'
+  requirements:
+    _permission: 'access administration pages'
+  options:
+    _admin_route: TRUE
