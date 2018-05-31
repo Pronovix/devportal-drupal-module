@@ -1,0 +1,10 @@
+devportal_repo_sync.config:
+  type: config_object
+  label: 'Repo Sync'
+  mapping:
+    uuid:
+      type: string
+      label: UUID
+    secret:
+      type: string
+      label: Secret
