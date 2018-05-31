@@ -1,0 +1,17 @@
+name: 'Devportal Repository Synchronization'
+type: module
+description: 'Imports content from remote repositories.'
+core: 8.x
+package: 'Devportal'
+dependencies:
+  - drupal:book
+  - drupal:node
+  - drupal:text
+  - drupal:migrate
+  - drupal:migrate_drupal_ui
+  - devportal:devportal_migrate_batch
+  - devportal:devportal_api_reference
+  - drupal:path
+  - drupal:editor
+  - drupal:menu_ui
+  - drupal:views

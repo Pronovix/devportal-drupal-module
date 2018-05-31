@@ -1,0 +1,25 @@
+<?php
+
+/**
+ * @file
+ * Contains devportal_repo_sync.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function devportal_repo_sync_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the devportal_repo_sync module.
+    case 'help.page.repo_sync':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('Imports content from remote repositories.') . '</p>';
+      return $output;
+
+    default:
+      return NULL;
+  }
+}
