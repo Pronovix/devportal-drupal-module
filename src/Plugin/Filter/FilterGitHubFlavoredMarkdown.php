@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\devportal_api_reference\Plugin\Filter;
+namespace Drupal\devportal\Plugin\Filter;
 
 use Parsedown;
 use Drupal\filter\FilterProcessResult;

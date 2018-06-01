@@ -1,0 +1,42 @@
+<?php
+
+/**
+ * @file
+ * Install, update, and uninstall functions for devportal_api_reference module.
+ */
+
+use Drupal\filter\Entity\FilterFormat;
+
+/**
+ * Implements hook_install().
+ */
+function devportal_api_reference_install() {
+  // The devportal module only provides the github_flavored_markdown filter
+  // format, devportal_api_reference enables it during install.
+  FilterFormat::load('github_flavored_markdown')->enable()->save();
+}
+
+/**
+ * Implements hook_uninstall().
+ *
+ * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+ * @throws \Drupal\Core\Entity\EntityStorageException
+ */
+function devportal_api_reference_uninstall() {
+  // Get all the nodes of the bundle provided by devportal_api_reference and
+  // delete them.
+  // https://www.drupal.org/project/drupal/issues/874000
+  $nodes = \Drupal::entityTypeManager()
+    ->getStorage('node')
+    // TODO: If we'll use only one bundle in the future, make sure to change api_ref_swagger_20 to that new bundle's id.
+    ->loadByProperties(['type' => 'api_ref_swagger_20']);
+
+  // Delete all nodes of api_ref_swagger_20 type.
+  /** @var \Drupal\node\Entity\Node $node */
+  foreach ($nodes as $node) {
+    $node->delete();
+  }
+
+  // Disable the github_flavored_markdown filter format.
+  FilterFormat::load('github_flavored_markdown')->disable()->save();
+}
