@@ -7,3 +7,21 @@ devportal_repo_sync.devportal_repo_sync_config_form:
     _permission: 'access administration pages'
   options:
     _admin_route: TRUE
+
+devportal_repo_sync.repo_sync_controller_content:
+  path: '/admin/devportal/repo_sync/content'
+  defaults:
+    _controller: '\Drupal\devportal_repo_sync\Controller\RepoSyncController::content'
+    _title: 'Hello Repo Sync!'
+  requirements:
+    _permission: 'access administration pages'
+  options:
+    _admin_route: TRUE
+
+devportal_repo_sync.devportal_repo_sync_create_form:
+  path: '/admin/devportal/repo_sync/create'
+  defaults:
+    _form: '\Drupal\devportal_repo_sync\Form\RepoSyncCreateForm'
+    _title: 'Import Repository'
+  requirements:
+    _access: 'TRUE'

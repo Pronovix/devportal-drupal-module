@@ -166,6 +166,7 @@ class Client {
    * @param callable|null $callback
    *
    * @return array
+   * @throws \Exception
    */
   protected function withCurl(string $method, string $url, array $headers, ?callable $callback = null): array {
     $ch = curl_init();
@@ -189,11 +190,14 @@ class Client {
       $callback($ch);
     }
 
-    $rawresult = curl_exec($ch);
-    $header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
-    $result = substr($rawresult, $header_size);
-    $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-
+    if ($rawresult = curl_exec($ch)) {
+      $header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
+      $result = substr($rawresult, $header_size);
+      $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    }
+    else {
+      throw new \Exception('Curl handler error.');
+    }
     curl_close($ch);
     return [$code, $result];
   }

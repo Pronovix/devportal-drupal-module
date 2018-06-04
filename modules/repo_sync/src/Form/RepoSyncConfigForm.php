@@ -6,7 +6,7 @@ use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
 
 /**
- * Global settings form.
+ * The config form for the UUID and secret key.
  */
 class RepoSyncConfigForm extends ConfigFormBase {
 
