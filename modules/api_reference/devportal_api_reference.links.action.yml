@@ -2,13 +2,6 @@ api_ref.add_page:
   route_name: node.add
   route_parameters:
     node_type: api_ref_swagger_20
-  title: 'Add Swagger 2.0 API Reference'
+  title: 'Add API Reference Swagger 2.0'
   appears_on:
-    - entity.api_ref.collection
-entity.api_ref_type.add_form:
-  route_name: entity.node_type.edit_form
-  route_parameters:
-    node_type: api_ref_swagger_20
-  title: 'Add API Reference type'
-  appears_on:
-    - entity.api_ref_type.collection
+    - view.devportal_api_reference.page_1

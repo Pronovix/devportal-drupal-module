@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @file
+ * Main module file for Devportal API Reference.
+ */
+
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\devportal_api_reference\Plugin\MigrationConfigDeriver;
 use Drupal\file\Entity\File;
@@ -14,6 +19,38 @@ use Drupal\Core\Entity\ContentEntityInterface;
  */
 function devportal_api_reference_bundles() {
   return ['api_ref_swagger_20'];
+}
+
+/**
+ * Implements hook_menu_links_discovered_alter().
+ *
+ * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+ */
+function devportal_api_reference_menu_links_discovered_alter(&$links) {
+  // Add menu links for API Reference bundles.
+  foreach (\Drupal::entityTypeManager()->getStorage('node_type')->loadMultiple() as $type) {
+    if (in_array($type->id(), devportal_api_reference_bundles(), TRUE)) {
+      // Menu link for node add form.
+      $links["entity.api_ref.add.{$type->id()}"] = [
+        'title' => 'Add ' . t($type->label()),
+        'parent' => 'entity.api_ref.collection',
+        'route_name' => 'node.add',
+        'route_parameters' => [
+          'node_type' => $type->id()
+        ],
+      ];
+      // Menu link for node bundle configuration.
+      $links["entity.api_ref.configuration.{$type->id()}"] = [
+        'title' => t($type->label()),
+        'parent' => 'system.admin_devportal_config',
+        'description' => t("Manage {$type->label()} configuration."),
+        'route_name' => 'entity.node_type.edit_form',
+        'route_parameters' => [
+          'node_type' => $type->id()
+        ],
+      ];
+    }
+  }
 }
 
 /**
