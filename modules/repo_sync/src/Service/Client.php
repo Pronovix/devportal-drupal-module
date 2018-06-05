@@ -74,6 +74,8 @@ class Client {
    * @param null|string $body
    *
    * @return array
+   *
+   * @throws \Exception
    */
   public function __invoke(string $method, string $path, ?string $body): array {
     if (($tokenresponse = $this->ensureToken())) {
@@ -109,6 +111,8 @@ class Client {
 
   /**
    * @return array|null
+   *
+   * @throws \Exception
    */
   protected function ensureToken(): ?array {
     if ($this->token !== null) {
