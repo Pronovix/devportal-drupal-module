@@ -1,0 +1,6 @@
+entity.api_bundle.collection:
+  title: API Bundles
+  route_name: view.devportal_api_bundle.page_1
+  description: List API Bundles.
+  parent: system.admin_devportal
+  weight: -5

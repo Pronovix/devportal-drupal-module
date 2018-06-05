@@ -1,0 +1,7 @@
+api_bundle.add_page:
+  route_name: node.add
+  route_parameters:
+    node_type: api_bundle_swagger_20
+  title: 'Add API Bundle Swagger 2.0'
+  appears_on:
+    - view.devportal_api_bundle.page_1

@@ -3,16 +3,16 @@ status: true
 dependencies:
   config:
     - field.storage.node.field_version
-    - node.type.api_ref_swagger_20
+    - node.type.api_bundle_swagger_20
   module:
     - node
     - user
 _core:
   default_config_hash: '-tuhe5vYlCob1RMQxnOSk3mQ10Hksbv5sfUp3sq2994'
-id: devportal_api_reference
-label: 'Devportal API Reference'
+id: devportal_api_bundle
+label: 'Devportal API Bundle'
 module: views
-description: 'Find and manage API References.'
+description: 'Find and manage API Bundles.'
 tag: ''
 base_table: node_field_data
 base_field: nid
@@ -27,7 +27,7 @@ display:
       access:
         type: perm
         options:
-          perm: 'access api ref overview'
+          perm: 'access api bundle overview'
       cache:
         type: tag
         options: {  }
@@ -604,7 +604,7 @@ display:
           admin_label: ''
           operator: in
           value:
-            api_ref_swagger_20: api_ref_swagger_20
+            api_bundle_swagger_20: api_bundle_swagger_20
           group: 1
           exposed: true
           expose:
@@ -723,18 +723,18 @@ display:
           id: created
           table: node_field_data
           field: created
-          order: DESC
-          entity_type: node
-          entity_field: created
-          plugin_id: date
           relationship: none
           group_type: group
           admin_label: ''
+          order: DESC
           exposed: false
           expose:
             label: ''
           granularity: second
-      title: 'API References'
+          entity_type: node
+          entity_field: created
+          plugin_id: date
+      title: 'API Bundles'
       header: {  }
       footer: {  }
       empty:
@@ -747,7 +747,7 @@ display:
           admin_label: ''
           empty: true
           tokenize: false
-          content: 'No API Reference available.'
+          content: 'No API Bundle available.'
           plugin_id: text_custom
       relationships: {  }
       arguments: {  }
@@ -774,7 +774,7 @@ display:
     position: 1
     display_options:
       display_extenders: {  }
-      path: admin/devportal/api-reference
+      path: admin/devportal/api-bundle
     cache_metadata:
       max-age: 0
       contexts:
