@@ -1,13 +1,6 @@
 entity.api_ref.collection:
-  title: 'API References'
-  route_name: 'view.devportal_api_reference.page_1'
-  description: 'List API References.'
+  title: API References
+  route_name: view.devportal_api_reference.page_1
+  description: List API References.
   parent: system.admin_devportal
   weight: -5
-entity.api_ref.configuration:
-  title: 'API References'
-  description: 'Configure API References.'
-  route_name: entity.node_type.edit_form
-  route_parameters:
-    node_type: api_ref_swagger_20
-  parent: system.admin_devportal_config
