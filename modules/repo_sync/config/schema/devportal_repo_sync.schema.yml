@@ -8,3 +8,6 @@ devportal_repo_sync.config:
     secret:
       type: string
       label: Secret
+    service:
+      type: string
+      label: Service

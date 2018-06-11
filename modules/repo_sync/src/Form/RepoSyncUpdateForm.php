@@ -4,34 +4,46 @@ namespace Drupal\devportal_repo_sync\Form;
 
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Site\Settings;
-use Drupal\Core\Url;
 use Drupal\devportal_repo_sync\Exception\DevportalRepoSyncConnectionException;
 use Drupal\devportal_repo_sync\Service\Client;
 
 /**
- * Class RepoSyncCreateForm.
+ * Class RepoSyncUpdateForm.
  */
-class RepoSyncCreateForm extends FormBase {
+class RepoSyncUpdateForm extends FormBase {
+
 
   /**
    * {@inheritdoc}
    */
   public function getFormId() {
-    return 'devportal_repo_sync_create_form';
+    return 'devportal_repo_sync_update_form';
   }
 
   /**
    * {@inheritdoc}
+   *
+   * @throws \Exception
    */
-  public function buildForm(array $form, FormStateInterface $form_state) {
+  public function buildForm(array $form, FormStateInterface $form_state, $uuid = NULL) {
+    $config = $this->config('devportal_repo_sync.config');
+    $client = new Client($config->get('uuid'), hex2bin($config->get('secret')), $config->get('service'));
+
+    try {
+      $result = $client("GET", "/api/import/$uuid", NULL);
+      $result = json_decode(array_pop($result), TRUE);
+    }
+    catch (DevportalRepoSyncConnectionException $e) {
+      $this->messenger()->addError($e->getMessage());
+    }
+
     $form['label'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Label'),
       '#description' => $this->t('A name for the import project.'),
       '#maxlength' => 64,
       '#size' => 64,
-      '#default_value' => '',
+      '#default_value' => $result["Label"] ?? NULL,
       '#weight' => 1,
     ];
     $form['repository_url'] = [
@@ -40,7 +52,7 @@ class RepoSyncCreateForm extends FormBase {
       '#description' => $this->t('The URL of the repository to import.'),
       '#maxlength' => 128,
       '#size' => 64,
-      '#default_value' => '',
+      '#default_value' => $result["RepositoryURL"] ?? NULL,
       '#weight' => 3,
     ];
     $form['pattern'] = [
@@ -49,7 +61,7 @@ class RepoSyncCreateForm extends FormBase {
       '#description' => $this->t('A pattern to look for in the repository.'),
       '#maxlength' => 64,
       '#size' => 64,
-      '#default_value' => '',
+      '#default_value' => $result["Pattern"] ?? NULL,
       '#weight' => 4,
     ];
     $form['reference'] = [
@@ -58,8 +70,16 @@ class RepoSyncCreateForm extends FormBase {
       '#description' => $this->t('Branch reference'),
       '#maxlength' => 64,
       '#size' => 64,
-      '#default_value' => '',
+      '#default_value' => $result["Reference"] ?? NULL,
       '#weight' => 5,
+    ];
+    $form['result'] = [
+      '#type' => 'value',
+      '#value' => !empty($result) ? $result : NULL,
+    ];
+    $form['uuid'] = [
+      '#type' => 'value',
+      '#value' => $uuid,
     ];
     $form['submit'] = [
       '#type' => 'submit',
@@ -89,24 +109,23 @@ class RepoSyncCreateForm extends FormBase {
     $client = new Client($config->get('uuid'), hex2bin($config->get('secret')), $config->get('service'));
 
     try {
-      $result = $client("POST", "/api/import", json_encode([
+      $client("PUT", "/api/import/{$values["result"]["ID"]}", json_encode([
+        "ID" => $values["uuid"],
         "Label" => $values["label"],
         "RepositoryType" => 'git',
         "RepositoryURL" => $values["repository_url"],
         "Pattern" => $values["pattern"],
         "Reference" => $values["reference"],
-        "Callback" => 'http://d8.devportal.test',
+        "Webhook" => $values["result"]["Webhook"],
+        "Callback" => $values["result"]["Callback"],
+        "Owner" => $values["result"]["Owner"],
       ]));
-      $result = json_decode(array_pop($result), TRUE);
-      $result['Callback'] = Url::fromRoute('devportal_repo_sync.controller_callback', [
-        'uuid' => $result["ID"],
-        'hash' => hash_hmac('sha256', $result["ID"], Settings::getHashSalt(), FALSE),
-      ], ['absolute' => TRUE])->toString();
-      $client("PUT", "/api/import/{$result["ID"]}", json_encode($result));
     }
     catch (DevportalRepoSyncConnectionException $e) {
       $this->messenger()->addError($e->getMessage());
-      $form_state->setRedirect('devportal_repo_sync.create_form');
+      $form_state->setRedirect('devportal_repo_sync.update_form', [
+        'uuid' => $values["uuid"],
+      ]);
     }
   }
 

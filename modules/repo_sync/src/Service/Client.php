@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace Drupal\devportal_repo_sync\Service;
 
+use Drupal\devportal_repo_sync\Exception\DevportalRepoSyncConnectionException;
+
 class Client {
 
   /**
@@ -170,7 +172,8 @@ class Client {
    * @param callable|null $callback
    *
    * @return array
-   * @throws \Exception
+   *
+   * @throws \Drupal\devportal_repo_sync\Exception\DevportalRepoSyncConnectionException
    */
   protected function withCurl(string $method, string $url, array $headers, ?callable $callback = null): array {
     $ch = curl_init();
@@ -194,13 +197,13 @@ class Client {
       $callback($ch);
     }
 
-    if ($rawresult = curl_exec($ch)) {
+    if (!($rawresult = curl_exec($ch))) {
+      throw new DevportalRepoSyncConnectionException('Curl handler error.');
+    }
+    else {
       $header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
       $result = substr($rawresult, $header_size);
       $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-    }
-    else {
-      throw new \Exception('Curl handler error.');
     }
     curl_close($ch);
     return [$code, $result];

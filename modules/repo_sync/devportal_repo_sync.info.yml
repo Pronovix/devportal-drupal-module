@@ -15,4 +15,4 @@ dependencies:
   - drupal:editor
   - drupal:menu_ui
   - drupal:views
-configure: devportal_repo_sync.devportal_repo_sync_config_form
+configure: devportal_repo_sync.config_form

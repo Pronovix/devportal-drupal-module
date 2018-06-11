@@ -47,6 +47,15 @@ class RepoSyncConfigForm extends ConfigFormBase {
       '#default_value' => $config->get('secret'),
       '#required' => TRUE,
     ];
+    $form['service'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Service URL'),
+      '#description' => $this->t('The URL of the server you wish to use'),
+      '#maxlength' => 64,
+      '#size' => 64,
+      '#default_value' => $config->get('service'),
+      '#required' => TRUE,
+    ];
     return parent::buildForm($form, $form_state);
   }
 
@@ -66,6 +75,7 @@ class RepoSyncConfigForm extends ConfigFormBase {
     $this->config('devportal_repo_sync.config')
       ->set('uuid', $form_state->getValue('uuid'))
       ->set('secret', $form_state->getValue('secret'))
+      ->set('service', $form_state->getValue('service'))
       ->save();
   }
 

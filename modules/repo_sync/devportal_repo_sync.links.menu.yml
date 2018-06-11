@@ -1,20 +1,20 @@
-devportal_repo_sync.devportal_repo_sync_config_form:
+devportal_repo_sync.config_form:
   title: 'Repo sync configuration'
-  route_name: devportal_repo_sync.devportal_repo_sync_config_form
+  route_name: devportal_repo_sync.config_form
   description: 'Add description of the menu entry'
   parent: system.admin_devportal_config
   weight: 99
 
-devportal_repo_sync.repo_sync_controller_content:
+devportal_repo_sync.controller_content:
   title: 'Repository Synchronization overview'
-  route_name: devportal_repo_sync.repo_sync_controller_content
+  route_name: devportal_repo_sync.controller_content
   description: 'Lists the available repo sync stuff'
   parent: system.admin_devportal
   weight: 88
 
-devportal_repo_sync.devportal_repo_sync_create_form:
+devportal_repo_sync.create_form:
   title: 'Create repo import'
-  route_name: devportal_repo_sync.devportal_repo_sync_create_form
+  route_name: devportal_repo_sync.create_form
   description: 'Create a repository import.'
   parent: system.admin_devportal
   weight: 88
