@@ -8,15 +8,6 @@
 use Drupal\filter\Entity\FilterFormat;
 
 /**
- * Implements hook_install().
- */
-function devportal_api_reference_install() {
-  // The devportal module only provides the github_flavored_markdown filter
-  // format, devportal_api_reference enables it during install.
-  FilterFormat::load('github_flavored_markdown')->enable()->save();
-}
-
-/**
  * Implements hook_uninstall().
  *
  * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
