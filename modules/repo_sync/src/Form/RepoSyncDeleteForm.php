@@ -55,6 +55,7 @@ class RepoSyncDeleteForm extends ConfirmFormBase {
     }
     catch (DevportalRepoSyncConnectionException $e) {
       $this->messenger()->addError($e->getMessage());
+      watchdog_exception('repo_sync', $e);
     }
   }
 

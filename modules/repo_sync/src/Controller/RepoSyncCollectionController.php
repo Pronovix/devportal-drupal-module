@@ -25,10 +25,10 @@ class RepoSyncCollectionController extends ControllerBase {
     $client = new Client($config->get('uuid'), hex2bin($config->get('secret')), $config->get('service'));
 
     try {
+      $rows = [];
       $result = $client("GET", "/api/import", NULL);
       $result = json_decode(array_pop($result));
 
-      $rows = [];
       foreach ($result->items as $item) {
         $rows[] = [
           $item->Label,
@@ -58,6 +58,7 @@ class RepoSyncCollectionController extends ControllerBase {
     }
     catch (DevportalRepoSyncConnectionException $e) {
       $this->messenger()->addError($e->getMessage());
+      watchdog_exception('repo_sync', $e);
     }
 
     $build = [
@@ -69,7 +70,7 @@ class RepoSyncCollectionController extends ControllerBase {
         $this->t('Owner'),
         $this->t('Operations'),
       ],
-      '#rows' => !empty($rows) ? $rows : [['Nothing to display.']],
+      '#rows' => $rows ?: [['Nothing to display.']],
       '#description' => $this->t('Repository Synchronization settings overview.'),
     ];
 

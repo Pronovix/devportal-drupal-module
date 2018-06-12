@@ -28,29 +28,42 @@ class RepoSyncViewController extends ControllerBase {
 
     try {
       $result = $client("GET", "/api/import/$uuid", NULL);
-      $result = json_decode(array_pop($result), TRUE);
+      if ($result[0] == 200) {
+        $result = json_decode(array_pop($result), TRUE);
 
-      $rows = [];
-      foreach ($result as $key => $value) {
-        $rows[] = [$key, $value];
+        $rows = [];
+        foreach ($result as $key => $value) {
+          $rows[] = [$key, $value];
+        }
+        $build = [
+          '#type' => 'table',
+          '#caption' => $this->t('Repository Synchronization settings overview.'),
+          '#header' => [
+            $this->t('Key'),
+            $this->t('Value'),
+          ],
+          '#rows' => $rows ?: [['Nothing to display.']],
+          '#description' => $this->t('Repository Synchronization settings overview.'),
+        ];
+      }
+      else {
+        $build = self::error($result[1]);
       }
     }
     catch (DevportalRepoSyncConnectionException $e) {
       $this->messenger()->addError($e->getMessage());
+      watchdog_exception('repo_sync', $e);
+      $build = self::error($e->getMessage());
     }
 
-    $build = [
-      '#type' => 'table',
-      '#caption' => $this->t('Repository Synchronization settings overview.'),
-      '#header' => [
-        $this->t('Key'),
-        $this->t('Value'),
-      ],
-      '#rows' => !empty($rows) ? $rows : [['Nothing to display.']],
-      '#description' => $this->t('Repository Synchronization settings overview.'),
-    ];
-
     return $build;
+  }
+
+  public static function error($message) {
+    return [
+      '#type' => 'markup',
+      '#markup' => t("An error occurred: %message", ['%message' => $message]),
+    ];
   }
 
 }

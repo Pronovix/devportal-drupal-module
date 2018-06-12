@@ -106,6 +106,7 @@ class RepoSyncCreateForm extends FormBase {
     }
     catch (DevportalRepoSyncConnectionException $e) {
       $this->messenger()->addError($e->getMessage());
+      watchdog_exception('repo_sync', $e);
       $form_state->setRedirect('devportal_repo_sync.create_form');
     }
   }

@@ -198,7 +198,7 @@ class Client {
     }
 
     if (!($rawresult = curl_exec($ch))) {
-      throw new DevportalRepoSyncConnectionException('Curl handler error.');
+      throw new DevportalRepoSyncConnectionException(curl_errno($ch) . ': ' . curl_error($ch));
     }
     else {
       $header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
