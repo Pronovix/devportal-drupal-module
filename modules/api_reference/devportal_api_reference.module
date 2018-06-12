@@ -10,6 +10,7 @@ use Drupal\devportal_api_reference\Plugin\MigrationConfigDeriver;
 use Drupal\file\Entity\File;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\filter\Entity\FilterFormat;
 
 /**
  * Provides the list of API Reference related node bundles.
@@ -287,5 +288,18 @@ function devportal_api_reference_node_presave(ContentEntityInterface $entity) {
     // table to TRUE, so that all revisions in the database will be viewable on
     // the /node/{nid}/revisions page.
     $entity->setRevisionTranslationAffected(TRUE);
+  }
+}
+
+/**
+ * Implements hook_modules_installed().
+ */
+function devportal_api_reference_modules_installed($modules) {
+  // The devportal module only provides the github_flavored_markdown filter
+  // format, devportal_api_reference enables it during install.
+  // Make sure that the devportal module has been installed before trying to
+  // enable the filter format.
+  if (in_array('devportal', $modules)) {
+    FilterFormat::load('github_flavored_markdown')->enable()->save();
   }
 }
