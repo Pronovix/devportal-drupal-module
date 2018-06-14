@@ -23,7 +23,10 @@ class RepoSyncCallbackController extends ControllerBase {
   public function callback(string $uuid, string $hash) {
     return [
       '#type' => 'markup',
-      '#markup' => $this->t("This is your UUID: $uuid, and this is your hash: $hash"),
+      '#markup' => $this->t("This is your UUID: %uuid, and this is your hash: %hash", [
+        '%uuid' => $uuid,
+        '%hash' => $hash,
+      ]),
     ];
   }
 
