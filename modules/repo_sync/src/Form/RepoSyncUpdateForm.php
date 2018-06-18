@@ -50,7 +50,7 @@ class RepoSyncUpdateForm extends FormBase {
    * @throws \Exception
    */
   public function buildForm(array $form, FormStateInterface $form_state, $uuid = NULL) {
-    $result = $this->devportalRepoSyncConnection->getImport($uuid, TRUE);
+    $result = $this->devportalRepoSyncConnection->getImport($uuid);
     $form['label'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Label'),
