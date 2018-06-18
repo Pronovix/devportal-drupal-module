@@ -1,0 +1,5 @@
+services:
+  devportal_repo_sync.connection:
+    class: Drupal\devportal_repo_sync\Service\RepoSyncConnector
+    arguments:
+      - '@config.factory'

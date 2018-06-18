@@ -2,9 +2,9 @@ devportal_repo_sync.config:
   type: config_object
   label: 'Repo Sync'
   mapping:
-    uuid:
+    accout:
       type: string
-      label: UUID
+      label: Account
     secret:
       type: string
       label: Secret
