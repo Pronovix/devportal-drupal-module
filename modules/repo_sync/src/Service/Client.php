@@ -95,8 +95,6 @@ class Client {
       $headers[] = "Content-Type: application/json";
     }
 
-    $this->executed = true;
-
     return $this->withCurl($method, $this->host . $path, $headers, function($ch) use($body) {
       if ($body !== null) {
         curl_setopt($ch, CURLOPT_POSTFIELDS, $body);

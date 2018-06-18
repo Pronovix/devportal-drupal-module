@@ -31,13 +31,13 @@ class RepoSyncConfigForm extends ConfigFormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
     $config = $this->config('devportal_repo_sync.config');
-    $form['uuid'] = [
+    $form['account'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('UUID'),
+      '#title' => $this->t('Account ID'),
       '#description' => $this->t('The UUID of your account'),
       '#maxlength' => 64,
       '#size' => 64,
-      '#default_value' => $config->get('uuid'),
+      '#default_value' => $config->get('account'),
       '#required' => TRUE,
     ];
     $form['secret'] = [
@@ -73,7 +73,7 @@ class RepoSyncConfigForm extends ConfigFormBase {
     parent::submitForm($form, $form_state);
 
     $this->config('devportal_repo_sync.config')
-      ->set('uuid', $form_state->getValue('uuid'))
+      ->set('account', $form_state->getValue('account'))
       ->set('secret', $form_state->getValue('secret'))
       ->set('service', $form_state->getValue('service'))
       ->save();

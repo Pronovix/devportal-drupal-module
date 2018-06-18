@@ -4,15 +4,38 @@ namespace Drupal\devportal_repo_sync\Form;
 
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Site\Settings;
-use Drupal\Core\Url;
-use Drupal\devportal_repo_sync\Exception\DevportalRepoSyncConnectionException;
-use Drupal\devportal_repo_sync\Service\Client;
+use Drupal\devportal_repo_sync\Service\RepoSyncConnector;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Class RepoSyncCreateForm.
  */
 class RepoSyncCreateForm extends FormBase {
+
+  /**
+   * Drupal\devportal_repo_sync\Service\RepoSyncConnector definition.
+   *
+   * @var \Drupal\devportal_repo_sync\Service\RepoSyncConnector
+   */
+  protected $devportalRepoSyncConnection;
+
+  /**
+   * Constructs a new RepoSyncCreateForm object.
+   *
+   * @param \Drupal\devportal_repo_sync\Service\RepoSyncConnector $devportal_repo_sync_connection
+   */
+  public function __construct(RepoSyncConnector $devportal_repo_sync_connection) {
+    $this->devportalRepoSyncConnection = $devportal_repo_sync_connection;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('devportal_repo_sync.connection')
+    );
+  }
 
   /**
    * {@inheritdoc}
@@ -85,30 +108,12 @@ class RepoSyncCreateForm extends FormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $form_state->setRedirect('devportal_repo_sync.controller_content');
     $values = $form_state->getValues();
-    $config = $this->config('devportal_repo_sync.config');
-    $client = new Client($config->get('uuid'), hex2bin($config->get('secret')), $config->get('service'));
-
-    try {
-      $result = $client("POST", "/api/import", json_encode([
-        "Label" => $values["label"],
-        "RepositoryType" => 'git',
-        "RepositoryURL" => $values["repository_url"],
-        "Pattern" => $values["pattern"],
-        "Reference" => $values["reference"],
-        "Callback" => 'http://d8.devportal.test',
-      ]));
-      $result = json_decode(array_pop($result), TRUE);
-      $result['Callback'] = Url::fromRoute('devportal_repo_sync.controller_callback', [
-        'uuid' => $result["ID"],
-        'hash' => hash_hmac('sha256', $result["ID"], Settings::getHashSalt(), FALSE),
-      ], ['absolute' => TRUE])->toString();
-      $client("PUT", "/api/import/{$result["ID"]}", json_encode($result));
-    }
-    catch (DevportalRepoSyncConnectionException $e) {
-      $this->messenger()->addError($e->getMessage());
-      watchdog_exception('repo_sync', $e);
-      $form_state->setRedirect('devportal_repo_sync.create_form');
-    }
+    $this->devportalRepoSyncConnection->createImport(
+      $values["label"],
+      $values["repository_url"],
+      $values["pattern"],
+      $values["reference"]
+    );
   }
 
 }

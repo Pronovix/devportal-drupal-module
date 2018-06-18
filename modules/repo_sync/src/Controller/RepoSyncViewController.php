@@ -3,8 +3,8 @@
 namespace Drupal\devportal_repo_sync\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
-use Drupal\devportal_repo_sync\Exception\DevportalRepoSyncConnectionException;
-use Drupal\devportal_repo_sync\Service\Client;
+use Drupal\devportal_repo_sync\Service\RepoSyncConnector;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Class RepoSyncViewController.
@@ -12,7 +12,32 @@ use Drupal\devportal_repo_sync\Service\Client;
 class RepoSyncViewController extends ControllerBase {
 
   /**
-   * Hello.
+   * Drupal\devportal_repo_sync\Service\RepoSyncConnector definition.
+   *
+   * @var \Drupal\devportal_repo_sync\Service\RepoSyncConnector
+   */
+  protected $devportalRepoSyncConnection;
+
+  /**
+   * Constructs a new RepoSyncViewController object.
+   *
+   * @param \Drupal\devportal_repo_sync\Service\RepoSyncConnector $devportal_repo_sync_connection
+   */
+  public function __construct(RepoSyncConnector $devportal_repo_sync_connection) {
+    $this->devportalRepoSyncConnection = $devportal_repo_sync_connection;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('devportal_repo_sync.connection')
+    );
+  }
+
+  /**
+   * View an import.
    *
    * @param string $uuid
    *   The UUID of the imported repository.
@@ -23,47 +48,22 @@ class RepoSyncViewController extends ControllerBase {
    * @throws \Exception
    */
   public function content($uuid) {
-    $config = $this->config('devportal_repo_sync.config');
-    $client = new Client($config->get('uuid'), hex2bin($config->get('secret')), $config->get('service'));
-
-    try {
-      $result = $client("GET", "/api/import/$uuid", NULL);
-      if ($result[0] == 200) {
-        $result = json_decode(array_pop($result), TRUE);
-
-        $rows = [];
-        foreach ($result as $key => $value) {
-          $rows[] = [$key, $value];
-        }
-        $build = [
-          '#type' => 'table',
-          '#caption' => $this->t('Repository Synchronization settings overview.'),
-          '#header' => [
-            $this->t('Key'),
-            $this->t('Value'),
-          ],
-          '#rows' => $rows ?: [['Nothing to display.']],
-          '#description' => $this->t('Repository Synchronization settings overview.'),
-        ];
-      }
-      else {
-        $build = self::error($result[1]);
-      }
+    $result = $this->devportalRepoSyncConnection->getImport($uuid);
+    $rows = [];
+    foreach ($result as $key => $value) {
+      $rows[] = [$key, $value];
     }
-    catch (DevportalRepoSyncConnectionException $e) {
-      $this->messenger()->addError($e->getMessage());
-      watchdog_exception('repo_sync', $e);
-      $build = self::error($e->getMessage());
-    }
-
-    return $build;
-  }
-
-  public static function error($message) {
-    return [
-      '#type' => 'markup',
-      '#markup' => t("An error occurred: %message", ['%message' => $message]),
+    $build = [
+      '#type' => 'table',
+      '#caption' => $this->t('Repository Synchronization settings overview.'),
+      '#header' => [
+        $this->t('Key'),
+        $this->t('Value'),
+      ],
+      '#rows' => $rows ?: [['Nothing to display.']],
+      '#description' => $this->t('Repository Synchronization settings overview.'),
     ];
+    return $build;
   }
 
 }
