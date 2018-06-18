@@ -305,3 +305,16 @@ function devportal_api_reference_node_presave(ContentEntityInterface $entity) {
     $entity->setRevisionTranslationAffected(TRUE);
   }
 }
+
+/**
+ * Implements hook_modules_installed().
+ */
+function devportal_api_reference_modules_installed($modules) {
+  // The devportal module only provides the github_flavored_markdown filter
+  // format, devportal_api_reference enables it during install.
+  // Make sure that the devportal module has been installed before trying to
+  // enable the filter format.
+  if (in_array('devportal', $modules)) {
+    FilterFormat::load('github_flavored_markdown')->enable()->save();
+  }
+}
