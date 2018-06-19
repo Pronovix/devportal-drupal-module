@@ -23,6 +23,21 @@ function devportal_api_reference_bundles() {
 }
 
 /**
+ * Implements hook_modules_installed().
+ *
+ * @param array $modules
+ */
+function devportal_api_reference_modules_installed($modules) {
+  // The devportal module only provides the github_flavored_markdown filter
+  // format, devportal_api_reference enables it during install.
+  // Make sure that the devportal module has been installed, before trying to
+  // enable the filter format.
+  if (in_array('devportal', $modules)) {
+    FilterFormat::load('github_flavored_markdown')->enable()->save();
+  }
+}
+
+/**
  * Implements hook_menu_links_discovered_alter().
  *
  * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
@@ -288,18 +303,5 @@ function devportal_api_reference_node_presave(ContentEntityInterface $entity) {
     // table to TRUE, so that all revisions in the database will be viewable on
     // the /node/{nid}/revisions page.
     $entity->setRevisionTranslationAffected(TRUE);
-  }
-}
-
-/**
- * Implements hook_modules_installed().
- */
-function devportal_api_reference_modules_installed($modules) {
-  // The devportal module only provides the github_flavored_markdown filter
-  // format, devportal_api_reference enables it during install.
-  // Make sure that the devportal module has been installed before trying to
-  // enable the filter format.
-  if (in_array('devportal', $modules)) {
-    FilterFormat::load('github_flavored_markdown')->enable()->save();
   }
 }

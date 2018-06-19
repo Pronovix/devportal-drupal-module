@@ -1,26 +1,20 @@
-devportal_repo_sync.repo_account_config:
-  title: 'Accounts'
-  description: 'Manage repository accounts'
-  parent: system.admin_devportal_config_repo_sync
-  route_name: entity.repo_account.collection
-  weight: -5
-
-devportal_repo_sync.repo_import_config:
-  title: 'Repository imports'
-  description: 'Manage repository imports'
-  parent: system.admin_devportal
-  route_name: entity.repo_import.collection
-  weight: -2
-
-devportal_repo_sync.admin_settings:
-  title: 'Import settings'
-  description: 'Manage global repository sync settings'
-  parent: system.admin_devportal_config_repo_sync
-  route_name: devportal_repo_sync.admin_settings
-  weight: -2
-
-system.admin_devportal_config_repo_sync:
-  title: 'Repository import'
-  description: 'Manage repository import settings'
+devportal_repo_sync.config_form:
+  title: 'Repo sync configuration'
+  route_name: devportal_repo_sync.config_form
+  description: 'Add description of the menu entry'
   parent: system.admin_devportal_config
-  route_name: devportal.admin_repo_sync_config
+  weight: 99
+
+devportal_repo_sync.controller_content:
+  title: 'Repository Synchronization overview'
+  route_name: devportal_repo_sync.controller_content
+  description: 'Lists the available repo sync stuff'
+  parent: system.admin_devportal
+  weight: 88
+
+devportal_repo_sync.create_form:
+  title: 'Create repo import'
+  route_name: devportal_repo_sync.create_form
+  description: 'Create a repository import.'
+  parent: system.admin_devportal
+  weight: 88

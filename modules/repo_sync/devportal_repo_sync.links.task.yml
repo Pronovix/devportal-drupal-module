@@ -1,24 +1,12 @@
-devportal_repo_sync.repo_account.collection:
-  title: 'View'
-  route_name: 'entity.repo_account.collection'
-  base_route: 'entity.repo_account.collection'
-
-devportal_repo_sync.repo_account.view:
-  title: 'View'
-  route_name: 'entity.repo_account.canonical'
-  base_route: 'entity.repo_account.canonical'
-
-devportal_repo_sync.repo_account.edit:
-  title: 'Edit'
-  route_name: 'entity.repo_account.edit_form'
-  base_route: 'entity.repo_account.canonical'
-
-devportal_repo_sync.repo_account.delete:
-  title: 'Delete'
-  route_name: 'entity.repo_account.delete_form'
-  base_route: 'entity.repo_account.canonical'
-
-entity.node.imported_content.redirectToEdit:
-  route_name: entity.node.imported_content.redirectToEdit
-  base_route: entity.node.canonical
-  class: '\Drupal\devportal_repo_sync\ImportedContentRedirectToEditLocalTask'
+devportal_repo_sync.controller_view:
+  route_name: devportal_repo_sync.controller_view
+  base_route: devportal_repo_sync.controller_view
+  title: View
+devportal_repo_sync.update_form:
+  route_name: devportal_repo_sync.update_form
+  base_route: devportal_repo_sync.controller_view
+  title: Update
+devportal_repo_sync.delete_form:
+  route_name: devportal_repo_sync.delete_form
+  base_route: devportal_repo_sync.controller_view
+  title: Delete

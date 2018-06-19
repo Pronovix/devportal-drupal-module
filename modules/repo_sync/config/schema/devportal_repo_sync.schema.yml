@@ -1,0 +1,13 @@
+devportal_repo_sync.config:
+  type: config_object
+  label: 'Repo Sync'
+  mapping:
+    accout:
+      type: string
+      label: Account
+    secret:
+      type: string
+      label: Secret
+    service:
+      type: string
+      label: Service

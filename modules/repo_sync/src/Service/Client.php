@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace Drupal\devportal_repo_sync\Service;
 
+use Drupal\devportal_repo_sync\Exception\DevportalRepoSyncConnectionException;
+
 class Client {
 
   /**
@@ -74,6 +76,8 @@ class Client {
    * @param null|string $body
    *
    * @return array
+   *
+   * @throws \Exception
    */
   public function __invoke(string $method, string $path, ?string $body): array {
     if (($tokenresponse = $this->ensureToken())) {
@@ -91,8 +95,6 @@ class Client {
       $headers[] = "Content-Type: application/json";
     }
 
-    $this->executed = true;
-
     return $this->withCurl($method, $this->host . $path, $headers, function($ch) use($body) {
       if ($body !== null) {
         curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
@@ -109,6 +111,8 @@ class Client {
 
   /**
    * @return array|null
+   *
+   * @throws \Exception
    */
   protected function ensureToken(): ?array {
     if ($this->token !== null) {
@@ -166,6 +170,8 @@ class Client {
    * @param callable|null $callback
    *
    * @return array
+   *
+   * @throws \Drupal\devportal_repo_sync\Exception\DevportalRepoSyncConnectionException
    */
   protected function withCurl(string $method, string $url, array $headers, ?callable $callback = null): array {
     $ch = curl_init();
@@ -189,11 +195,14 @@ class Client {
       $callback($ch);
     }
 
-    $rawresult = curl_exec($ch);
-    $header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
-    $result = substr($rawresult, $header_size);
-    $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-
+    if (!($rawresult = curl_exec($ch))) {
+      throw new DevportalRepoSyncConnectionException(curl_errno($ch) . ': ' . curl_error($ch));
+    }
+    else {
+      $header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
+      $result = substr($rawresult, $header_size);
+      $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    }
     curl_close($ch);
     return [$code, $result];
   }
