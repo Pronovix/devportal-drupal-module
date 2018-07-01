@@ -8,24 +8,25 @@ use Drupal\devportal_repo_sync\Service\RepoSyncConnector;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Class RepoSyncUpdateForm.
+ * Class RepoSyncForm.
  */
-class RepoSyncUpdateForm extends FormBase {
+class RepoSyncForm extends FormBase {
 
   /**
    * Drupal\devportal_repo_sync\Service\RepoSyncConnector definition.
    *
    * @var \Drupal\devportal_repo_sync\Service\RepoSyncConnector
    */
-  protected $devportalRepoSyncConnection;
+  protected $connection;
 
   /**
-   * Constructs a new RepoSyncUpdateForm object.
+   * Constructs a new RepoSyncForm object.
    *
-   * @param \Drupal\devportal_repo_sync\Service\RepoSyncConnector $devportal_repo_sync_connection
+   * @param \Drupal\devportal_repo_sync\Service\RepoSyncConnector $connection
+   *   A configured connection to the repository importer service.
    */
-  public function __construct(RepoSyncConnector $devportal_repo_sync_connection) {
-    $this->devportalRepoSyncConnection = $devportal_repo_sync_connection;
+  public function __construct(RepoSyncConnector $connection) {
+    $this->connection = $connection;
   }
 
   /**
@@ -41,69 +42,67 @@ class RepoSyncUpdateForm extends FormBase {
    * {@inheritdoc}
    */
   public function getFormId() {
-    return 'devportal_repo_sync_update_form';
+    return 'devportal_repo_sync_form';
   }
 
   /**
    * {@inheritdoc}
-   *
-   * @throws \Exception
    */
   public function buildForm(array $form, FormStateInterface $form_state, $uuid = NULL) {
-    $result = $this->devportalRepoSyncConnection->getImport($uuid);
+    $result = $uuid ? $this->connection->getImport($uuid) : NULL;
+
     $form['label'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Label'),
       '#description' => $this->t('A name for the import project.'),
-      '#maxlength' => 64,
-      '#size' => 64,
       '#default_value' => $result["Label"] ?? NULL,
       '#weight' => 1,
     ];
+
     $form['repository_url'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Repository URL'),
       '#description' => $this->t('The URL of the repository to import.'),
-      '#maxlength' => 128,
-      '#size' => 64,
       '#default_value' => $result["RepositoryURL"] ?? NULL,
       '#weight' => 3,
     ];
+
     $form['pattern'] = [
-      '#type' => 'textfield',
+      '#type' => 'textarea',
       '#title' => $this->t('Pattern'),
       '#description' => $this->t('A pattern to look for in the repository.'),
-      '#maxlength' => 64,
-      '#size' => 64,
       '#default_value' => $result["Pattern"] ?? NULL,
       '#weight' => 4,
     ];
+
     $form['reference'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Reference'),
       '#description' => $this->t('Branch reference'),
-      '#maxlength' => 64,
-      '#size' => 64,
       '#default_value' => $result["Reference"] ?? NULL,
       '#weight' => 5,
     ];
+
+    $form['base_path'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Base path'),
+      '#description' => $this->t('Path prefix for the imported content'),
+      '#default_value' => $result["BasePath"] ?? NULL,
+      '#weight' => 6,
+    ];
+
     $form['result'] = [
       '#type' => 'value',
       '#value' => $result ?? NULL,
     ];
+
     $form['submit'] = [
       '#type' => 'submit',
       '#value' => $this->t('Submit'),
       '#weight' => 7,
     ];
-    return $form;
-  }
 
-  /**
-   * {@inheritdoc}
-   */
-  public function validateForm(array &$form, FormStateInterface $form_state) {
-    parent::validateForm($form, $form_state);
+    return $form;
   }
 
   /**
@@ -113,12 +112,24 @@ class RepoSyncUpdateForm extends FormBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $form_state->setRedirect('devportal_repo_sync.controller_content');
-    $result = $form_state->getValue('result');
-    $result["Label"] = $form_state->getValue('label');
-    $result["RepositoryURL"] = $form_state->getValue('repository_url');
-    $result["Pattern"] = $form_state->getValue('pattern');
-    $result["Reference"] = $form_state->getValue('reference');
-    $this->devportalRepoSyncConnection->updateImport($result);
+    $values = $form_state->getValues();
+    if (($result = $form_state->getValue('result'))) {
+      $result["Label"] = $values['label'];
+      $result["RepositoryURL"] = $values['repository_url'];
+      $result["Pattern"] = $values['pattern'];
+      $result["Reference"] = $values['reference'];
+      $result["BasePath"] = $values['base_path'];
+      $this->connection->updateImport($result);
+    }
+    else {
+      $this->connection->createImport(
+        $values["label"],
+        $values["repository_url"],
+        $values["pattern"],
+        $values["reference"],
+        $values["base_path"]
+      );
+    }
   }
 
 }

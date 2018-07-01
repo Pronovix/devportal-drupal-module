@@ -3,3 +3,9 @@ devportal_repo_sync.create_form:
   title: 'Import repository'
   appears_on:
     - devportal_repo_sync.controller_content
+
+devportal_repo_sync.trigger:
+  route_name: devportal_repo_sync.trigger
+  title: 'Start import'
+  appears_on:
+    - devportal_repo_sync.controller_view

@@ -11,3 +11,6 @@ devportal_repo_sync.config:
     service:
       type: string
       label: Service
+    baseurl:
+      type: string
+      label: Base url

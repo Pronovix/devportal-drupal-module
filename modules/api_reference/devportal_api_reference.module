@@ -11,6 +11,7 @@ use Drupal\file\Entity\File;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\filter\Entity\FilterFormat;
+use Drupal\node\Entity\Node;
 
 /**
  * Provides the list of API Reference related node bundles.
@@ -27,7 +28,7 @@ function devportal_api_reference_bundles() {
  *
  * @param array $modules
  */
-function devportal_api_reference_modules_installed($modules) {
+function devportal_api_reference_modules_installed(array $modules) {
   // The devportal module only provides the github_flavored_markdown filter
   // format, devportal_api_reference enables it during install.
   // Make sure that the devportal module has been installed, before trying to
@@ -39,8 +40,6 @@ function devportal_api_reference_modules_installed($modules) {
 
 /**
  * Implements hook_menu_links_discovered_alter().
- *
- * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
  */
 function devportal_api_reference_menu_links_discovered_alter(&$links) {
   // Add menu links for API Reference bundles.
@@ -48,21 +47,21 @@ function devportal_api_reference_menu_links_discovered_alter(&$links) {
     if (in_array($type->id(), devportal_api_reference_bundles(), TRUE)) {
       // Menu link for node add form.
       $links["entity.api_ref.add.{$type->id()}"] = [
-        'title' => 'Add ' . t($type->label()),
+        'title' => t('Add %type', ['%type' => $type->label()]),
         'parent' => 'entity.api_ref.collection',
         'route_name' => 'node.add',
         'route_parameters' => [
-          'node_type' => $type->id()
+          'node_type' => $type->id(),
         ],
       ];
       // Menu link for node bundle configuration.
       $links["entity.api_ref.configuration.{$type->id()}"] = [
-        'title' => t($type->label()),
+        'title' => $type->label(),
         'parent' => 'system.admin_devportal_config',
-        'description' => t("Manage {$type->label()} configuration."),
+        'description' => t("Manage %type configuration.", ['%type' => $type->label()]),
         'route_name' => 'entity.node_type.edit_form',
         'route_parameters' => [
-          'node_type' => $type->id()
+          'node_type' => $type->id(),
         ],
       ];
     }
@@ -108,9 +107,6 @@ function devportal_api_reference_api_ref_swagger_20_validate(array $form, FormSt
 
 /**
  * Implements hook_form_FORM_ID_alter().
- *
- * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
- * @throws \Exception
  */
 function devportal_api_reference_form_node_api_ref_swagger_20_edit_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   $form['#validate'][] = 'devportal_api_reference_api_ref_swagger_20_edit_form_validate';
@@ -161,8 +157,6 @@ function devportal_api_reference_form_node_api_ref_swagger_20_edit_form_alter(&$
  *   The form array.
  * @param \Drupal\Core\Form\FormStateInterface $form_state
  *   The form_state object.
- *
- * @return void|boolean
  */
 function devportal_api_reference_api_ref_swagger_20_edit_form_validate(array $form, FormStateInterface $form_state) {
   /** @var \Drupal\node\Entity\Node $node */
@@ -179,16 +173,16 @@ function devportal_api_reference_api_ref_swagger_20_edit_form_validate(array $fo
     if (devportal_api_reference_check_api_version($node, $swagger['info']['version'])) {
       \Drupal::messenger()->addError('This version has been added before.');
       $form_state->unsetValue('field_source_file');
-      return NULL;
+      return;
     }
 
     if ($fid = isset($source[0]["fids"][0]) ? $source[0]["fids"][0] : NULL) {
       $file = File::load($fid);
-      $swagger = MigrationConfigDeriver::parseSwagger($file->getFileUri());
-      $form_state->setValue('title', $swagger['info']['title']);
-      $form_state->setValue('field_version', $swagger['info']['version']);
+      list($title, $version, $description) = _devportal_api_reference_get_data_from_file($file->getFileUri());
+      $form_state->setValue('title', $title);
+      $form_state->setValue('field_version', $version);
       $form_state->setValue('field_description', [
-        'value' => $swagger['info']['description'],
+        'value' => $description,
         'format' => 'github_flavored_markdown',
       ]);
     }
@@ -205,21 +199,35 @@ function devportal_api_reference_api_ref_swagger_20_edit_form_validate(array $fo
 }
 
 /**
+ * @param string $uri
+ *
+ * @return array
+ */
+function _devportal_api_reference_get_data_from_file(string $uri): array {
+  $data = MigrationConfigDeriver::parseSwagger($uri);
+  return [
+    $data['info']['title'],
+    $data['info']['version'],
+    $data['info']['description'],
+  ];
+}
+
+/**
  * Checks whether a given API documentation version already exist or not.
  *
  * @param \Drupal\node\Entity\Node $node
  *   The API Reference node entity.
- * @param $version
+ * @param string $version
  *   The API version to check.
  *
- * @return boolean
+ * @return bool
  *   Returns TRUE if the given API version already exist. Returns FALSE
  *   otherwise.
  *
  * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
  * @throws \Exception
  */
-function devportal_api_reference_check_api_version(\Drupal\node\Entity\Node $node, $version) {
+function devportal_api_reference_check_api_version(Node $node, string $version) {
   $previous_files = devportal_api_reference_get_previous_files($node->id());
   foreach ($previous_files as $file) {
     $previous_file = MigrationConfigDeriver::parseSwagger($file->getFileUri());
@@ -262,7 +270,7 @@ function devportal_api_reference_get_previous_files($nid) {
   // If, for example, the published setting is toggled Drupal will create a new
   // revision. In this case Drupal will list that revision in the revisions
   // list, thus it will be deletable or revertable through the UI.
-  // But... we still have the same number of flies uploaded. We need to remove
+  // But... we still have the same number of files uploaded. We need to remove
   // the duplicate files from the list of previous files.
   return devportal_api_reference_get_unique_files($previous_files);
 }
