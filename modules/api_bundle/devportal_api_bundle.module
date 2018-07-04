@@ -18,7 +18,7 @@ use Drupal\Core\Entity\ContentEntityInterface;
  *   An array of node bundles.
  */
 function devportal_api_bundle_bundles() {
-  return ['api_bundle_swagger_20'];
+  return ['api_bundle'];
 }
 
 /**

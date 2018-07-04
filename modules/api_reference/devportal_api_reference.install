@@ -19,10 +19,9 @@ function devportal_api_reference_uninstall() {
   // https://www.drupal.org/project/drupal/issues/874000
   $nodes = \Drupal::entityTypeManager()
     ->getStorage('node')
-    // TODO: If we'll use only one bundle in the future, make sure to change api_ref_swagger_20 to that new bundle's id.
-    ->loadByProperties(['type' => 'api_ref_swagger_20']);
+    ->loadByProperties(['type' => 'api_reference']);
 
-  // Delete all nodes of api_ref_swagger_20 type.
+  // Delete all nodes of api_reference type.
   /** @var \Drupal\node\Entity\Node $node */
   foreach ($nodes as $node) {
     $node->delete();

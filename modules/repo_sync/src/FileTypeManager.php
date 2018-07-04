@@ -33,7 +33,7 @@ class FileTypeManager extends DefaultPluginManager {
    */
   protected function findDefinitions(): array {
     $definitions = parent::findDefinitions();
-    uasort($definitions, function (array $def0, array $def1) {
+    uasort($definitions, function (array $def0, array $def1): int {
       return ($def0['weight'] ?? 0) <=> ($def1['weight'] ?? 0);
     });
 

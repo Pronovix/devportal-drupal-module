@@ -24,7 +24,12 @@ class RepoSyncController extends ControllerBase {
   /**
    * @var \Drupal\Core\Queue\QueueInterface
    */
-  protected $queue;
+  protected $importQueue;
+
+  /**
+   * @var \Drupal\Core\Queue\QueueInterface
+   */
+  protected $cleanupQueue;
 
   /**
    * {@inheritdoc}
@@ -38,16 +43,18 @@ class RepoSyncController extends ControllerBase {
 
     return new static(
       $connector,
-      $queueFactory->get('file_import')
+      $queueFactory->get('file_import'),
+      $queueFactory->get('file_cleanup')
     );
   }
 
   /**
    * {@inheritdoc}
    */
-  public function __construct(RepoSyncConnector $connector, QueueInterface $queue) {
+  public function __construct(RepoSyncConnector $connector, QueueInterface $importQueue, QueueInterface $cleanupQueue) {
     $this->devportalRepoSyncConnection = $connector;
-    $this->queue = $queue;
+    $this->importQueue = $importQueue;
+    $this->cleanupQueue = $cleanupQueue;
   }
 
   /**
@@ -67,15 +74,24 @@ class RepoSyncController extends ControllerBase {
     }
 
     $data = json_decode(file_get_contents('php://input'), TRUE);
+    $filenames = [];
     foreach ($data['Files'] as $filename => $file) {
       $original = $file['Files']['Original']['URL'] ?? NULL;
       $processed = $file['Files']['Processed']['URL'] ?? NULL;
+      $filenames[] = $filename;
 
-      $this->queue->createItem((object) [
+      $this->importQueue->createItem((object) [
         'import' => $uuid,
         'filename' => $filename,
         'original' => $original,
         'processed' => $processed,
+      ]);
+    }
+
+    if ($filenames) {
+      $this->cleanupQueue->createItem((object) [
+        'import' => $uuid,
+        'filenames' => $filenames,
       ]);
     }
 

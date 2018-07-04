@@ -3,7 +3,7 @@ status: true
 dependencies:
   config:
     - field.storage.node.field_version
-    - node.type.api_bundle_swagger_20
+    - node.type.api_bundle
   module:
     - node
     - user
@@ -669,7 +669,7 @@ display:
           admin_label: ''
           operator: in
           value:
-            api_bundle_swagger_20: api_bundle_swagger_20
+            api_bundle: api_bundle
           group: 1
           exposed: true
           expose:

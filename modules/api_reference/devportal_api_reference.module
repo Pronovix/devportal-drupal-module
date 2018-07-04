@@ -6,7 +6,6 @@
  */
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\devportal_api_reference\Plugin\MigrationConfigDeriver;
 use Drupal\file\Entity\File;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Entity\ContentEntityInterface;
@@ -20,7 +19,7 @@ use Drupal\node\Entity\Node;
  *   An array of node bundles.
  */
 function devportal_api_reference_bundles() {
-  return ['api_ref_swagger_20'];
+  return ['api_reference'];
 }
 
 /**
@@ -71,30 +70,29 @@ function devportal_api_reference_menu_links_discovered_alter(&$links) {
 /**
  * Implements hook_form_FORM_ID_alter().
  */
-function devportal_api_reference_form_node_api_ref_swagger_20_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+function devportal_api_reference_form_node_api_reference_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   $form["field_source_file"]["widget"][0]["#required"] = TRUE;
-  $form['#validate'][] = 'devportal_api_reference_api_ref_swagger_20_validate';
+  $form['#validate'][] = 'devportal_api_reference_api_reference_validate';
 }
 
 /**
- * Custom validation function api_ref_swagger_20 node bundle.
+ * Custom validation function api_reference node bundle.
  *
  * @param array $form
  *   The form array.
  * @param Drupal\Core\Form\FormStateInterface $form_state
  *   The form_state object.
  */
-function devportal_api_reference_api_ref_swagger_20_validate(array $form, FormStateInterface $form_state) {
+function devportal_api_reference_api_reference_validate(array $form, FormStateInterface $form_state) {
   try {
-    $swagger = NULL;
     $source = $form_state->getValue('field_source_file');
-    if ($fid = isset($source[0]["fids"][0]) ? $source[0]["fids"][0] : NULL) {
+    if (($fid = ($source[0]["fids"][0] ?? NULL))) {
       $file = File::load($fid);
-      $swagger = MigrationConfigDeriver::parseSwagger($file->getFileUri());
-      $form_state->setValue('title', $swagger['info']['title']);
-      $form_state->setValue('field_version', $swagger['info']['version']);
+      list($title, $version, $description) = _devportal_api_reference_get_data_from_file($file->getFileUri());
+      $form_state->setValue('title', $title);
+      $form_state->setValue('field_version', $version);
       $form_state->setValue('field_description', [
-        'value' => $swagger['info']['description'],
+        'value' => $description,
         'format' => 'github_flavored_markdown',
       ]);
     }
@@ -108,8 +106,8 @@ function devportal_api_reference_api_ref_swagger_20_validate(array $form, FormSt
 /**
  * Implements hook_form_FORM_ID_alter().
  */
-function devportal_api_reference_form_node_api_ref_swagger_20_edit_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  $form['#validate'][] = 'devportal_api_reference_api_ref_swagger_20_edit_form_validate';
+function devportal_api_reference_form_node_api_reference_edit_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $form['#validate'][] = 'devportal_api_reference_api_reference_edit_form_validate';
   /** @var \Drupal\node\Entity\Node $node */
   $node = $form_state->getFormObject()->getEntity();
 
@@ -138,11 +136,11 @@ function devportal_api_reference_form_node_api_ref_swagger_20_edit_form_alter(&$
   ];
   /** @var \Drupal\file\FileInterface $file */
   foreach ($previous_files as $file) {
-    $swagger = MigrationConfigDeriver::parseSwagger($file->getFileUri());
+    list(, $version,) = _devportal_api_reference_get_data_from_file($file->getFileUri());
     $form['previous_files'][] = [
       '#theme' => 'file_link',
       '#file' => $file,
-      '#description' => Html::escape("{$file->getFilename()} ({$swagger['info']['version']})"),
+      '#description' => Html::escape("{$file->getFilename()} ({$version})"),
       '#cache' => [
         'tags' => $file->getCacheTags(),
       ],
@@ -151,34 +149,29 @@ function devportal_api_reference_form_node_api_ref_swagger_20_edit_form_alter(&$
 }
 
 /**
- * Validation function for api_ref_swagger_20_edit_form.
+ * Validation function for api_reference_edit_form.
  *
  * @param array $form
  *   The form array.
  * @param \Drupal\Core\Form\FormStateInterface $form_state
  *   The form_state object.
  */
-function devportal_api_reference_api_ref_swagger_20_edit_form_validate(array $form, FormStateInterface $form_state) {
+function devportal_api_reference_api_reference_edit_form_validate(array $form, FormStateInterface $form_state) {
   /** @var \Drupal\node\Entity\Node $node */
   $node = $form_state->getFormObject()->getEntity();
 
   $source = $form_state->getValue('field_source_file');
-  $swagger = NULL;
   try {
-    if ($fid = isset($source[0]["fids"][0]) ? $source[0]["fids"][0] : NULL) {
-      $file = File::load($fid);
-      $swagger = MigrationConfigDeriver::parseSwagger($file->getFileUri());
-    }
-
-    if (devportal_api_reference_check_api_version($node, $swagger['info']['version'])) {
-      \Drupal::messenger()->addError('This version has been added before.');
-      $form_state->unsetValue('field_source_file');
-      return;
-    }
-
-    if ($fid = isset($source[0]["fids"][0]) ? $source[0]["fids"][0] : NULL) {
+    if (($fid = ($source[0]["fids"][0] ?? NULL))) {
       $file = File::load($fid);
       list($title, $version, $description) = _devportal_api_reference_get_data_from_file($file->getFileUri());
+
+      if (devportal_api_reference_check_api_version($node, $version)) {
+        \Drupal::messenger()->addError('This version has been added before.');
+        $form_state->unsetValue('field_source_file');
+        return;
+      }
+
       $form_state->setValue('title', $title);
       $form_state->setValue('field_version', $version);
       $form_state->setValue('field_description', [
@@ -203,12 +196,18 @@ function devportal_api_reference_api_ref_swagger_20_edit_form_validate(array $fo
  *
  * @return array
  */
-function _devportal_api_reference_get_data_from_file(string $uri): array {
-  $data = MigrationConfigDeriver::parseSwagger($uri);
+function _devportal_api_reference_get_data_from_file(string $uri): ?array {
+  /** @var \Drupal\devportal_api_reference\ReferenceTypeManager $manager */
+  $manager = \Drupal::service('plugin.manager.reference');
+  $ref = $manager->lookupPlugin($uri);
+  if (!$ref) {
+    return NULL;
+  }
+
   return [
-    $data['info']['title'],
-    $data['info']['version'],
-    $data['info']['description'],
+    $ref->getTitle($uri),
+    $ref->getVersion($uri),
+    $ref->getDescription($uri),
   ];
 }
 
@@ -230,8 +229,8 @@ function _devportal_api_reference_get_data_from_file(string $uri): array {
 function devportal_api_reference_check_api_version(Node $node, string $version) {
   $previous_files = devportal_api_reference_get_previous_files($node->id());
   foreach ($previous_files as $file) {
-    $previous_file = MigrationConfigDeriver::parseSwagger($file->getFileUri());
-    if ($version === $previous_file['info']['version']) {
+    list(, $previous_version,) = _devportal_api_reference_get_data_from_file($file->getFileUri());
+    if ($version === $previous_version) {
       return TRUE;
     }
   }
@@ -306,7 +305,7 @@ function devportal_api_reference_get_unique_files(array $array) {
  * Implements hook_ENTITY_TYPE_presave().
  */
 function devportal_api_reference_node_presave(ContentEntityInterface $entity) {
-  if ($entity->bundle() === 'api_ref_swagger_20') {
+  if ($entity->bundle() === 'api_reference') {
     // Force set revision_translation_affected column in node_field_revision
     // table to TRUE, so that all revisions in the database will be viewable on
     // the /node/{nid}/revisions page.

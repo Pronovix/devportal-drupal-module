@@ -2,12 +2,12 @@ langcode: en
 status: true
 dependencies:
   config:
-    - node.type.api_bundle_swagger_20
-id: node.api_bundle_swagger_20.promote
-field_name: promote
+    - node.type.api_bundle
+id: node.api_bundle.status
+field_name: status
 entity_type: node
-bundle: api_bundle_swagger_20
-label: 'Promoted to front page'
+bundle: api_bundle
+label: Published
 description: ''
 required: false
 translatable: true

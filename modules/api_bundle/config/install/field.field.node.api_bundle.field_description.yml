@@ -3,19 +3,19 @@ status: true
 dependencies:
   config:
     - field.storage.node.field_description
-    - node.type.api_ref_swagger_20
+    - node.type.api_bundle
   module:
     - text
-id: node.api_ref_swagger_20.field_description
+id: node.api_bundle.field_description
 field_name: field_description
 entity_type: node
-bundle: api_ref_swagger_20
+bundle: api_bundle
 label: Description
 description: ''
 required: false
-translatable: false
+translatable: true
 default_value: {  }
 default_value_callback: ''
 settings:
-  display_summary: true
+  display_summary: false
 field_type: text_with_summary

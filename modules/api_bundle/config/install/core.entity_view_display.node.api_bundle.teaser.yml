@@ -3,14 +3,14 @@ status: false
 dependencies:
   config:
     - core.entity_view_mode.node.teaser
-    - field.field.node.api_bundle_swagger_20.field_api_ref
-    - field.field.node.api_bundle_swagger_20.field_description
-    - node.type.api_bundle_swagger_20
+    - field.field.node.api_bundle.field_api_ref
+    - field.field.node.api_bundle.field_description
+    - node.type.api_bundle
   module:
     - user
-id: node.api_bundle_swagger_20.teaser
+id: node.api_bundle.teaser
 targetEntityType: node
-bundle: api_bundle_swagger_20
+bundle: api_bundle
 mode: teaser
 content:
   links:

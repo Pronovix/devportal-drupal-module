@@ -3,12 +3,12 @@ status: true
 dependencies:
   config:
     - field.storage.node.field_api_ref
-    - node.type.api_bundle_swagger_20
-    - node.type.api_ref_swagger_20
-id: node.api_bundle_swagger_20.field_api_ref
+    - node.type.api_bundle
+    - node.type.api_reference
+id: node.api_bundle.field_api_ref
 field_name: field_api_ref
 entity_type: node
-bundle: api_bundle_swagger_20
+bundle: api_bundle
 label: 'API Reference(s)'
 description: ''
 required: false
@@ -19,7 +19,7 @@ settings:
   handler: 'default:node'
   handler_settings:
     target_bundles:
-      api_ref_swagger_20: api_ref_swagger_20
+      api_reference: api_reference
     sort:
       field: title
       direction: ASC

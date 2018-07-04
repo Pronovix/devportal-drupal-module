@@ -6,6 +6,7 @@ use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Site\Settings;
 use Drupal\Core\Url;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 /**
@@ -40,8 +41,10 @@ class RepoSyncConnector {
     $account = $c->get('account');
     $secret = $c->get('secret');
     $service = $c->get('service');
-    $this->baseurl = $c->get('baseurl');
-    $this->client = new Client($account, hex2bin($secret), $service);
+    if ($account && $secret && $service) {
+      $this->baseurl = $c->get('baseurl');
+      $this->client = new Client($account, hex2bin($secret), $service);
+    }
   }
 
   /**
@@ -62,6 +65,9 @@ class RepoSyncConnector {
    */
   protected function request(string $method, string $endpoint, ?array $body = NULL) {
     $client = $this->client;
+    if (!$client) {
+      throw new HttpException(Response::HTTP_NOT_FOUND);
+    }
 
     $result = $client($method, $endpoint, json_encode($body));
 

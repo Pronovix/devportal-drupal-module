@@ -2,7 +2,7 @@
 
 namespace Drupal\devportal_api_reference\Plugin;
 
-class Swagger20ValidationException extends \Exception {
+class OpenApiValidationException extends \Exception {
 
   /**
    * List of errors.
@@ -25,7 +25,7 @@ class Swagger20ValidationException extends \Exception {
    *
    * @param array $errors
    *
-   * @return Swagger20ValidationException
+   * @return OpenApiValidationException
    */
   public function setErrors($errors) {
     $this->errors = $errors;

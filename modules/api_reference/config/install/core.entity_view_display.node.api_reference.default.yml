@@ -2,18 +2,18 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.node.api_ref_swagger_20.field_description
-    - field.field.node.api_ref_swagger_20.field_project_id
-    - field.field.node.api_ref_swagger_20.field_source_file
-    - field.field.node.api_ref_swagger_20.field_version
-    - node.type.api_ref_swagger_20
+    - field.field.node.api_reference.field_description
+    - field.field.node.api_reference.field_project_id
+    - field.field.node.api_reference.field_source_file
+    - field.field.node.api_reference.field_version
+    - node.type.api_reference
   module:
     - swagger_ui_formatter
     - text
     - user
-id: node.api_ref_swagger_20.default
+id: node.api_reference.default
 targetEntityType: node
-bundle: api_ref_swagger_20
+bundle: api_reference
 mode: default
 content:
   field_description:

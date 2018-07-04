@@ -2,13 +2,13 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.field_version
-    - node.type.api_ref_swagger_20
-id: node.api_ref_swagger_20.field_version
-field_name: field_version
+    - field.storage.node.field_project_id
+    - node.type.api_reference
+id: node.api_reference.field_project_id
+field_name: field_project_id
 entity_type: node
-bundle: api_ref_swagger_20
-label: Version
+bundle: api_reference
+label: 'Project ID'
 description: ''
 required: false
 translatable: false

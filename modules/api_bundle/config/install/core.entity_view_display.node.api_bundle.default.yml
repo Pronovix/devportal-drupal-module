@@ -2,15 +2,15 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.node.api_bundle_swagger_20.field_api_ref
-    - field.field.node.api_bundle_swagger_20.field_description
-    - node.type.api_bundle_swagger_20
+    - field.field.node.api_bundle.field_api_ref
+    - field.field.node.api_bundle.field_description
+    - node.type.api_bundle
   module:
     - text
     - user
-id: node.api_bundle_swagger_20.default
+id: node.api_bundle.default
 targetEntityType: node
-bundle: api_bundle_swagger_20
+bundle: api_bundle
 mode: default
 content:
   field_api_ref:

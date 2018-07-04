@@ -2,44 +2,35 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.node.api_bundle_swagger_20.field_api_ref
-    - field.field.node.api_bundle_swagger_20.field_description
-    - node.type.api_bundle_swagger_20
+    - field.field.node.api_reference.field_description
+    - field.field.node.api_reference.field_project_id
+    - field.field.node.api_reference.field_source_file
+    - field.field.node.api_reference.field_version
+    - node.type.api_reference
   module:
+    - file
     - path
-    - text
-id: node.api_bundle_swagger_20.default
+id: node.api_reference.default
 targetEntityType: node
-bundle: api_bundle_swagger_20
+bundle: api_reference
 mode: default
 content:
   created:
     type: datetime_timestamp
-    weight: 4
+    weight: 1
     region: content
     settings: {  }
     third_party_settings: {  }
-  field_api_ref:
-    weight: 2
+  field_source_file:
+    weight: 6
     settings:
-      match_operator: CONTAINS
-      size: 60
-      placeholder: ''
+      progress_indicator: throbber
     third_party_settings: {  }
-    type: entity_reference_autocomplete
-    region: content
-  field_description:
-    weight: 1
-    settings:
-      rows: 9
-      summary_rows: 3
-      placeholder: ''
-    third_party_settings: {  }
-    type: text_textarea_with_summary
+    type: file_generic
     region: content
   path:
     type: path
-    weight: 7
+    weight: 4
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -47,38 +38,34 @@ content:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 5
+    weight: 2
     region: content
     third_party_settings: {  }
   status:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 8
+    weight: 5
     region: content
     third_party_settings: {  }
   sticky:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 6
+    weight: 3
     region: content
-    third_party_settings: {  }
-  title:
-    type: string_textfield
-    weight: 0
-    region: content
-    settings:
-      size: 60
-      placeholder: ''
     third_party_settings: {  }
   uid:
     type: entity_reference_autocomplete
-    weight: 3
+    weight: 0
     settings:
       match_operator: CONTAINS
       size: 60
       placeholder: ''
     region: content
     third_party_settings: {  }
-hidden: {  }
+hidden:
+  field_description: true
+  field_project_id: true
+  field_version: true
+  title: true

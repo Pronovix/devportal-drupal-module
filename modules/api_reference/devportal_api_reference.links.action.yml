@@ -1,7 +1,7 @@
 api_ref.add_page:
   route_name: node.add
   route_parameters:
-    node_type: api_ref_swagger_20
-  title: 'Add API Reference Swagger 2.0'
+    node_type: api_reference
+  title: 'Add API Reference'
   appears_on:
     - view.devportal_api_reference.page_1

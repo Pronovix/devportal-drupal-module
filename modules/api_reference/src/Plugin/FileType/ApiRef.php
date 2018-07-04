@@ -2,17 +2,16 @@
 
 namespace Drupal\devportal_api_reference\Plugin\FileType;
 
+use Drupal\Core\Annotation\Translation;
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\devportal_repo_sync\Plugin\FileType\FileTypeBase;
-use Drupal\file\Entity\File;
 use Drupal\node\Entity\Node;
 use Psr\Http\Message\StreamInterface;
 
 /**
  * @FileType(
  *   id = "api_ref",
- *   label = "API Reference",
+ *   label = @Translation("API Reference"),
  *   matcher = "#(swagger|openapi)\.(ya?ml|json)$#",
  *   weight = 0,
  * )
@@ -28,7 +27,7 @@ class ApiRef extends FileTypeBase {
     if ($entity === NULL) {
       /** @var \Drupal\node\Entity\Node $entity */
       $entity = Node::create([
-        'type' => 'api_ref_swagger_20',
+        'type' => 'api_reference',
       ]);
       $entity->setOwnerId($this->currentUser->id());
       $entity->set('path', $path);

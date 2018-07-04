@@ -3,7 +3,7 @@ status: true
 dependencies:
   config:
     - field.storage.node.field_version
-    - node.type.api_ref_swagger_20
+    - node.type.api_reference
   module:
     - node
     - user
@@ -669,7 +669,7 @@ display:
           admin_label: ''
           operator: in
           value:
-            api_ref_swagger_20: api_ref_swagger_20
+            api_reference: api_reference
           group: 1
           exposed: true
           expose:
