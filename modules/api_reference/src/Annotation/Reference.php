@@ -9,12 +9,32 @@ use Drupal\Component\Annotation\Plugin;
  */
 class Reference extends Plugin {
 
+  /**
+   * Machine name.
+   *
+   * @var string
+   */
   public $id;
 
+  /**
+   * Human-readable label.
+   *
+   * @var string
+   */
   public $label;
 
+  /**
+   * List of extensions where this plugin should be used.
+   *
+   * @var string[]
+   */
   public $extensions;
 
+  /**
+   * Priority of the plugin.
+   *
+   * @var int
+   */
   public $weight;
 
 }

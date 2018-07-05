@@ -8,8 +8,14 @@ use JsonSchema\Validator;
 use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
 
+/**
+ * Base class for OpenAPI references.
+ */
 abstract class OpenApi extends ReferenceBase {
 
+  /**
+   * {@inheritdoc}
+   */
   public function getVersion(string $path): ?string {
     if (!$path) {
       return NULL;
@@ -18,6 +24,9 @@ abstract class OpenApi extends ReferenceBase {
     return $this->parse($path)['info']['version'] ?? NULL;
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function getTitle(string $path): ?string {
     if (!$path) {
       return NULL;
@@ -26,6 +35,9 @@ abstract class OpenApi extends ReferenceBase {
     return $this->parse($path)['info']['title'] ?? NULL;
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function getDescription(string $path): ?string {
     if (!$path) {
       return NULL;
@@ -34,10 +46,33 @@ abstract class OpenApi extends ReferenceBase {
     return $this->parse($path)['info']['description'] ?? NULL;
   }
 
+  /**
+   * Path to the JSON schema file.
+   *
+   * @return string
+   *   Path relative to Drupal.
+   */
   abstract protected function getSchema(): string;
 
+  /**
+   * Checks if an OpenAPI file is valid.
+   *
+   * Normally, plugins should check the version in data structure. This
+   * function is used to determine if the current plugin is applicable to be
+   * used for a given file. Since different OpenAPI versions use the same
+   * formats (YAML and JSON), this function is need to tell which one it is.
+   *
+   * @param array $data
+   *   OpenAPI data structure.
+   *
+   * @return bool
+   *   TRUE if valid.
+   */
   abstract protected function isValid(array $data): bool;
 
+  /**
+   * {@inheritdoc}
+   */
   public function parse(string $file_path): ?array {
     $bin = \Drupal::cache('apifiles');
     $cid = $file_path . ':' . md5_file($file_path);
@@ -78,6 +113,9 @@ abstract class OpenApi extends ReferenceBase {
     return $openapi;
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function validate(array $content) {
     // Converts the content associative array into objects.
     $objectified = json_decode(json_encode($content));

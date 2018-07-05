@@ -46,7 +46,7 @@ function devportal_api_reference_menu_links_discovered_alter(&$links) {
     if (in_array($type->id(), devportal_api_reference_bundles(), TRUE)) {
       // Menu link for node add form.
       $links["entity.api_ref.add.{$type->id()}"] = [
-        'title' => t('Add %type', ['%type' => $type->label()]),
+        'title' => t('Add @type', ['@type' => $type->label()]),
         'parent' => 'entity.api_ref.collection',
         'route_name' => 'node.add',
         'route_parameters' => [

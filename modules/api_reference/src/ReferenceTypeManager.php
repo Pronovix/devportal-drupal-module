@@ -8,6 +8,9 @@ use Drupal\Core\Plugin\DefaultPluginManager;
 use Drupal\devportal_api_reference\Annotation\Reference;
 use Traversable;
 
+/**
+ * Manager for the reference handler plugins.
+ */
 class ReferenceTypeManager extends DefaultPluginManager {
 
   /**
@@ -39,10 +42,12 @@ class ReferenceTypeManager extends DefaultPluginManager {
   }
 
   /**
+   * Returns possible instances for a given file based on its extension.
+   *
    * @param string $filename
+   *   Path of the API reference file.
    *
    * @return \Drupal\devportal_api_reference\ReferenceInterface[]
-   * @throws \Drupal\Component\Plugin\Exception\PluginException
    */
   public function getInstancesFor(string $filename): array {
     $definitions = $this->getDefinitions();
@@ -64,6 +69,15 @@ class ReferenceTypeManager extends DefaultPluginManager {
     return $instances;
   }
 
+  /**
+   * Attempts to find the appropriate plugin for an API reference file.
+   *
+   * @param string $filename
+   *   Path of the API reference file.
+   *
+   * @return \Drupal\devportal_api_reference\ReferenceInterface|null
+   *   The found plugin's instance, or NULL if not found.
+   */
   public function lookupPlugin(string $filename): ?ReferenceInterface {
     $instances = $this->getInstancesFor($filename);
 
