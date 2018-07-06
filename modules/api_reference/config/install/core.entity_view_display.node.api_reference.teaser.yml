@@ -1,0 +1,25 @@
+langcode: en
+status: false
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.api_reference.field_description
+    - field.field.node.api_reference.field_project_id
+    - field.field.node.api_reference.field_source_file
+    - field.field.node.api_reference.field_version
+    - node.type.api_reference
+  module:
+    - user
+id: node.api_reference.teaser
+targetEntityType: node
+bundle: api_reference
+mode: teaser
+content:
+  links:
+    weight: 100
+    region: content
+hidden:
+  field_description: true
+  field_project_id: true
+  field_source_file: true
+  field_version: true

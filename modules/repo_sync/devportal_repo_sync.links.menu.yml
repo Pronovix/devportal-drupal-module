@@ -11,10 +11,3 @@ devportal_repo_sync.controller_content:
   description: 'Lists the available repo sync stuff'
   parent: system.admin_devportal
   weight: 88
-
-devportal_repo_sync.create_form:
-  title: 'Create repo import'
-  route_name: devportal_repo_sync.create_form
-  description: 'Create a repository import.'
-  parent: system.admin_devportal
-  weight: 88

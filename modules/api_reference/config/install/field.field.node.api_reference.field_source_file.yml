@@ -1,0 +1,26 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_source_file
+    - node.type.api_reference
+  module:
+    - file
+id: node.api_reference.field_source_file
+field_name: field_source_file
+entity_type: node
+bundle: api_reference
+label: 'Source file'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  file_directory: '[date:custom:Y]-[date:custom:m]'
+  file_extensions: 'yaml yml json'
+  max_filesize: ''
+  description_field: false
+  handler: 'default:file'
+  handler_settings: {  }
+field_type: file

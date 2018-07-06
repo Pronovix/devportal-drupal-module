@@ -9,3 +9,6 @@ services:
     class: Drupal\devportal_api_reference\Access\APIRefBundleAccessCheck
     tags:
       - { name: access_check, applies_to: _api_ref_bundle_access }
+  plugin.manager.reference:
+    class: Drupal\devportal_api_reference\ReferenceTypeManager
+    parent: default_plugin_manager

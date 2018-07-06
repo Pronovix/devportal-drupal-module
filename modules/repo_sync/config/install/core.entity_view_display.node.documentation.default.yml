@@ -1,0 +1,25 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.documentation.field_content
+    - node.type.documentation
+  module:
+    - text
+    - user
+id: node.documentation.default
+targetEntityType: node
+bundle: documentation
+mode: default
+content:
+  field_content:
+    weight: 101
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  links:
+    weight: 100
+    region: content
+hidden: {  }
