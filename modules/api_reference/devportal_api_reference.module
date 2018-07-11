@@ -208,6 +208,7 @@ function _devportal_api_reference_allow_skip_upload_on_node_form(array &$form, F
   $manual = $form_state->getValue('mode_selector') === 'manual' && !$has_file;
 
   $form['field_source_file']['widget'][0]['#process'][] = '_devportal_api_reference_file_field_process';
+  $form['field_source_file']['widget'][0]['#required'] = !$manual;
 
   $form['title']['#access'] = $manual;
   $form['field_description']['#access'] = $manual;
