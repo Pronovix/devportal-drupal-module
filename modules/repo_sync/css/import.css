@@ -1,0 +1,5 @@
+table.import-details td.value {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  word-break: break-all;
+}
