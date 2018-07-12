@@ -69,8 +69,7 @@ function devportal_api_reference_menu_links_discovered_alter(&$links) {
  * Implements hook_form_FORM_ID_alter().
  */
 function devportal_api_reference_form_node_api_reference_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  _devportal_api_reference_allow_skip_upload_on_node_form($form, $form_state);
-  $form['field_source_file']['widget'][0]['#required'] = TRUE;
+  _devportal_api_reference_allow_skip_upload_on_node_form($form, $form_state, TRUE);
 }
 
 /**
@@ -149,7 +148,7 @@ function devportal_api_reference_api_reference_submit(array $form, FormStateInte
  * Implements hook_form_FORM_ID_alter().
  */
 function devportal_api_reference_form_node_api_reference_edit_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  _devportal_api_reference_allow_skip_upload_on_node_form($form, $form_state);
+  _devportal_api_reference_allow_skip_upload_on_node_form($form, $form_state, FALSE);
 
   /** @var \Drupal\node\Entity\Node $node */
   $node = $form_state->getFormObject()->getEntity();
@@ -200,7 +199,7 @@ function devportal_api_reference_form_node_api_reference_edit_form_alter(&$form,
  * @param \Drupal\Core\Form\FormStateInterface $form_state
  *   Form state object.
  */
-function _devportal_api_reference_allow_skip_upload_on_node_form(array &$form, FormStateInterface $form_state) {
+function _devportal_api_reference_allow_skip_upload_on_node_form(array &$form, FormStateInterface $form_state, bool $is_new) {
   array_unshift($form['#validate'], 'devportal_api_reference_api_reference_validate');
   array_unshift($form['actions']['submit']['#submit'], 'devportal_api_reference_api_reference_submit');
   $form['#prefix'] = '<div id="api-reference-node">';
@@ -234,6 +233,7 @@ function _devportal_api_reference_allow_skip_upload_on_node_form(array &$form, F
 
   $manual = $form_state->getValue('mode_selector') === 'manual' && !$has_file;
 
+  $form['field_source_file']['widget'][0]['#required'] = !$manual && $is_new;
   $form['field_source_file']['widget'][0]['#process'][] = '_devportal_api_reference_file_field_process';
 
   $form['title']['#access'] = $manual;
