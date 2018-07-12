@@ -1,17 +1,21 @@
 langcode: en
-status: true
+status: false
 dependencies:
   config:
     - core.entity_view_mode.node.teaser
-    - node.type.documentation
+    - node.type.api_reference
   module:
     - user
-id: node.documentation.teaser
+id: node.api_reference.teaser
 targetEntityType: node
-bundle: documentation
+bundle: api_reference
 mode: teaser
 content:
   links:
     weight: 100
     region: content
-hidden: {  }
+hidden:
+  field_description: true
+  field_project_id: true
+  field_source_file: true
+  field_version: true
