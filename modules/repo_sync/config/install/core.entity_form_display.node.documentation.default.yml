@@ -2,53 +2,33 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.node.api_reference.field_description
-    - field.field.node.api_reference.field_project_id
-    - field.field.node.api_reference.field_source_file
-    - field.field.node.api_reference.field_version
-    - node.type.api_reference
+    - field.field.node.documentation.field_content
+    - node.type.documentation
   module:
-    - file
     - path
     - text
-id: node.api_reference.default
+id: node.documentation.default
 targetEntityType: node
-bundle: api_reference
+bundle: documentation
 mode: default
 content:
   created:
     type: datetime_timestamp
-    weight: 1
+    weight: 10
     region: content
     settings: {  }
     third_party_settings: {  }
-  field_description:
-    type: text_textarea_with_summary
-    weight: 8
-    region: content
+  field_content:
+    weight: 121
     settings:
-      rows: 9
-      summary_rows: 3
+      rows: 5
       placeholder: ''
     third_party_settings: {  }
-  field_source_file:
-    weight: 6
-    settings:
-      progress_indicator: throbber
-    third_party_settings: {  }
-    type: file_generic
+    type: text_textarea
     region: content
-  field_version:
-    type: string_textfield
-    weight: 9
-    region: content
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
   path:
     type: path
-    weight: 4
+    weight: 30
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -56,26 +36,26 @@ content:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 2
+    weight: 15
     region: content
     third_party_settings: {  }
   status:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 5
+    weight: 120
     region: content
     third_party_settings: {  }
   sticky:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 3
+    weight: 16
     region: content
     third_party_settings: {  }
   title:
     type: string_textfield
-    weight: 7
+    weight: -5
     region: content
     settings:
       size: 60
@@ -83,18 +63,11 @@ content:
     third_party_settings: {  }
   uid:
     type: entity_reference_autocomplete
-    weight: 0
+    weight: 5
     settings:
       match_operator: CONTAINS
       size: 60
       placeholder: ''
     region: content
     third_party_settings: {  }
-  url_redirects:
-    weight: 10
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-hidden:
-  field_project_id: true
-
+hidden: {  }

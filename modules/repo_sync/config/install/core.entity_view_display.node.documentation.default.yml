@@ -2,46 +2,24 @@ langcode: en
 status: true
 dependencies:
   config:
-    - node.type.api_reference
+    - field.field.node.documentation.field_content
+    - node.type.documentation
   module:
+    - text
     - user
-id: node.api_reference.default
+id: node.documentation.default
 targetEntityType: node
-bundle: api_reference
+bundle: documentation
 mode: default
 content:
-  field_description:
+  field_content:
+    weight: 101
+    label: above
+    settings: {  }
+    third_party_settings: {  }
     type: text_default
-    weight: 1
     region: content
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-  field_source_file:
-    weight: 3
-    label: hidden
-    settings:
-      validator: default
-      validator_url: ''
-      doc_expansion: list
-      show_top_bar: false
-      sort_tags_by_name: false
-    third_party_settings: {  }
-    type: swagger_ui
-    region: content
-  field_version:
-    type: string
-    weight: 2
-    region: content
-    label: above
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
   links:
-    weight: 0
+    weight: 100
     region: content
-    settings: {  }
-    third_party_settings: {  }
-hidden:
-  field_project_id: true
-
+hidden: {  }
