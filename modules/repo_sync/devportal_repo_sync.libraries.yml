@@ -1,4 +1,4 @@
-devportal-repo-sync-import-page:
+import-page:
   version: 1.x
   css:
     theme:

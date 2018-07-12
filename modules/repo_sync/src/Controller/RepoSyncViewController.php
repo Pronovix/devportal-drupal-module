@@ -92,7 +92,7 @@ class RepoSyncViewController extends ControllerBase {
     return [
       '#attached' => [
         'library' => [
-          'devportal_repo_sync/devportal-repo-sync-import-page',
+          'devportal_repo_sync/import-page',
         ],
       ],
       'import_details' => [
