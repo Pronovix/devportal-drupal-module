@@ -113,21 +113,22 @@ class RepoSyncForm extends FormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $form_state->setRedirect('devportal_repo_sync.controller_content');
     $values = $form_state->getValues();
+    $values['base_path'] = '/' . trim($values['base_path'] . '/');
     if (($result = $form_state->getValue('result'))) {
-      $result["Label"] = $values['label'];
-      $result["RepositoryURL"] = $values['repository_url'];
-      $result["Pattern"] = $values['pattern'];
-      $result["Reference"] = $values['reference'];
-      $result["BasePath"] = $values['base_path'];
+      $result['Label'] = $values['label'];
+      $result['RepositoryURL'] = $values['repository_url'];
+      $result['Pattern'] = $values['pattern'];
+      $result['Reference'] = $values['reference'];
+      $result['BasePath'] = $values['base_path'];
       $this->connection->updateImport($result);
     }
     else {
       $this->connection->createImport(
-        $values["label"],
-        $values["repository_url"],
-        $values["pattern"],
-        $values["reference"],
-        $values["base_path"]
+        $values['label'],
+        $values['repository_url'],
+        $values['pattern'],
+        $values['reference'],
+        $values['base_path']
       );
     }
   }

@@ -24,8 +24,6 @@ function devportal_api_reference_bundles() {
 
 /**
  * Implements hook_modules_installed().
- *
- * @param array $modules
  */
 function devportal_api_reference_modules_installed(array $modules) {
   // The devportal module only provides the github_flavored_markdown filter
@@ -71,8 +69,7 @@ function devportal_api_reference_menu_links_discovered_alter(&$links) {
  * Implements hook_form_FORM_ID_alter().
  */
 function devportal_api_reference_form_node_api_reference_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  $form["field_source_file"]["widget"][0]["#required"] = TRUE;
-  $form['#validate'][] = 'devportal_api_reference_api_reference_validate';
+  _devportal_api_reference_allow_skip_upload_on_node_form($form, $form_state, TRUE);
 }
 
 /**
@@ -84,17 +81,35 @@ function devportal_api_reference_form_node_api_reference_form_alter(&$form, Form
  *   The form_state object.
  */
 function devportal_api_reference_api_reference_validate(array $form, FormStateInterface $form_state) {
+  /** @var \Drupal\node\Entity\Node $node */
+  $node = $form_state->getFormObject()->getEntity();
+
+  $source = $form_state->getValue('field_source_file');
   try {
-    $source = $form_state->getValue('field_source_file');
     if (($fid = ($source[0]["fids"][0] ?? NULL))) {
       $file = File::load($fid);
       list($title, $version, $description) = _devportal_api_reference_get_data_from_file($file->getFileUri());
-      $form_state->setValue('title', $title);
-      $form_state->setValue('field_version', $version);
+
+      if (devportal_api_reference_check_api_version($node, $version)) {
+        \Drupal::messenger()->addError('This version has been added before.');
+        $form_state->unsetValue('field_source_file');
+        return;
+      }
+
+      $form_state->setValue('title', [['value' => (string) $title]]);
+      $form_state->setValue('field_version', [['value' => (string) $version]]);
       $form_state->setValue('field_description', [
-        'value' => $description,
-        'format' => 'github_flavored_markdown',
+        [
+          'value' => (string) $description,
+          'summary' => $description ? text_summary($description, 'github_flavored_markdown') : '',
+          'format' => 'github_flavored_markdown',
+        ],
       ]);
+    }
+    elseif (($oldfids = ($form_state->get('field_source_file_tmp')["fids"][0] ?? NULL))) {
+      // If no source file was uploaded use the last uploaded source file.
+      $source[0]["fids"][0] = $oldfids;
+      $form_state->setValue('field_source_file', $source);
     }
   }
   catch (\Exception $e) {
@@ -104,10 +119,37 @@ function devportal_api_reference_api_reference_validate(array $form, FormStateIn
 }
 
 /**
+ * Submit callback for the api reference node form.
+ *
+ * This function adds the file version to the revision log message.
+ *
+ * @param array $form
+ *   Form array.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   Form state object.
+ */
+function devportal_api_reference_api_reference_submit(array $form, FormStateInterface $form_state) {
+  $key = ['revision_log', 0, 'value'];
+
+  $source = $form_state->getValue('field_source_file');
+  if (($fid = ($source[0]['fids'][0] ?? NULL)) && $form_state->getValue('revision')) {
+    /** @var \Drupal\file\Entity\File $file */
+    $file = File::load($fid);
+    list(, $version,) = _devportal_api_reference_get_data_from_file($file->getFileUri());
+    $message = $form_state->getValue($key);
+    $message .= ($message ? PHP_EOL . PHP_EOL : '') . t('Version: @version', [
+      '@version' => $version,
+    ]);
+    $form_state->setValue($key, $message);
+  }
+}
+
+/**
  * Implements hook_form_FORM_ID_alter().
  */
 function devportal_api_reference_form_node_api_reference_edit_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  $form['#validate'][] = 'devportal_api_reference_api_reference_edit_form_validate';
+  _devportal_api_reference_allow_skip_upload_on_node_form($form, $form_state, FALSE);
+
   /** @var \Drupal\node\Entity\Node $node */
   $node = $form_state->getFormObject()->getEntity();
 
@@ -133,6 +175,7 @@ function devportal_api_reference_form_node_api_reference_edit_form_alter(&$form,
     '#weight' => -2,
     '#title' => t('All uploaded files'),
     '#open' => TRUE,
+    '#access' => (bool) $previous_files,
   ];
   /** @var \Drupal\file\FileInterface $file */
   foreach ($previous_files as $file) {
@@ -149,52 +192,114 @@ function devportal_api_reference_form_node_api_reference_edit_form_alter(&$form,
 }
 
 /**
- * Validation function for api_reference_edit_form.
+ * Adds the mode selector to the api reference node form.
  *
  * @param array $form
- *   The form array.
+ *   Form array.
  * @param \Drupal\Core\Form\FormStateInterface $form_state
- *   The form_state object.
+ *   Form state object.
  */
-function devportal_api_reference_api_reference_edit_form_validate(array $form, FormStateInterface $form_state) {
+function _devportal_api_reference_allow_skip_upload_on_node_form(array &$form, FormStateInterface $form_state, bool $is_new) {
+  array_unshift($form['#validate'], 'devportal_api_reference_api_reference_validate');
+  array_unshift($form['actions']['submit']['#submit'], 'devportal_api_reference_api_reference_submit');
+  $form['#prefix'] = '<div id="api-reference-node">';
+  $form['#suffix'] = '</div>';
+
   /** @var \Drupal\node\Entity\Node $node */
   $node = $form_state->getFormObject()->getEntity();
+  /** @var \Drupal\file\Plugin\Field\FieldType\FileItem $file */
+  $file = $node->get('field_source_file')->get(0);
+  $has_file = (bool) $file->getValue();
 
-  $source = $form_state->getValue('field_source_file');
-  try {
-    if (($fid = ($source[0]["fids"][0] ?? NULL))) {
-      $file = File::load($fid);
-      list($title, $version, $description) = _devportal_api_reference_get_data_from_file($file->getFileUri());
+  $form['mode_selector'] = [
+    '#type' => 'radios',
+    '#title' => t('Mode'),
+    '#options' => [
+      'upload' => t('Upload an API reference file'),
+      'manual' => t('Fill in the values manually'),
+    ],
+    '#weight' => -128,
+    '#default_value' => 'upload',
+    '#submit' => [
+      '_devportal_api_reference_node_form_submit',
+    ],
+    '#ajax' => [
+      'callback' => '_devportal_api_reference_node_form_callback',
+      'event' => 'change',
+      'wrapper' => 'api-reference-node',
+    ],
+    '#access' => !$has_file,
+  ];
 
-      if (devportal_api_reference_check_api_version($node, $version)) {
-        \Drupal::messenger()->addError('This version has been added before.');
-        $form_state->unsetValue('field_source_file');
-        return;
-      }
+  $manual = $form_state->getValue('mode_selector') === 'manual' && !$has_file;
 
-      $form_state->setValue('title', $title);
-      $form_state->setValue('field_version', $version);
-      $form_state->setValue('field_description', [
-        'value' => $description,
-        'format' => 'github_flavored_markdown',
-      ]);
-    }
-    else {
-      // If no source file was uploaded use the last uploaded source file.
-      $source[0]["fids"][0] = $form_state->get('field_source_file_tmp')["fids"][0];
-      $form_state->setValue('field_source_file', $source);
-    }
-  }
-  catch (\Exception $e) {
-    \Drupal::messenger()->addError($e->getMessage());
-    $form_state->unsetValue('field_source_file');
-  }
+  $form['field_source_file']['widget'][0]['#required'] = !$manual && $is_new;
+  $form['field_source_file']['widget'][0]['#process'][] = '_devportal_api_reference_file_field_process';
+
+  $form['title']['#access'] = $manual;
+  $form['field_description']['#access'] = $manual;
+  $form['field_version']['#access'] = $manual;
+  $form['field_source_file']['#access'] = !$manual;
 }
 
 /**
- * @param string $uri
+ * Process callback for the file field on the api reference node form.
+ *
+ * @param array $element
+ *   Element array.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   Form state object.
+ * @param array $complete_form
+ *   The complete form.
  *
  * @return array
+ *   The processed element.
+ */
+function _devportal_api_reference_file_field_process(array &$element, FormStateInterface $form_state, array &$complete_form): array {
+  $element['upload_button']['#ajax']['wrapper'] = 'api-reference-node';
+  $element['upload_button']['#ajax']['callback'] = '_devportal_api_reference_node_form_callback';
+  return $element;
+}
+
+/**
+ * AJAX callback for the api reference node form.
+ *
+ * This callback returns the whole form.
+ *
+ * @param array $form
+ *   Form array.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   Form state object.
+ *
+ * @return array
+ *   Form array.
+ */
+function _devportal_api_reference_node_form_callback(array &$form, FormStateInterface $form_state): array {
+  return $form;
+}
+
+/**
+ * AJAX submit callback for the api reference node form.
+ *
+ * Sets rebuild on the form.
+ *
+ * @param array $form
+ *   Form array.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   Form state object.
+ */
+function _devportal_api_reference_node_form_submit(array &$form, FormStateInterface $form_state) {
+  $form_state->setRebuild(TRUE);
+}
+
+/**
+ * Extracts data from an api reference file.
+ *
+ * @param string $uri
+ *   URI to the file.
+ *
+ * @return array
+ *   Title, version and description respectively.
  */
 function _devportal_api_reference_get_data_from_file(string $uri): ?array {
   /** @var \Drupal\devportal_api_reference\ReferenceTypeManager $manager */
