@@ -42,8 +42,6 @@ class RepoSyncCollectionController extends ControllerBase {
    *
    * @return array|bool
    *   Return table array.
-   *
-   * @throws \Exception
    */
   public function content() {
     $result = $this->devportalRepoSyncConnection->getImports();
@@ -75,6 +73,7 @@ class RepoSyncCollectionController extends ControllerBase {
         ],
       ];
     }
+
     $build = [
       '#type' => 'table',
       '#caption' => $this->t('Repository Synchronization settings overview.'),
