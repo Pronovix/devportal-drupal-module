@@ -8,6 +8,9 @@ core: 8.x
 dependencies:
   - drupal:file
   - drupal:filter
+  - drupal:text
+  - drupal:path
+  - drupal:menu_ui
   - drupal:options
   - drupal:views
   - devportal:devportal
