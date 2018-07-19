@@ -154,4 +154,20 @@ abstract class DevportalTestBase extends BrowserTestBase {
     $this->assertEquals(0, $queue->numberOfItems());
   }
 
+  /**
+   * Installs modules and rebuilds the cache.
+   *
+   * @param string[] $module_list
+   *   List of modules.
+   *
+   * @see \Drupal\Tests\toolbar\Functional\ToolbarCacheContextsTest::installExtraModules()
+   */
+  protected function installExtraModules(array $module_list) {
+    /** @var \Drupal\Core\Extension\ModuleInstallerInterface $installer */
+    $installer = $this->container->get('module_installer');
+    $installer->install($module_list);
+
+    $this->container->get('router.builder')->rebuildIfNeeded();
+  }
+
 }

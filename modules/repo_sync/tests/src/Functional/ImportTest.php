@@ -22,12 +22,16 @@ class ImportTest extends RepoSyncTestBase {
   public $serverAddr = '0.0.0.0:9999';
 
   /**
+   * Git url for the test repository.
+   */
+  const REPO_URL = 'https://github.com/tamasd/git-test.git';
+
+  /**
    * Import CRUD test.
    */
   public function testCrud() {
     $this->drupalLogin($this->rootUser);
     $label = $this->getRandomGenerator()->name();
-    $repo_url = 'https://github.com/tamasd/git-test.git';
     $base_path = '/content/import/test';
     $pattern = 'docs/';
     $reference = 'refs/heads/master';
@@ -35,7 +39,7 @@ class ImportTest extends RepoSyncTestBase {
     // Create.
     $this->drupalPostForm(Url::fromRoute('devportal_repo_sync.create_form'), [
       'label' => $label,
-      'repository_url' => $repo_url,
+      'repository_url' => static::REPO_URL,
       'pattern' => $pattern,
       'reference' => $reference,
       'base_path' => $base_path,
@@ -46,7 +50,7 @@ class ImportTest extends RepoSyncTestBase {
 
     // View.
     $this->assertSession()->pageTextContains($label);
-    $this->assertSession()->pageTextContains($repo_url);
+    $this->assertSession()->pageTextContains(static::REPO_URL);
     $this->assertSession()->pageTextContains($base_path);
     $this->assertSession()->pageTextContains($pattern);
     $this->assertSession()->pageTextContains($reference);
@@ -64,7 +68,7 @@ class ImportTest extends RepoSyncTestBase {
     ], 'Save');
     $this->assertSession()->pageTextNotContains($label);
     $this->assertSession()->pageTextContains($new_label);
-    $this->assertSession()->pageTextContains($repo_url);
+    $this->assertSession()->pageTextContains(static::REPO_URL);
     $this->assertSession()->pageTextContains($base_path);
     $this->assertSession()->pageTextContains($pattern);
     $this->assertSession()->pageTextContains($reference);
@@ -84,7 +88,6 @@ class ImportTest extends RepoSyncTestBase {
   public function testImport() {
     $this->drupalLogin($this->rootUser);
     $label = $this->getRandomGenerator()->name();
-    $repo_url = 'https://github.com/tamasd/git-test.git';
     $base_path = '/content/import/test';
     $pattern = 'docs/';
     $reference = 'refs/heads/master';
@@ -92,7 +95,7 @@ class ImportTest extends RepoSyncTestBase {
     // Create.
     $this->drupalPostForm(Url::fromRoute('devportal_repo_sync.create_form'), [
       'label' => $label,
-      'repository_url' => $repo_url,
+      'repository_url' => static::REPO_URL,
       'pattern' => $pattern,
       'reference' => $reference,
       'base_path' => $base_path,
@@ -101,9 +104,7 @@ class ImportTest extends RepoSyncTestBase {
     $this->assertNotEmpty($uuid);
     $this->cleanUp[] = $uuid;
 
-    /** @var \Drupal\Core\Extension\ModuleInstallerInterface $installer */
-    $installer = $this->container->get('module_installer');
-    $installer->install(['devportal_api_reference']);
+    $this->installExtraModules(['devportal_api_reference']);
 
     $server = new TestServer($this->serverAddr);
     try {
