@@ -2,6 +2,7 @@
 
 namespace Drupal\Tests\devportal_repo_sync\Functional;
 
+use Drupal\Core\Url;
 use Drupal\node\NodeInterface;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -23,7 +24,7 @@ class ImportTest extends RepoSyncTestBase {
   /**
    * Import CRUD test.
    */
-  public function testCRUD() {
+  public function testCrud() {
     $this->drupalLogin($this->rootUser);
     $label = $this->getRandomGenerator()->name();
     $repo_url = 'https://github.com/tamasd/git-test.git';
@@ -32,7 +33,7 @@ class ImportTest extends RepoSyncTestBase {
     $reference = 'refs/heads/master';
 
     // Create.
-    $this->drupalPostForm('/admin/devportal/repo-sync/create', [
+    $this->drupalPostForm(Url::fromRoute('devportal_repo_sync.create_form'), [
       'label' => $label,
       'repository_url' => $repo_url,
       'pattern' => $pattern,
@@ -51,7 +52,7 @@ class ImportTest extends RepoSyncTestBase {
     $this->assertSession()->pageTextContains($reference);
 
     // List.
-    $this->drupalGet('/admin/devportal/repo-sync/content');
+    $this->drupalGet(Url::fromRoute('devportal_repo_sync.controller_content'));
     $this->assertSession()->pageTextContains($label);
     $this->clickLink($label);
 
@@ -89,7 +90,7 @@ class ImportTest extends RepoSyncTestBase {
     $reference = 'refs/heads/master';
 
     // Create.
-    $this->drupalPostForm('/admin/devportal/repo-sync/create', [
+    $this->drupalPostForm(Url::fromRoute('devportal_repo_sync.create_form'), [
       'label' => $label,
       'repository_url' => $repo_url,
       'pattern' => $pattern,
@@ -101,7 +102,7 @@ class ImportTest extends RepoSyncTestBase {
     $this->cleanUp[] = $uuid;
 
     /** @var \Drupal\Core\Extension\ModuleInstallerInterface $installer */
-    $installer = \Drupal::service('module_installer');
+    $installer = $this->container->get('module_installer');
     $installer->install(['devportal_api_reference']);
 
     $server = new TestServer($this->serverAddr);
@@ -127,7 +128,7 @@ class ImportTest extends RepoSyncTestBase {
 
     $this->drainQueue('file_import');
 
-    $nodes = \Drupal::entityTypeManager()->getStorage('node')->loadMultiple();
+    $nodes = $this->container->get('entity_type.manager')->getStorage('node')->loadMultiple();
     $this->assertGreaterThan(0, count($nodes));
 
     $titles = array_map(function (NodeInterface $node) {

@@ -44,7 +44,7 @@ abstract class DevportalTestBase extends BrowserTestBase {
     $url = $this->buildUrl($path, $options);
     $requested_token = $this->drupalGet('session/token');
     $this->assertNotEmpty($requested_token);
-    $client = \Drupal::httpClient();
+    $client = $this->container->get('http_client');
 
     $client_options = [
       'http_errors' => FALSE,
@@ -74,7 +74,7 @@ abstract class DevportalTestBase extends BrowserTestBase {
    *   The assembled cookie jar.
    */
   protected function cookies(): CookieJarInterface {
-    $request = \Drupal::request();
+    $request = $this->container->get('request_stack')->getCurrentRequest();
     $cookies = $this->extractCookiesFromRequest($request);
     $jar = new FileCookieJar($this->publicFilesDirectory . '/cookie.jar');
 
@@ -131,11 +131,11 @@ abstract class DevportalTestBase extends BrowserTestBase {
    *   Queue name.
    */
   protected function drainQueue(string $name) {
-    $queue = \Drupal::queue($name);
+    $queue = $this->container->get('queue')->get($name);
     $this->assertGreaterThan(0, $queue->numberOfItems());
 
     /** @var \Drupal\Core\Queue\QueueWorkerManager $manager */
-    $manager = \Drupal::service('plugin.manager.queue_worker');
+    $manager = $this->container->get('plugin.manager.queue_worker');
     $worker = $manager->createInstance($name);
     while (($item = $queue->claimItem())) {
       try {

@@ -41,7 +41,7 @@ abstract class RepoSyncTestBase extends DevportalTestBase {
     $this->drupalPlaceBlock('local_tasks_block');
     $this->drupalPlaceBlock('local_actions_block');
 
-    \Drupal::configFactory()->getEditable('devportal_repo_sync.config')
+    $this->config('devportal_repo_sync.config')
       ->set('account', $account)
       ->set('secret', $secret)
       ->set('service', $service)
@@ -54,7 +54,7 @@ abstract class RepoSyncTestBase extends DevportalTestBase {
    */
   protected function tearDown() {
     /** @var \Drupal\devportal_repo_sync\Service\RepoSyncConnector $connection */
-    $connection = \Drupal::service('devportal_repo_sync.connection');
+    $connection = $this->container->get('devportal_repo_sync.connection');
     foreach ($this->cleanUp as $id) {
       try {
         $connection->deleteImport($id);
