@@ -3,6 +3,7 @@
 namespace Drupal\devportal_repo_sync\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\Core\Link;
 use Drupal\Core\Url;
 use Drupal\devportal_repo_sync\Service\RepoSyncConnector;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -49,19 +50,15 @@ class RepoSyncCollectionController extends ControllerBase {
     $rows = [];
     foreach ($result["items"] as $item) {
       $rows[] = [
-        $item["Label"],
+        Link::fromTextAndUrl($item['Label'], Url::fromRoute('devportal_repo_sync.controller_view', ['uuid' => $item['ID']])),
         $item["ID"],
         $item["Owner"],
         [
           'data' => [
             '#type' => 'operations',
             '#links' => [
-              'view' => [
-                'title' => $this->t('View'),
-                'url' => Url::fromRoute('devportal_repo_sync.controller_view', ['uuid' => $item["ID"]]),
-              ],
               'edit' => [
-                'title' => $this->t('Update'),
+                'title' => $this->t('Edit'),
                 'url' => Url::fromRoute('devportal_repo_sync.update_form', ['uuid' => $item["ID"]]),
               ],
               'delete' => [

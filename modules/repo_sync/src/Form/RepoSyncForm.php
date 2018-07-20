@@ -96,9 +96,14 @@ class RepoSyncForm extends FormBase {
       '#value' => $result ?? NULL,
     ];
 
-    $form['submit'] = [
+    $form['actions'] = [
+      '#type' => 'actions',
+    ];
+
+    $form['actions']['submit'] = [
       '#type' => 'submit',
-      '#value' => $this->t('Submit'),
+      '#button_type' => 'primary',
+      '#value' => $this->t('Save'),
       '#weight' => 7,
     ];
 
@@ -107,13 +112,11 @@ class RepoSyncForm extends FormBase {
 
   /**
    * {@inheritdoc}
-   *
-   * @throws \Exception
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    $form_state->setRedirect('devportal_repo_sync.controller_content');
     $values = $form_state->getValues();
     $values['base_path'] = '/' . trim($values['base_path'] . '/');
+    $uuid = NULL;
     if (($result = $form_state->getValue('result'))) {
       $result['Label'] = $values['label'];
       $result['RepositoryURL'] = $values['repository_url'];
@@ -121,16 +124,20 @@ class RepoSyncForm extends FormBase {
       $result['Reference'] = $values['reference'];
       $result['BasePath'] = $values['base_path'];
       $this->connection->updateImport($result);
+      $uuid = $result['ID'];
     }
     else {
-      $this->connection->createImport(
+      $result = $this->connection->createImport(
         $values['label'],
         $values['repository_url'],
         $values['pattern'],
         $values['reference'],
         $values['base_path']
       );
+      $uuid = $result['ID'];
     }
+
+    $form_state->setRedirect('devportal_repo_sync.controller_view', ['uuid' => $uuid]);
   }
 
 }
