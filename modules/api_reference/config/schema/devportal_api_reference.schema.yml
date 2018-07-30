@@ -1,0 +1,5 @@
+devportal_api_reference.settings:
+  type: config_object
+  mapping:
+    allow_version_duplication:
+      type: boolean

@@ -193,6 +193,33 @@ class OpenApiUploadTest extends JavascriptTestBase {
   }
 
   /**
+   * Tests the 'allow_version_duplication' setting.
+   */
+  public function testVersionDuplication() {
+    $this->drupalLogin($this->rootUser);
+    $this
+      ->config('devportal_api_reference.settings')
+      ->set('allow_version_duplication', TRUE)
+      ->save();
+
+    $this->drupalGet('node/add/api_reference');
+    $this->uploadFile('petstore-openapi.yaml');
+    $this->clickSubmit();
+
+    $this->assertSession()->pageTextContains('Swagger Petstore');
+    $this->assertSession()->pageTextContains('1.0.0');
+
+    $this->clickLink('Edit');
+
+    $this->uploadFile('petstore-openapi-duplicate.yaml');
+    $this->clickSubmit();
+
+    $this->assertSession()->pageTextContains('Swagger Petstore');
+    $this->assertSession()->pageTextContains('1.0.0');
+    $this->assertSession()->pageTextContains('petstore-openapi-duplicate.yaml');
+  }
+
+  /**
    * Uploads a file on the node edit form.
    *
    * @param string $filename
