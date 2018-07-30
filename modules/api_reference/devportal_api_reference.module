@@ -362,6 +362,7 @@ function devportal_api_reference_get_previous_files($nid) {
     ->condition('nid', $nid)
     ->allRevisions()
     ->execute();
+
   foreach ($revision_ids as $vid => $nid) {
     /** @var \Drupal\node\NodeInterface $revision */
     $revision = \Drupal::entityTypeManager()
@@ -372,6 +373,7 @@ function devportal_api_reference_get_previous_files($nid) {
       $previous_files[] = File::load($source[0]["target_id"]);
     }
   }
+
   // If, for example, the published setting is toggled Drupal will create a new
   // revision. In this case Drupal will list that revision in the revisions
   // list, thus it will be deletable or revertable through the UI.
