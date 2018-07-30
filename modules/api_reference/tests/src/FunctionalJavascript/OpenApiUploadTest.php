@@ -47,7 +47,9 @@ class OpenApiUploadTest extends JavascriptTestBase {
    * {@inheritdoc}
    */
   public function createScreenshot($filename_prefix = '', $set_background_color = TRUE) {
-    $log_dir = getenv('BROWSERTEST_OUTPUT_DIRECTORY') ?: \Drupal::service('file_system')->realpath('public://');
+    $log_dir = getenv('BROWSERTEST_OUTPUT_DIRECTORY') ?: $this->container
+      ->get('file_system')
+      ->realpath('public://');
 
     $screenshots_dir = "{$log_dir}/screenshots";
     if (!is_dir($screenshots_dir)) {
@@ -55,11 +57,14 @@ class OpenApiUploadTest extends JavascriptTestBase {
     }
 
     /** @var \Drupal\Core\Database\Connection $database */
-    $database = \Drupal::service('database');
+    $database = $this->container->get('database');
     $test_id = str_replace('test', '', $database->tablePrefix());
 
     $filename = file_create_filename("{$filename_prefix}-{$test_id}.png", $screenshots_dir);
-    \Drupal::logger('devportal')->debug("Creating new screenshot: {$filename}.");
+    $this->container
+      ->get('logger.factory')
+      ->get('devportal')
+      ->debug("Creating new screenshot: {$filename}.");
     parent::createScreenshot($filename, $set_background_color);
   }
 
