@@ -14,4 +14,3 @@ dependencies:
   - drupal:options
   - drupal:views
   - devportal:devportal
-  - swagger_ui_formatter:swagger_ui_formatter

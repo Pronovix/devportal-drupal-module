@@ -9,7 +9,6 @@
         "league/commonmark": "^0.15.3",
         "michelf/php-markdown": "^1.7.0",
         "erusev/parsedown": "^1.6.3",
-        "drupal/swagger_ui_formatter": "^2.0",
         "justinrainbow/json-schema": "^5.2",
         "drupal/redirect": "^1.2"
     }

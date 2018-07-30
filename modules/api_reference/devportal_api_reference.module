@@ -333,6 +333,10 @@ function _devportal_api_reference_get_data_from_file(string $uri): ?array {
  * @throws \Exception
  */
 function devportal_api_reference_check_api_version(Node $node, string $version) {
+  if (\Drupal::config('devportal_api_reference.settings')->get('allow_version_duplication')) {
+    return FALSE;
+  }
+
   $previous_files = devportal_api_reference_get_previous_files($node->id());
   foreach ($previous_files as $file) {
     list(, $previous_version,) = _devportal_api_reference_get_data_from_file($file->getFileUri());

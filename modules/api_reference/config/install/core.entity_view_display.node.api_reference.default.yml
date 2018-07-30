@@ -8,7 +8,7 @@ dependencies:
     - field.field.node.api_reference.field_version
     - node.type.api_reference
   module:
-    - swagger_ui_formatter
+    - file
     - text
     - user
 id: node.api_reference.default
@@ -27,13 +27,9 @@ content:
     weight: 3
     label: hidden
     settings:
-      validator: default
-      validator_url: ''
-      doc_expansion: list
-      show_top_bar: false
-      sort_tags_by_name: false
+      use_description_as_link_text: true
     third_party_settings: {  }
-    type: swagger_ui
+    type: file_default
     region: content
   field_version:
     type: string
