@@ -220,6 +220,30 @@ class OpenApiUploadTest extends JavascriptTestBase {
   }
 
   /**
+   * Tests the default mode hidden setting.
+   */
+  public function testDefaultModeSetting() {
+    $this->drupalLogin($this->rootUser);
+    $this
+      ->config('devportal_api_reference.settings')
+      ->set('manual_mode_default', TRUE)
+      ->save();
+
+    $this->drupalGet('node/add/api_reference');
+    $this->assertSession()->pageTextContains('Title');
+    $this->assertSession()->pageTextNotContains('Source file');
+
+    $this
+      ->config('devportal_api_reference.settings')
+      ->set('manual_mode_default', FALSE)
+      ->save();
+
+    $this->drupalGet('node/add/api_reference');
+    $this->assertSession()->pageTextNotContains('Title');
+    $this->assertSession()->pageTextContains('Source file');
+  }
+
+  /**
    * Uploads a file on the node edit form.
    *
    * @param string $filename

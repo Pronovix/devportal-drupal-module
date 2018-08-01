@@ -212,6 +212,7 @@ function _devportal_api_reference_allow_skip_upload_on_node_form(array &$form, F
   $file = $node->get('field_source_file')->get(0);
   $has_file = (bool) $file->getValue();
 
+  $default_mode = \Drupal::config('devportal_api_reference.settings')->get('manual_mode_default') ? 'manual' : 'upload';
   $form['mode_selector'] = [
     '#type' => 'radios',
     '#title' => t('Mode'),
@@ -220,7 +221,7 @@ function _devportal_api_reference_allow_skip_upload_on_node_form(array &$form, F
       'manual' => t('Fill in the values manually'),
     ],
     '#weight' => -128,
-    '#default_value' => 'upload',
+    '#default_value' => $default_mode,
     '#submit' => [
       '_devportal_api_reference_node_form_submit',
     ],
@@ -232,7 +233,8 @@ function _devportal_api_reference_allow_skip_upload_on_node_form(array &$form, F
     '#access' => !$has_file,
   ];
 
-  $manual = $form_state->getValue('mode_selector') === 'manual' && !$has_file;
+  $current_mode = $form_state->getValue('mode_selector') ?: $default_mode;
+  $manual = $current_mode === 'manual' && !$has_file;
 
   $form['field_source_file']['widget'][0]['#required'] = !$manual && $is_new;
   $form['field_source_file']['widget'][0]['#process'][] = '_devportal_api_reference_file_field_process';

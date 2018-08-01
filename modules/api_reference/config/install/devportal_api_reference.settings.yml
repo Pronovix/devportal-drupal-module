@@ -1,1 +1,2 @@
 allow_version_duplication: false
+manual_mode_default: false

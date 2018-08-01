@@ -3,3 +3,5 @@ devportal_api_reference.settings:
   mapping:
     allow_version_duplication:
       type: boolean
+    manual_mode_default:
+      type: boolean
