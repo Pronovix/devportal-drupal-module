@@ -9,24 +9,8 @@ use Drupal\filter\Entity\FilterFormat;
 
 /**
  * Implements hook_uninstall().
- *
- * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
- * @throws \Drupal\Core\Entity\EntityStorageException
  */
 function devportal_api_reference_uninstall() {
-  // Get all the nodes of the bundle provided by devportal_api_reference and
-  // delete them.
-  // https://www.drupal.org/project/drupal/issues/874000
-  $nodes = \Drupal::entityTypeManager()
-    ->getStorage('node')
-    ->loadByProperties(['type' => 'api_reference']);
-
-  // Delete all nodes of api_reference type.
-  /** @var \Drupal\node\Entity\Node $node */
-  foreach ($nodes as $node) {
-    $node->delete();
-  }
-
   // Disable the github_flavored_markdown filter format.
   FilterFormat::load('github_flavored_markdown')->disable()->save();
 }
