@@ -1,25 +1,2 @@
-administer api refs:
-  title: 'Administer API References'
-  restrict access: true
 access api ref overview:
   title: 'Access API Reference overview'
-access api ref revisions:
-  title: 'Access API Reference revisions'
-revert all api ref revisions:
-  title: 'Revert all API Reference revisions'
-  restrict access: true
-delete all api ref revisions:
-  title: 'Delete all API Reference revisions'
-  restrict access: true
-view api refs:
-  title: 'View API References'
-add api refs:
-  title: 'Add API References'
-edit api refs:
-  title: 'Edit API References'
-delete api refs:
-  title: 'Delete API References'
-  restrict access: true
-administer api ref types:
-  title: 'Administer API Reference types'
-  restrict access: true
