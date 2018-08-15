@@ -42,7 +42,7 @@ class TestServer {
    * Starts the test server.
    */
   public function start() {
-    $filename = escapeshellarg(dirname(__FILE__) . '/server.php');
+    $filename = escapeshellarg(dirname(__FILE__) . '/../../fixtures/server.php');
     $cmd = "php -S {$this->serverAddr} {$filename}";
     $env = NULL;
     $options = ['bypass_shell' => TRUE];
