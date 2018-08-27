@@ -2,7 +2,6 @@
 
 namespace Drupal\devportal_api_reference\Plugin\FileType;
 
-use Drupal\Core\Annotation\Translation;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\devportal_repo_sync\Plugin\FileType\FileTypeBase;
 use Drupal\node\Entity\Node;

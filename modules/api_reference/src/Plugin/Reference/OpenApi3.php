@@ -22,8 +22,8 @@ class OpenApi3 extends OpenApi {
   /**
    * {@inheritdoc}
    */
-  protected function isValid(array $data): bool {
-    return ($data['openapi'] ?? NULL) === '3.0.0';
+  protected function isValid(object $data): bool {
+    return ($data->openapi ?? NULL) === '3.0.0';
   }
 
 }
