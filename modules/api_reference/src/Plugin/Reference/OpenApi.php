@@ -21,7 +21,7 @@ abstract class OpenApi extends ReferenceBase {
       return NULL;
     }
 
-    return $this->parse($path)['info']['version'] ?? NULL;
+    return $this->parse($path)->info->version ?? NULL;
   }
 
   /**
@@ -32,7 +32,7 @@ abstract class OpenApi extends ReferenceBase {
       return NULL;
     }
 
-    return $this->parse($path)['info']['title'] ?? NULL;
+    return $this->parse($path)->info->title ?? NULL;
   }
 
   /**
@@ -43,7 +43,7 @@ abstract class OpenApi extends ReferenceBase {
       return NULL;
     }
 
-    return $this->parse($path)['info']['description'] ?? NULL;
+    return $this->parse($path)->info->description ?? NULL;
   }
 
   /**
@@ -62,18 +62,18 @@ abstract class OpenApi extends ReferenceBase {
    * used for a given file. Since different OpenAPI versions use the same
    * formats (YAML and JSON), this function is need to tell which one it is.
    *
-   * @param array $data
+   * @param object $data
    *   OpenAPI data structure.
    *
    * @return bool
    *   TRUE if valid.
    */
-  abstract protected function isValid(array $data): bool;
+  abstract protected function isValid(object $data): bool;
 
   /**
    * {@inheritdoc}
    */
-  public function parse(string $file_path): ?array {
+  public function parse(string $file_path): ?object {
     $bin = \Drupal::cache('apifiles');
     $cid = $file_path . ':' . md5_file($file_path);
     $cached = $bin->get($cid);
@@ -86,14 +86,14 @@ abstract class OpenApi extends ReferenceBase {
 
     if (($file_ext === 'yaml') || ($file_ext === 'yml')) {
       try {
-        $openapi = Yaml::parse(file_get_contents($file_path));
+        $openapi = Yaml::parse(file_get_contents($file_path), Yaml::PARSE_OBJECT | Yaml::PARSE_OBJECT_FOR_MAP);
       }
       catch (ParseException $e) {
         throw new \Exception("Can not parse YAML source file ({$file_path}).");
       }
     }
     elseif ($file_ext === 'json') {
-      $openapi = json_decode(file_get_contents($file_path), TRUE);
+      $openapi = json_decode(file_get_contents($file_path), FALSE);
       if ($openapi === NULL) {
         throw new \Exception("The JSON source file ({$file_path}) cannot be decoded or the encoded data is deeper then the recursion limit (512).");
       }
@@ -116,11 +116,9 @@ abstract class OpenApi extends ReferenceBase {
   /**
    * {@inheritdoc}
    */
-  public function validate(array $content) {
-    // Converts the content associative array into objects.
-    $objectified = json_decode(json_encode($content));
+  public function validate(object $content) {
     $validator = new Validator();
-    $validator->validate($objectified, (object) [
+    $validator->validate($content, (object) [
       '$ref' => 'file://' . ($_SERVER['DOCUMENT_ROOT'] ?: getcwd()) . '/' . $this->getSchema(),
     ]);
     if (!$validator->isValid()) {

@@ -22,8 +22,8 @@ class Swagger extends OpenApi {
   /**
    * {@inheritdoc}
    */
-  protected function isValid(array $data): bool {
-    return ($data['swagger'] ?? NULL) === '2.0';
+  protected function isValid(object $data): bool {
+    return ($data->swagger ?? NULL) === '2.0';
   }
 
 }

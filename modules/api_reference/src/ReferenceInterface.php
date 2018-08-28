@@ -37,21 +37,21 @@ interface ReferenceInterface {
    * @param string $file_path
    *   Path of the reference file.
    *
-   * @return array|null
+   * @return object|null
    *   Raw data or null if invalid.
    */
-  public function parse(string $file_path): ?array;
+  public function parse(string $file_path): ?object;
 
   /**
    * Validates the parsed content of an API reference.
    *
-   * @param array $content
+   * @param object $content
    *   Content from ReferenceInterface::parse().
    *
    * @throws \Exception
    *   Thrown on validation failure.
    */
-  public function validate(array $content);
+  public function validate(object $content);
 
   /**
    * Returns the title of the API reference.
