@@ -6,9 +6,11 @@
  */
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\devportal_api_reference\ReferenceInterface;
 use Drupal\file\Entity\File;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\file\FileInterface;
 use Drupal\filter\Entity\FilterFormat;
 use Drupal\node\Entity\Node;
 
@@ -88,7 +90,8 @@ function devportal_api_reference_api_reference_validate(array $form, FormStateIn
   try {
     if (($fid = ($source[0]["fids"][0] ?? NULL))) {
       $file = File::load($fid);
-      list($title, $version, $description) = _devportal_api_reference_get_data_from_file($file->getFileUri());
+      /** @var \Drupal\devportal_api_reference\ReferenceInterface $type */
+      list(, $version, , $doc, $type) = _devportal_api_reference_get_data_from_file($file->getFileUri());
 
       if (devportal_api_reference_check_api_version($node, $version)) {
         \Drupal::messenger()->addError('This version has been added before.');
@@ -96,15 +99,11 @@ function devportal_api_reference_api_reference_validate(array $form, FormStateIn
         return;
       }
 
-      $form_state->setValue('title', [['value' => (string) $title]]);
-      $form_state->setValue('field_version', [['value' => (string) $version]]);
-      $form_state->setValue('field_description', [
-        [
-          'value' => (string) $description,
-          'summary' => $description ? text_summary($description, 'github_flavored_markdown') : '',
-          'format' => 'github_flavored_markdown',
-        ],
-      ]);
+      $mappings = \Drupal::moduleHandler()
+        ->invokeAll('devportal_api_reference_fields', [$type, $doc, $file]);
+      foreach ($mappings as $field_name => $value) {
+        $form_state->setValue($field_name, $value);
+      }
     }
     elseif (($oldfids = ($form_state->get('field_source_file_tmp')["fids"][0] ?? NULL))) {
       // If no source file was uploaded use the last uploaded source file.
@@ -116,6 +115,24 @@ function devportal_api_reference_api_reference_validate(array $form, FormStateIn
     \Drupal::messenger()->addError($e->getMessage());
     $form_state->unsetValue('field_source_file');
   }
+}
+
+/**
+ * Implements hook_devportal_api_reference_fields().
+ */
+function devportal_api_reference_devportal_api_reference_fields(ReferenceInterface $type, object $doc, FileInterface $file) {
+  $description = (string) $type->getDescription($doc);
+  return [
+    'title' => [['value' => (string) $type->getTitle($doc)]],
+    'field_version' => [['value' => (string) $type->getVersion($doc)]],
+    'field_description' => [
+      [
+        'value' => $description,
+        'summary' => $description ? text_summary($description, 'github_flavored_markdown') : '',
+        'format' => 'github_flavored_markdown',
+      ],
+    ],
+  ];
 }
 
 /**
@@ -298,11 +315,13 @@ function _devportal_api_reference_node_form_submit(array &$form, FormStateInterf
 /**
  * Extracts data from an api reference file.
  *
+ * TODO refactor this.
+ *
  * @param string $uri
  *   URI to the file.
  *
  * @return array
- *   Title, version and description respectively.
+ *   Title, version, description, the full document and the plugin respectively.
  */
 function _devportal_api_reference_get_data_from_file(string $uri): ?array {
   /** @var \Drupal\devportal_api_reference\ReferenceTypeManager $manager */
@@ -312,10 +331,14 @@ function _devportal_api_reference_get_data_from_file(string $uri): ?array {
     return NULL;
   }
 
+  $doc = $ref->parse($uri);
+
   return [
-    $ref->getTitle($uri),
-    $ref->getVersion($uri),
-    $ref->getDescription($uri),
+    $ref->getTitle($doc),
+    $ref->getVersion($doc),
+    $ref->getDescription($doc),
+    $doc,
+    $ref,
   ];
 }
 

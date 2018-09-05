@@ -16,34 +16,34 @@ abstract class OpenApi extends ReferenceBase {
   /**
    * {@inheritdoc}
    */
-  public function getVersion(string $path): ?string {
-    if (!$path) {
+  public function getVersion(?object $doc): ?string {
+    if (!$doc) {
       return NULL;
     }
 
-    return $this->parse($path)->info->version ?? NULL;
+    return $doc->info->version ?? NULL;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getTitle(string $path): ?string {
-    if (!$path) {
+  public function getTitle(?object $doc): ?string {
+    if (!$doc) {
       return NULL;
     }
 
-    return $this->parse($path)->info->title ?? NULL;
+    return $doc->info->title ?? NULL;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getDescription(string $path): ?string {
-    if (!$path) {
+  public function getDescription(?object $doc): ?string {
+    if (!$doc) {
       return NULL;
     }
 
-    return $this->parse($path)->info->description ?? NULL;
+    return $doc->info->description ?? NULL;
   }
 
   /**

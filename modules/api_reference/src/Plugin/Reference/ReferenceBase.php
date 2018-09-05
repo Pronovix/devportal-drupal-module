@@ -2,13 +2,14 @@
 
 namespace Drupal\devportal_api_reference\Plugin\Reference;
 
+use Drupal\Core\Plugin\PluginBase;
 use Drupal\devportal_api_reference\ReferenceInterface;
 use Drupal\node\NodeInterface;
 
 /**
  * Base class for reference handlers.
  */
-abstract class ReferenceBase implements ReferenceInterface {
+abstract class ReferenceBase extends PluginBase implements ReferenceInterface {
 
   /**
    * Returns the source path from the 'field_source_file' on a node.
@@ -36,7 +37,8 @@ abstract class ReferenceBase implements ReferenceInterface {
    */
   public function getVersionFromApiRef(NodeInterface $ref): ?string {
     $path = $this->getSourcePath($ref);
-    return $this->getVersion($path);
+    $doc = $this->parse($path);
+    return $this->getVersion($doc);
   }
 
 }
