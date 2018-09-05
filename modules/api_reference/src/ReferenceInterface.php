@@ -2,12 +2,13 @@
 
 namespace Drupal\devportal_api_reference;
 
+use Drupal\Component\Plugin\PluginInspectionInterface;
 use Drupal\node\NodeInterface;
 
 /**
  * A handler class for an API reference type.
  */
-interface ReferenceInterface {
+interface ReferenceInterface extends PluginInspectionInterface {
 
   /**
    * Returns a version of the API reference from a node.
@@ -23,13 +24,13 @@ interface ReferenceInterface {
   /**
    * Returns a version of the API reference.
    *
-   * @param string $path
-   *   Path of the reference file.
+   * @param object $doc
+   *   Parsed reference file.
    *
    * @return null|string
    *   Version, or null on error.
    */
-  public function getVersion(string $path): ?string;
+  public function getVersion(?object $doc): ?string;
 
   /**
    * Returns the raw data of the reference.
@@ -56,23 +57,23 @@ interface ReferenceInterface {
   /**
    * Returns the title of the API reference.
    *
-   * @param string $path
-   *   Path of the reference file.
+   * @param object $doc
+   *   Parsed reference file.
    *
    * @return null|string
    *   Title, or null on error.
    */
-  public function getTitle(string $path): ?string;
+  public function getTitle(?object $doc): ?string;
 
   /**
    * Returns the description of the API reference.
    *
-   * @param string $path
-   *   Path of the reference file.
+   * @param object $doc
+   *   Parsed reference file.
    *
    * @return null|string
    *   Description, or null on error.
    */
-  public function getDescription(string $path): ?string;
+  public function getDescription(?object $doc): ?string;
 
 }
