@@ -78,7 +78,10 @@ abstract class OpenApi extends ReferenceBase {
     $cid = $file_path . ':' . md5_file($file_path);
     $cached = $bin->get($cid);
     if ($cached) {
-      return $cached->data;
+      if (($cached->data['plugin'] ?? NULL) === $this->getPluginId()) {
+        return $cached->data['object'] ?? NULL;
+      }
+      return NULL;
     }
 
     $file_info = pathinfo($file_path);
@@ -108,7 +111,10 @@ abstract class OpenApi extends ReferenceBase {
 
     $this->validate($openapi);
 
-    $bin->set($cid, $openapi, Cache::PERMANENT);
+    $bin->set($cid, [
+      'object' => $openapi,
+      'plugin' => $this->getPluginId(),
+    ], Cache::PERMANENT);
 
     return $openapi;
   }
