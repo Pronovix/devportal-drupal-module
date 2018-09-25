@@ -120,7 +120,7 @@ function devportal_api_reference_api_reference_validate(array $form, FormStateIn
 /**
  * Implements hook_devportal_api_reference_fields().
  */
-function devportal_api_reference_devportal_api_reference_fields(ReferenceInterface $type, object $doc, FileInterface $file) {
+function devportal_api_reference_devportal_api_reference_fields(ReferenceInterface $type, \stdClass $doc, FileInterface $file) {
   $description = (string) $type->getDescription($doc);
   return [
     'title' => [['value' => (string) $type->getTitle($doc)]],

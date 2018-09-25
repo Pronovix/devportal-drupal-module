@@ -22,7 +22,7 @@ class OpenApi3 extends OpenApi {
   /**
    * {@inheritdoc}
    */
-  protected function isValid(object $data): bool {
+  protected function isValid(\stdClass $data): bool {
     return ($data->openapi ?? NULL) === '3.0.0';
   }
 

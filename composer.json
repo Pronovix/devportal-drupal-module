@@ -3,7 +3,7 @@
     "type": "drupal-module",
     "license": "GPL-2.0+",
     "require": {
-        "php": "^7.2",
+        "php": "^7.1",
         "knplabs/github-api": "^2.0",
         "php-http/guzzle6-adapter": "^v1.1",
         "league/commonmark": "^0.15.3",
