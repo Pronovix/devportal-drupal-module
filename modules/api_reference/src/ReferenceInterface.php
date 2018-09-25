@@ -24,13 +24,13 @@ interface ReferenceInterface extends PluginInspectionInterface {
   /**
    * Returns a version of the API reference.
    *
-   * @param object $doc
+   * @param \stdClass $doc
    *   Parsed reference file.
    *
    * @return null|string
    *   Version, or null on error.
    */
-  public function getVersion(?object $doc): ?string;
+  public function getVersion(?\stdClass $doc): ?string;
 
   /**
    * Returns the raw data of the reference.
@@ -41,39 +41,39 @@ interface ReferenceInterface extends PluginInspectionInterface {
    * @return object|null
    *   Raw data or null if invalid.
    */
-  public function parse(string $file_path): ?object;
+  public function parse(string $file_path): ?\stdClass;
 
   /**
    * Validates the parsed content of an API reference.
    *
-   * @param object $content
+   * @param \stdClass $content
    *   Content from ReferenceInterface::parse().
    *
    * @throws \Exception
    *   Thrown on validation failure.
    */
-  public function validate(object $content);
+  public function validate(\stdClass $content);
 
   /**
    * Returns the title of the API reference.
    *
-   * @param object $doc
+   * @param \stdClass $doc
    *   Parsed reference file.
    *
    * @return null|string
    *   Title, or null on error.
    */
-  public function getTitle(?object $doc): ?string;
+  public function getTitle(?\stdClass $doc): ?string;
 
   /**
    * Returns the description of the API reference.
    *
-   * @param object $doc
+   * @param \stdClass $doc
    *   Parsed reference file.
    *
    * @return null|string
    *   Description, or null on error.
    */
-  public function getDescription(?object $doc): ?string;
+  public function getDescription(?\stdClass $doc): ?string;
 
 }

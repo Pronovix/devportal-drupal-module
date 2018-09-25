@@ -16,7 +16,7 @@ abstract class OpenApi extends ReferenceBase {
   /**
    * {@inheritdoc}
    */
-  public function getVersion(?object $doc): ?string {
+  public function getVersion(?\stdClass $doc): ?string {
     if (!$doc) {
       return NULL;
     }
@@ -27,7 +27,7 @@ abstract class OpenApi extends ReferenceBase {
   /**
    * {@inheritdoc}
    */
-  public function getTitle(?object $doc): ?string {
+  public function getTitle(?\stdClass $doc): ?string {
     if (!$doc) {
       return NULL;
     }
@@ -38,7 +38,7 @@ abstract class OpenApi extends ReferenceBase {
   /**
    * {@inheritdoc}
    */
-  public function getDescription(?object $doc): ?string {
+  public function getDescription(?\stdClass $doc): ?string {
     if (!$doc) {
       return NULL;
     }
@@ -62,18 +62,18 @@ abstract class OpenApi extends ReferenceBase {
    * used for a given file. Since different OpenAPI versions use the same
    * formats (YAML and JSON), this function is need to tell which one it is.
    *
-   * @param object $data
+   * @param \stdClass $data
    *   OpenAPI data structure.
    *
    * @return bool
    *   TRUE if valid.
    */
-  abstract protected function isValid(object $data): bool;
+  abstract protected function isValid(\stdClass $data): bool;
 
   /**
    * {@inheritdoc}
    */
-  public function parse(string $file_path): ?object {
+  public function parse(string $file_path): ?\stdClass {
     $bin = \Drupal::cache('apifiles');
     $cid = $file_path . ':' . md5_file($file_path);
     $cached = $bin->get($cid);
@@ -122,7 +122,7 @@ abstract class OpenApi extends ReferenceBase {
   /**
    * {@inheritdoc}
    */
-  public function validate(object $content) {
+  public function validate(\stdClass $content) {
     $validator = new Validator();
     $validator->validate($content, (object) [
       '$ref' => 'file://' . ($_SERVER['DOCUMENT_ROOT'] ?: getcwd()) . '/' . $this->getSchema(),
