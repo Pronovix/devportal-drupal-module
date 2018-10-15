@@ -1,0 +1,15 @@
+guides.list:
+  path: '/admin/guides'
+  defaults:
+    _controller: '\Drupal\guides\Controller\GuidesController::listGuides'
+    _title: 'Guides'
+  requirements:
+    _permission: 'access administration pages'
+
+guides.guide:
+  path: '/admin/guides/{filename}'
+  defaults:
+    _controller: '\Drupal\guides\Controller\GuidesController::guideContent'
+    _title: 'Guide'
+  requirements:
+    _permission: 'access administration pages'

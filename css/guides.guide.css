@@ -1,0 +1,58 @@
+.region-content {
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#block-adminimal-theme-content h1, h2, h3, h4, h5, h6 {
+  color: #000000;
+}
+
+#-user-guide-outline > * {
+  margin: 0;
+}
+
+#-user-guide-outline a {
+  height: 64px;
+  display: flex;
+  align-items: center;
+  padding-right: 16px;
+  padding-left: 16px;
+  background: url('../icons/list-style.svg') left center/16px no-repeat;
+}
+
+#-user-guide-outline a:hover, a:focus {
+  background-color: lightgray;
+}
+
+#-user-guide-outline h2 {
+  border-top: 3px solid #acacac;
+}
+
+#-user-guide-outline h2 a {
+  border-top-width: 5px;
+  background-color: rgba(221, 221, 221, 1);
+}
+
+#-user-guide-outline h3 a {
+  padding-left: 30px;
+  background-position: 14px center;
+  background-color: rgba(221, 221, 221, 0.75);
+}
+
+#-user-guide-outline h4 a {
+  padding-left: 60px;
+  background-position: 44px center;
+  background-color: rgba(221, 221, 221, 0.5);
+}
+
+#-user-guide-outline h5 a {
+  padding-left: 90px;
+  background-position: 74px center;
+  background-color: rgba(221, 221, 221, 0.25);
+}
+
+#-user-guide-outline h6 a {
+  padding-left: 120px;
+  background-position: 104px center;
+}
