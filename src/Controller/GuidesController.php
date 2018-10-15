@@ -63,10 +63,17 @@ class GuidesController extends ControllerBase {
       }
     }
 
-    return [
-      '#theme' => 'item_list',
-      '#items' => $guides
-    ];
+    if (!empty($guides)) {
+      return [
+        '#theme' => 'item_list',
+        '#items' => $guides
+      ];
+    }
+    else {
+      return [
+        '#markup' => '<strong>' . t('No guides found.') . '</strong>'
+      ];
+    }
   }
 
   public function guideContent($filename) {
