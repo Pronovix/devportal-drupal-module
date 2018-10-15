@@ -1,0 +1,8 @@
+{
+    "name": "drupal/guides",
+    "type": "drupal-module",
+    "license": "GPL-2.0+",
+    "require": {
+        "erusev/parsedown": "^1.7.0"
+    }
+}
