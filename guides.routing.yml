@@ -10,6 +10,5 @@ guides.guide:
   path: '/admin/guides/{filename}'
   defaults:
     _controller: '\Drupal\guides\Controller\GuidesController::guideContent'
-    _title: 'Guide'
   requirements:
     _permission: 'access administration pages'
