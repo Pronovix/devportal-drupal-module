@@ -4,6 +4,11 @@
   margin-right: auto;
 }
 
-#block-adminimal-theme-content h1, h2, h3, h4, h5, h6 {
+#block-adminimal-theme-content h1,
+#block-adminimal-theme-content h2,
+#block-adminimal-theme-content h3,
+#block-adminimal-theme-content h4,
+#block-adminimal-theme-content h5,
+#block-adminimal-theme-content h6 {
   color: #000000;
 }

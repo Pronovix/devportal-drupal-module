@@ -71,7 +71,7 @@ class GuidesController extends ControllerBase {
     }
     else {
       return [
-        '#markup' => '<strong>' . t('No guides found.') . '</strong>'
+        '#markup' => $this->t('<strong>@text</strong>', ['@text' => 'No guides found.']),
       ];
     }
   }
