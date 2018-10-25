@@ -92,13 +92,13 @@ abstract class OpenApi extends ReferenceBase {
         $openapi = Yaml::parse(file_get_contents($file_path), Yaml::PARSE_OBJECT | Yaml::PARSE_OBJECT_FOR_MAP);
       }
       catch (ParseException $e) {
-        throw new \Exception("Can not parse YAML source file ({$file_path}).");
+        throw new \Exception("Can not parse YAML source file ({$file_path}). {$e->getMessage()}");
       }
     }
     elseif ($file_ext === 'json') {
       $openapi = json_decode(file_get_contents($file_path), FALSE);
       if ($openapi === NULL) {
-        throw new \Exception("The JSON source file ({$file_path}) cannot be decoded or the encoded data is deeper then the recursion limit (512).");
+        throw new \Exception("The JSON source file ({$file_path}) cannot be decoded (possible syntax error) or the encoded data is deeper then the recursion limit (512).");
       }
     }
     else {
