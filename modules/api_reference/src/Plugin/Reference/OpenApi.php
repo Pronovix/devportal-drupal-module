@@ -92,7 +92,7 @@ abstract class OpenApi extends ReferenceBase {
         $openapi = Yaml::parse(file_get_contents($file_path), Yaml::PARSE_OBJECT | Yaml::PARSE_OBJECT_FOR_MAP);
       }
       catch (ParseException $e) {
-        throw new \Exception("Can not parse YAML source file ({$file_path}). {$e->getMessage()}");
+        throw new \Exception("Can not parse YAML source file ({$file_path}). {$e->getMessage()}", 0, $e);
       }
     }
     elseif ($file_ext === 'json') {
