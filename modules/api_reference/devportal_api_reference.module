@@ -12,7 +12,9 @@ use Drupal\Component\Utility\Html;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\file\FileInterface;
 use Drupal\filter\Entity\FilterFormat;
-use Drupal\node\Entity\Node;
+use Drupal\node\NodeInterface;
+use Drupal\taxonomy\Entity\Term;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Provides the list of API Reference related node bundles.
@@ -120,7 +122,7 @@ function devportal_api_reference_api_reference_validate(array $form, FormStateIn
 /**
  * Implements hook_devportal_api_reference_fields().
  */
-function devportal_api_reference_devportal_api_reference_fields(ReferenceInterface $type, \stdClass $doc, FileInterface $file) {
+function devportal_api_reference_devportal_api_reference_fields(ReferenceInterface $type, \stdClass $doc, FileInterface $file, Request $request) {
   $description = (string) $type->getDescription($doc);
   return [
     'title' => [['value' => (string) $type->getTitle($doc)]],
@@ -345,7 +347,7 @@ function _devportal_api_reference_get_data_from_file(string $uri): ?array {
 /**
  * Checks whether a given API documentation version already exist or not.
  *
- * @param \Drupal\node\Entity\Node $node
+ * @param \Drupal\node\NodeInterface $node
  *   The API Reference node entity.
  * @param string $version
  *   The API version to check.
@@ -357,7 +359,7 @@ function _devportal_api_reference_get_data_from_file(string $uri): ?array {
  * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
  * @throws \Exception
  */
-function devportal_api_reference_check_api_version(Node $node, string $version) {
+function devportal_api_reference_check_api_version(NodeInterface $node, string $version) {
   if (\Drupal::config('devportal_api_reference.settings')->get('allow_version_duplication')) {
     return FALSE;
   }
@@ -448,4 +450,48 @@ function devportal_api_reference_node_presave(ContentEntityInterface $entity) {
     // the /node/{nid}/revisions page.
     $entity->setRevisionTranslationAffected(TRUE);
   }
+}
+
+/**
+ * Makes sure that the term exists for a given tag.
+ *
+ * @param string $vocabulary
+ *   Vocabulary vid.
+ * @param null|string $name
+ *   Name of the term. If NULL, then NULL will be returned.
+ * @param string $description
+ *   Description of the term. Only used when creating the term.
+ *
+ * @return \Drupal\taxonomy\Entity\Term|null
+ *   The found / created term. NULL if $name is NULL or if an error occoured.
+ */
+function devportal_api_reference_ensure_term(string $vocabulary, ?string $name, string $description): ?Term {
+  if ($name === NULL) {
+    return NULL;
+  }
+
+  /** @var \Drupal\taxonomy\Entity\Term[] $terms */
+  $terms = taxonomy_term_load_multiple_by_name($name, $vocabulary);
+  foreach ($terms as $term) {
+    if ($term->getName() === $name) {
+      return $term;
+    }
+  }
+
+  try {
+    $term = Term::create([
+      'vid' => $vocabulary,
+      'name' => $name,
+      'description' => $description,
+    ]);
+    $term->save();
+
+    return $term;
+  }
+  catch (\Exception $e) {
+    \Drupal::messenger()->addError(t('Failed to save tags.'));
+    watchdog_exception('devportal_api_reference', $e);
+  }
+
+  return NULL;
 }
