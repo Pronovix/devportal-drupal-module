@@ -5,7 +5,10 @@
  * Install, update, and uninstall functions for devportal_api_reference module.
  */
 
+use Drupal\file\Entity\File;
 use Drupal\filter\Entity\FilterFormat;
+
+const API_REFERENCE_FIELD_CHECK_ALLOW_REQUIRED = ['title'];
 
 /**
  * Implements hook_uninstall().
@@ -13,4 +16,60 @@ use Drupal\filter\Entity\FilterFormat;
 function devportal_api_reference_uninstall() {
   // Disable the github_flavored_markdown filter format.
   FilterFormat::load('github_flavored_markdown')->disable()->save();
+}
+
+/**
+ * Implements hook_requirements().
+ */
+function devportal_api_reference_requirements(string $phase): array {
+  $requirements = [];
+
+  if ($phase !== 'runtime') {
+    return $requirements;
+  }
+
+  /** @var \Drupal\Core\Entity\EntityFieldManagerInterface $field_manager */
+  $field_manager = \Drupal::service('entity_field.manager');
+
+  /** @var \Drupal\Core\Field\FieldDefinitionInterface[] $definitions */
+  $definitions = $field_manager->getFieldDefinitions('node', 'api_reference');
+
+  /** @var \Drupal\devportal_api_reference\ReferenceTypeManager $reference_manager */
+  $reference_manager = \Drupal::service('plugin.manager.reference');
+
+  $fields = \Drupal::moduleHandler()->invokeAll(
+    'devportal_api_reference_fields', [
+      $reference_manager->createInstance('empty'),
+      new stdClass(),
+      File::create([]),
+      NULL,
+    ]);
+
+  $required_fields = [];
+  foreach ($definitions as $definition) {
+    // On whitelist, will be ignored anyway.
+    if (in_array($definition->getName(), API_REFERENCE_FIELD_CHECK_ALLOW_REQUIRED)) {
+      continue;
+    }
+
+    // Not used by the api reference module.
+    if (!in_array($definition->getName(), array_keys($fields))) {
+      continue;
+    }
+
+    if ($definition->isRequired()) {
+      $required_fields[] = $definition->getLabel();
+    }
+  }
+
+  $ok = count($required_fields) === 0;
+  $requirements['devportal_api_reference_required'] = [
+    'title' => t('API Reference fields are not required.'),
+    'value' => $ok ? t('Ok') : t('Required fields: @field_list', [
+      '@field_list' => implode(', ', $required_fields),
+    ]),
+    'severity' => $ok ? REQUIREMENT_OK : REQUIREMENT_ERROR,
+  ];
+
+  return $requirements;
 }
