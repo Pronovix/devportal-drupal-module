@@ -12,3 +12,6 @@ services:
   plugin.manager.reference:
     class: Drupal\devportal_api_reference\ReferenceTypeManager
     parent: default_plugin_manager
+  logger.channel.api_reference:
+    parent: logger.channel_base
+    arguments: ['api_reference']
