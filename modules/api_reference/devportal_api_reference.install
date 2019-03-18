@@ -11,6 +11,20 @@ use Drupal\filter\Entity\FilterFormat;
 const API_REFERENCE_FIELD_CHECK_ALLOW_REQUIRED = ['title'];
 
 /**
+ * Implements hook_install().
+ */
+function devportal_api_reference_install(): void {
+  // Enable the github_flavored_markdown filter format.
+  // FilterFormat::load() doesn't work if using config_installer!
+  $config = \Drupal::configFactory()
+    ->getEditable('filter.format.github_flavored_markdown');
+  $status = $config->get('status');
+  if ($status === FALSE) {
+    $config->set('status', TRUE)->save();
+  }
+}
+
+/**
  * Implements hook_uninstall().
  */
 function devportal_api_reference_uninstall() {
