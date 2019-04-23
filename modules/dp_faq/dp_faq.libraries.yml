@@ -1,0 +1,11 @@
+faq:
+  version: 1.x
+  css:
+    theme:
+      css/dp_faq_tabs.css: {}
+  js:
+    js/dp_faq_tabs.js: {}
+  dependencies:
+    - core/jquery
+    - core/jquery.once
+    - core/drupal

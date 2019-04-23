@@ -1,0 +1,24 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_faq_weight
+    - node.type.faq_item
+id: node.faq_item.field_faq_weight
+field_name: field_faq_weight
+entity_type: node
+bundle: faq_item
+label: weight
+description: 'The weight of the <em>FAQ item</em> in the FAQ list. Items with lower weights are displayed at the top of the list.'
+required: true
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

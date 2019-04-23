@@ -1,0 +1,10 @@
+name: Devportal FAQ
+description: Creates an FAQ page.
+package: Devportal Standard
+
+dependencies:
+  - devportal:devportal
+  - views_accordion:views_accordion
+
+type: module
+core: 8.x
