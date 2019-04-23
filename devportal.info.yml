@@ -3,7 +3,7 @@ description: Common devportal functionality
 package: Devportal
 
 dependencies:
-  - drupal:node
+  - drupal:filter
 
 type: module
 core: 8.x

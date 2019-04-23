@@ -1,0 +1,8 @@
+langcode: en
+status: true
+dependencies: {  }
+name: 'FAQ tags'
+vid: faq_tags
+description: 'Tags used for FAQ items.'
+hierarchy: 0
+weight: 0
