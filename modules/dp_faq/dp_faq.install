@@ -1,0 +1,22 @@
+<?php
+
+/**
+ * @file
+ * Install, update, and uninstall functions for dp_faq module.
+ */
+
+/**
+ * Add has-shadow class to devportal_faq view.
+ */
+function dp_faq_update_8001() {
+  $config_factory = \Drupal::configFactory();
+  if ($config_factory->loadMultiple(['views.view.devportal_faq'])) {
+    $config = $config_factory->getEditable('views.view.devportal_faq');
+    $display = $config->get('display');
+    $css_class = $display['default']['display_options']['css_class'] ? explode(' ', $display['default']['display_options']['css_class']) : [];
+    $css_class[] = 'has-shadow';
+    $css_class = implode(' ', $css_class);
+    $config->set('display.default.display_options.css_class', $css_class);
+    $config->save(TRUE);
+  }
+}

@@ -311,6 +311,7 @@ display:
       arguments: {  }
       display_extenders: {  }
       use_ajax: true
+      css_class: has-shadow
     cache_metadata:
       max-age: -1
       contexts:
@@ -323,6 +324,7 @@ display:
         - user.permissions
       tags:
         - 'config:field.storage.node.field_faq_answer'
+        - extensions
   page_1:
     display_plugin: page
     id: page_1
@@ -347,3 +349,4 @@ display:
         - user.permissions
       tags:
         - 'config:field.storage.node.field_faq_answer'
+        - extensions
