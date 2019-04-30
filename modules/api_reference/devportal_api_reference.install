@@ -87,3 +87,67 @@ function devportal_api_reference_requirements(string $phase): array {
 
   return $requirements;
 }
+
+/**
+ * Change API_Reference.Source_file field's view display to use Swagger UI.
+ */
+function devportal_api_reference_update_8001(): ?string {
+  $database = \Drupal::database();
+  $entity_type_manager = \Drupal::entityTypeManager();
+  // Start a DB transaction in order to have some hopefully meaningful rollback
+  // option if anything goes wrong.
+  $transaction = $database->startTransaction();
+  try {
+    // Dig up the entity view display settings for the API Reference CT.
+    /** @var \Drupal\Core\Entity\Entity\EntityViewDisplay $view_config */
+    $view_config = $entity_type_manager->getStorage('entity_view_display')
+      ->load('node.api_reference.default');
+    $view_config_content = $view_config->get('content');
+    // Bail out early if Swagger UI is already being used.
+    if ($view_config_content['field_source_file']['type'] === 'swagger_ui_file') {
+      return t('No need to set Swagger UI for API Reference nodes as it was already set.');
+    }
+    // Enable the swagger_ui_formatter module in order to have the appropriate
+    // plugins available. TRUE stands for "also enable dependencies".
+    \Drupal::service('module_installer')->install(['swagger_ui_formatter'], TRUE);
+    // Only the Source_file field's config needs to be changed.
+    $view_config_content['field_source_file']['type'] = 'swagger_ui_file';
+    $view_config_content['field_source_file']['settings'] = [
+      'validator' => 'default',
+      'validator_url' => '',
+      'doc_expansion' => 'list',
+      'supported_submit_methods' => [
+        'get' => 'get',
+        'put' => 'put',
+        'post' => 'post',
+        'delete' => 'delete',
+        'options' => 'options',
+        'head' => 'head',
+        'patch' => 'patch',
+      ],
+      'show_top_bar' => 0,
+      'sort_tags_by_name' => 0,
+    ];
+    // Store the updated settings into config.
+    $view_config->set('content', $view_config_content);
+    // Update dependencies.
+    $dependencies = $view_config->get('dependencies');
+    if (!in_array('swagger_ui_formatter', $dependencies['module'])) {
+      $dependencies['module'][] = 'swagger_ui_formatter';
+    }
+    $key = array_search('file', $dependencies['module']);
+    if ($key !== FALSE) {
+      unset($dependencies['module'][$key]);
+    }
+    $view_config->set('dependencies', $dependencies);
+    $view_config->save();
+  }
+  // Catch any exceptions that are thrown. So we can fail somewhat nicely if a
+  // display plugin isn't found.
+  catch (\Exception $e) {
+    $transaction->rollBack();
+    \Drupal::messenger()->addError(t('@message', ['@message' => $e->getMessage()]));
+    watchdog_exception('devportal_api_reference', $e);
+  }
+  return t('Swagger UI enabled for API Reference nodes.');
+}
