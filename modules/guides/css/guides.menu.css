@@ -1,0 +1,29 @@
+/**
+ * @file
+ * User guide toolbar icon styling.
+ */
+
+/* Default Drupal toolbar. */
+.toolbar-bar .toolbar-icon-system-guides:before {
+  background-image: url("../icons/787878/guides.svg");
+  transition: width 0s;
+}
+.toolbar-icon-system-guides:active:before,
+.toolbar-icon-system-guides.is-active:before {
+  background-image: url("../icons/000000/guides.svg");
+}
+
+/* Adminimal toolbar. */
+.adminimal-admin-toolbar .toolbar-tray-horizontal .menu-item--expanded:hover .toolbar-icon-system-guides:before,
+.adminimal-admin-toolbar .toolbar-icon-system-guides:hover:before,
+.adminimal-admin-toolbar .toolbar-icon-system-guides:active:before,
+.adminimal-admin-toolbar .toolbar-icon-system-guides.is-active:before {
+  background-image: url("../icons/ffffff/guides.svg");
+}
+.adminimal .toolbar-icon-system-guides:active:before,
+.adminimal .toolbar-icon-system-guides.is-active:before {
+  background-image: url("../icons/787878/guides.svg");
+}
+.adminimal-admin-toolbar .toolbar-icon-system-guides:before {
+  background-image: url("../icons/acacac/guides.svg");
+}

@@ -1,0 +1,7 @@
+system.guides:
+  title: 'Guides'
+  description: 'Guides for managing the site'
+  route_name: 'guides.list'
+  base_route: 'guides.list'
+  parent: 'system.admin'
+  weight: 20
