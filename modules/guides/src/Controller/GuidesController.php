@@ -104,7 +104,8 @@ class GuidesController extends ControllerBase {
       '#markup' => $md,
       '#attached' => [
         'library' => [
-          'guides/guide'
+          'guides/guide',
+          'guides/in_page_navigation'
         ]
       ]
     ];
