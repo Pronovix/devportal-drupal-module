@@ -1,8 +1,0 @@
-services:
-  devportal_repo_sync.connection:
-    class: Drupal\devportal_repo_sync\Service\RepoSyncConnector
-    arguments:
-      - '@config.factory'
-  plugin.manager.file_type:
-    class: Drupal\devportal_repo_sync\FileTypeManager
-    parent: default_plugin_manager
