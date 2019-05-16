@@ -1,0 +1,14 @@
+.region-content {
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#block-adminimal-theme-content h1,
+#block-adminimal-theme-content h2,
+#block-adminimal-theme-content h3,
+#block-adminimal-theme-content h4,
+#block-adminimal-theme-content h5,
+#block-adminimal-theme-content h6 {
+  color: #000000;
+}

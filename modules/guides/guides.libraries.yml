@@ -1,0 +1,11 @@
+menu:
+  version: 1.0
+  css:
+    theme:
+      css/guides.menu.css: {}
+
+guide:
+  version: 1.0
+  css:
+    theme:
+      css/guides.guide.css: {}

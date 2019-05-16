@@ -1,0 +1,6 @@
+name: Guides
+description: Add markdown based guides for your users.
+package: Custom
+
+type: module
+core: 8.x

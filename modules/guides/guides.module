@@ -1,0 +1,13 @@
+<?php
+
+/**
+ * @file
+ * Main module file for  User Guide.
+ */
+
+/**
+ * Implements hook_toolbar_alter().
+ */
+function guides_toolbar_alter(&$items) {
+  $items['administration']['#attached']['library'][] = 'guides/menu';
+}
