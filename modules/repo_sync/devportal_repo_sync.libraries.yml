@@ -1,5 +1,0 @@
-import-page:
-  version: 1.x
-  css:
-    theme:
-      css/import.css: {}
