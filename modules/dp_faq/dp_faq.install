@@ -20,3 +20,14 @@ function dp_faq_update_8001() {
     $config->save(TRUE);
   }
 }
+
+/**
+ * Set the accordion height to 'content'
+ */
+function dp_faq_update_8002() {
+  $config_factory = \Drupal::configFactory();
+  if ($config = $config_factory->getEditable('views.view.devportal_faq')) {
+    $config->set('display.default.display_options.style.options.heightStyle', 'content');
+    $config->save(TRUE);
+  }
+}
