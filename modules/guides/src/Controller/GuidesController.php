@@ -5,6 +5,7 @@ namespace Drupal\guides\Controller;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Link;
 use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Site\Settings;
 use Drupal\Core\Url;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Parsedown;
@@ -45,7 +46,7 @@ class GuidesController extends ControllerBase {
 
   public function listGuides() {
     $guides = [];
-    $guides_dir = drupal_get_path('module', 'guides') . '/guides';
+    $guides_dir = DRUPAL_ROOT . (Settings::get('guides_dir') ?? '/guides');
 
     foreach (array_diff(scandir($guides_dir), array('..', '.')) as $guide_dir) {
       $dir = $guides_dir . '/' . $guide_dir;
@@ -77,17 +78,17 @@ class GuidesController extends ControllerBase {
   }
 
   public function guideContent($filename) {
-    $guides_dir = drupal_get_path('module', 'guides') . '/guides';
+    $guides_dir = Settings::get('guides_dir') ?? '/guides';
     $target = [
       'dir' => FALSE,
       'file' => FALSE,
     ];
 
-    foreach (array_diff(scandir($guides_dir), array('..', '.')) as $guide_dir) {
-      $dir = $guides_dir . '/' . $guide_dir;
+    foreach (array_diff(scandir(DRUPAL_ROOT . $guides_dir), array('..', '.')) as $guide_dir) {
+      $dir = DRUPAL_ROOT . $guides_dir . '/' . $guide_dir;
       $file = $dir . '/' . $filename . '.md';
       if (file_exists($file)) {
-        $target['dir'] = $dir;
+        $target['dir'] = $guides_dir . '/' . $guide_dir;
         $target['file'] = $file;
         break;
       }
@@ -98,7 +99,7 @@ class GuidesController extends ControllerBase {
     }
 
     $md = new Parsedown();
-    $md = $md->text(str_replace('@guide_path', base_path() . $target['dir'], file_get_contents($target['file'])));
+    $md = $md->text(str_replace('@guide_path', $target['dir'], file_get_contents($target['file'])));
 
     return [
       '#markup' => $md,
