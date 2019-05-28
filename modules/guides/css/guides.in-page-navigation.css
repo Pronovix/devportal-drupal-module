@@ -1,6 +1,6 @@
-#guides__flex-wrapper{
-  min-width:20%;
-  margin-right:1rem;
+#guides__flex-wrapper {
+  min-width: 20%;
+  margin-right: 1rem;
 }
 
 .region-content {
@@ -10,7 +10,6 @@
 #guides__in-page-nav.guides__in-page-nav--sticky {
   position: fixed;
   top: 0;
-  margin-top: 80px;
 }
 
 #guides__in-page-nav,
@@ -41,10 +40,10 @@
 }
 
 #guides__in-page-nav .guides__in-page-nav-li a {
-  display:inline-block;
+  display: inline-block;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
-  width:100%;
+  width: 100%;
   color: #434343;
 }
 #guides__in-page-nav .guides__in-page-nav-li .guides__active-nav {

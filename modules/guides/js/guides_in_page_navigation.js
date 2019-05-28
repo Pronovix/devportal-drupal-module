@@ -26,19 +26,29 @@ Drupal.guidesInPageNavigation = {
     }
   },
   setSticky: function () {
+    var adminToolbarHeight = document.getElementById('toolbar-bar').offsetHeight || 0;
+    var adminTrayHeight = 0;
+    var adminTray = document.getElementById('toolbar-item-administration-tray');
+
+    if(adminTray.classList.contains('is-active') && adminTray.classList.contains('toolbar-tray-horizontal')){
+      adminTrayHeight = adminTray.offsetHeight;
+    }
+
     var offsetTop = this.navigation.getBoundingClientRect().top;
     var scrollTop = window.pageYOffset;
     if (scrollTop > offsetTop) {
       this.navigation.classList.add('guides__in-page-nav--sticky');
+      this.navigation.style.marginTop = (adminTrayHeight + adminToolbarHeight) + 'px';
     }
     else {
       this.navigation.classList.remove('guides__in-page-nav--sticky');
+      this.navigation.style.marginTop = 0 + 'px';
     }
   },
   setSpy: function () {
     // 20 enables the spy to trigger a bit sooner than when
     // the content reaches the bottom of the admin toolbar.
-    var scrollTop = window.pageYOffset + 20;
+    var scrollTop = window.pageYOffset + 80;
     var isNewSpySet = false;
     var activeNav = null;
     var item = null;
@@ -105,7 +115,7 @@ Drupal.guidesInPageNavigation = {
     var self = this;
     var content = document.querySelector('.region-content');
     var mainBlock = document.querySelector('.block-system-main-block');
-    var headingsToFind = 'h2, h3';
+    var headingsToFind = 'h2';
     var headings = mainBlock.querySelectorAll(headingsToFind);
     var flexWrapper = document.createElement('div');
     flexWrapper.setAttribute('id', 'guides__flex-wrapper');
