@@ -10,6 +10,7 @@ Drupal.guidesInPageNavigation = {
   isSetUp: false,
   headingsOffsetTopLookup: null,
   navigation: null,
+  flexWrapper: null,
   isScrolledToBottom: function () {
     return (window.innerHeight + window.pageYOffset) >= document.body.offsetHeight;
   },
@@ -62,14 +63,9 @@ Drupal.guidesInPageNavigation = {
     for (var i = 0; i < this.headingsOffsetTopLookup.length; i++) {
       item = this.headingsOffsetTopLookup[i];
       if (item.offsetTop <= scrollTop) {
-
         if (this.isScrolledToBottom()) {
           item = this.headingsOffsetTopLookup[0];
         }
-
-        // if (i === 1) {
-        //   item = this.headingsOffsetTopLookup[0];
-        // }
 
         activeNav = this.navigation.querySelector('a.guides__active-nav');
 
@@ -167,20 +163,17 @@ Drupal.guidesInPageNavigation = {
     flexWrapper.appendChild(openMobileBtn);
     flexWrapper.appendChild(nav);
     content.insertBefore(flexWrapper, content.firstChild);
-    //content.insertBefore(openMobileBtn, content.firstChild);
 
+    this.flexWrapper = flexWrapper;
     this.navigation = nav;
 
-    if (screen.width <= 767) {
-      nav.classList.add('guides__util--hidden');
-      flexWrapper.style.top = this.getToolbarHeight() + 'px';
-    }
-    else {
-      // Fixed values must be set because of display:fixed when sticky.
-      this.navigation.style.maxWidth = flexWrapper.offsetWidth + 'px';
-    }
+    this.toggleMobileLayout();
 
     this.createLookup(headings);
+
+    window.onresize = function () {
+      self.toggleMobileLayout();
+    };
 
     window.onload = function () {
       window.addEventListener('scroll', function (e) {
@@ -273,6 +266,18 @@ Drupal.guidesInPageNavigation = {
     }
     else {
       window.scrollTo(0, 0);
+    }
+  },
+  toggleMobileLayout: function () {
+    if (screen.width <= 767) {
+      this.navigation.classList.add('guides__util--hidden');
+      this.flexWrapper.style.top = this.getToolbarHeight() + 'px';
+      this.navigation.style.maxWidth = '';
+    }
+    else {
+      // Fixed values must be set because of display:fixed when sticky.
+      this.navigation.style.maxWidth = this.flexWrapper.offsetWidth + 'px';
+      this.navigation.classList.remove('guides__util--hidden');
     }
   }
 };
