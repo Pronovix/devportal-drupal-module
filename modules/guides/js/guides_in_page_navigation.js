@@ -10,6 +10,9 @@ Drupal.guidesInPageNavigation = {
   isSetUp: false,
   headingsOffsetTopLookup: null,
   navigation: null,
+  isScrolledToBottom: function () {
+    return (window.innerHeight + window.pageYOffset) >= document.body.offsetHeight;
+  },
   getToolbarHeight: function () {
     var adminToolbarHeight = document.getElementById('toolbar-bar').offsetHeight;
     var adminTrayHeight = 0;
@@ -59,6 +62,15 @@ Drupal.guidesInPageNavigation = {
     for (var i = 0; i < this.headingsOffsetTopLookup.length; i++) {
       item = this.headingsOffsetTopLookup[i];
       if (item.offsetTop <= scrollTop) {
+
+        if (this.isScrolledToBottom()) {
+          item = this.headingsOffsetTopLookup[0];
+        }
+
+        // if (i === 1) {
+        //   item = this.headingsOffsetTopLookup[0];
+        // }
+
         activeNav = this.navigation.querySelector('a.guides__active-nav');
 
         // Removing the active status.
