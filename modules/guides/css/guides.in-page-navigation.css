@@ -10,6 +10,7 @@
 #guides__in-page-nav.guides__in-page-nav--sticky {
   position: fixed;
   top: 0;
+  width:20%;
 }
 
 #guides__in-page-nav,

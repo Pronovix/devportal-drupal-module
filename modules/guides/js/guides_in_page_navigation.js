@@ -141,7 +141,7 @@ Drupal.guidesInPageNavigation = {
 
     this.navigation = nav;
     // Fixed values must be set because of display:fixed when sticky.
-    this.navigation.style.width = flexWrapper.offsetWidth + 'px';
+    this.navigation.style.maxWidth = flexWrapper.offsetWidth + 'px';
 
     this.createLookup(headings);
 
