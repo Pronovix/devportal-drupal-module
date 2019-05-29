@@ -10,12 +10,12 @@ Drupal.guidesInPageNavigation = {
   isSetUp: false,
   headingsOffsetTopLookup: null,
   navigation: null,
-  getToolbarHeight: function(){
+  getToolbarHeight: function () {
     var adminToolbarHeight = document.getElementById('toolbar-bar').offsetHeight;
     var adminTrayHeight = 0;
     var adminTray = document.getElementById('toolbar-item-administration-tray');
 
-    if(adminTray.classList.contains('is-active') && adminTray.classList.contains('toolbar-tray-horizontal')){
+    if (adminTray.classList.contains('is-active') && adminTray.classList.contains('toolbar-tray-horizontal')) {
       adminTrayHeight = adminTray.offsetHeight;
     }
     return adminToolbarHeight + adminTrayHeight;
@@ -48,7 +48,7 @@ Drupal.guidesInPageNavigation = {
     }
   },
   setSpy: function () {
-    // 20 enables the spy to trigger a bit sooner than when
+    // 80 enables the spy to trigger a bit sooner than when
     // the content reaches the bottom of the admin toolbar.
     var scrollTop = window.pageYOffset + 80;
     var isNewSpySet = false;
@@ -117,7 +117,7 @@ Drupal.guidesInPageNavigation = {
     var self = this;
     var content = document.querySelector('.region-content');
     var mainBlock = document.querySelector('.block-system-main-block');
-    var headingsToFind = 'h2';
+    var headingsToFind = 'h2, h3';
     var headings = mainBlock.querySelectorAll(headingsToFind);
     var flexWrapper = document.createElement('div');
     flexWrapper.setAttribute('id', 'guides__flex-wrapper');
@@ -141,12 +141,12 @@ Drupal.guidesInPageNavigation = {
     var openMobileBtn = document.createElement('div');
     openMobileBtn.innerHTML = '&lt';
     openMobileBtn.setAttribute('id', 'guides__open-mobile');
-    openMobileBtn.addEventListener('click',function(){
-      if(nav.classList.contains('guides__util--hidden')){
+    openMobileBtn.addEventListener('click', function () {
+      if (nav.classList.contains('guides__util--hidden')) {
         nav.classList.remove('guides__util--hidden');
         this.innerHTML = '&gt';
       }
-      else{
+      else {
         nav.classList.add('guides__util--hidden');
         this.innerHTML = '&lt';
       }
@@ -159,11 +159,11 @@ Drupal.guidesInPageNavigation = {
 
     this.navigation = nav;
 
-    if(screen.width <= 767){
+    if (screen.width <= 767) {
       nav.classList.add('guides__util--hidden');
       flexWrapper.style.top = this.getToolbarHeight() + 'px';
     }
-    else{
+    else {
       // Fixed values must be set because of display:fixed when sticky.
       this.navigation.style.maxWidth = flexWrapper.offsetWidth + 'px';
     }
@@ -256,7 +256,7 @@ Drupal.guidesInPageNavigation = {
       var scrollToHeading = document.getElementById(id);
       if (scrollToHeading) {
         // Subtracting the height of the admin toolbar.
-        window.scrollTo(0, window.pageYOffset + scrollToHeading.getBoundingClientRect().top - 80);
+        window.scrollTo(0, window.pageYOffset + scrollToHeading.getBoundingClientRect().top - this.getToolbarHeight());
       }
     }
     else {

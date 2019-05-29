@@ -58,6 +58,8 @@
 
 #guides__in-page-nav {
   border-top: 1px solid #ddd;
+  overflow-y: auto;
+  max-height: 80vh;
 }
 
 #guides__in-page-nav .guides__in-page-nav-li {
