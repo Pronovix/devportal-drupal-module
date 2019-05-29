@@ -10,6 +10,16 @@ Drupal.guidesInPageNavigation = {
   isSetUp: false,
   headingsOffsetTopLookup: null,
   navigation: null,
+  getToolbarHeight: function(){
+    var adminToolbarHeight = document.getElementById('toolbar-bar').offsetHeight;
+    var adminTrayHeight = 0;
+    var adminTray = document.getElementById('toolbar-item-administration-tray');
+
+    if(adminTray.classList.contains('is-active') && adminTray.classList.contains('toolbar-tray-horizontal')){
+      adminTrayHeight = adminTray.offsetHeight;
+    }
+    return adminToolbarHeight + adminTrayHeight;
+  },
   updateUrl: function (headingId) {
     var urlSplit = window.location.href.split('#');
     var url = urlSplit[0];
@@ -26,19 +36,11 @@ Drupal.guidesInPageNavigation = {
     }
   },
   setSticky: function () {
-    var adminToolbarHeight = document.getElementById('toolbar-bar').offsetHeight || 0;
-    var adminTrayHeight = 0;
-    var adminTray = document.getElementById('toolbar-item-administration-tray');
-
-    if(adminTray.classList.contains('is-active') && adminTray.classList.contains('toolbar-tray-horizontal')){
-      adminTrayHeight = adminTray.offsetHeight;
-    }
-
     var offsetTop = this.navigation.getBoundingClientRect().top;
     var scrollTop = window.pageYOffset;
     if (scrollTop > offsetTop) {
       this.navigation.classList.add('guides__in-page-nav--sticky');
-      this.navigation.style.marginTop = (adminTrayHeight + adminToolbarHeight) + 'px';
+      this.navigation.style.marginTop = this.getToolbarHeight() + 'px';
     }
     else {
       this.navigation.classList.remove('guides__in-page-nav--sticky');
@@ -136,12 +138,35 @@ Drupal.guidesInPageNavigation = {
     var tree = this.createTree(navHeadings);
     nav.appendChild(tree);
 
+    var openMobileBtn = document.createElement('div');
+    openMobileBtn.innerHTML = '&lt';
+    openMobileBtn.setAttribute('id', 'guides__open-mobile');
+    openMobileBtn.addEventListener('click',function(){
+      if(nav.classList.contains('guides__util--hidden')){
+        nav.classList.remove('guides__util--hidden');
+        this.innerHTML = '&gt';
+      }
+      else{
+        nav.classList.add('guides__util--hidden');
+        this.innerHTML = '&lt';
+      }
+    });
+
+    flexWrapper.appendChild(openMobileBtn);
     flexWrapper.appendChild(nav);
     content.insertBefore(flexWrapper, content.firstChild);
+    //content.insertBefore(openMobileBtn, content.firstChild);
 
     this.navigation = nav;
-    // Fixed values must be set because of display:fixed when sticky.
-    this.navigation.style.maxWidth = flexWrapper.offsetWidth + 'px';
+
+    if(screen.width <= 767){
+      nav.classList.add('guides__util--hidden');
+      flexWrapper.style.top = this.getToolbarHeight() + 'px';
+    }
+    else{
+      // Fixed values must be set because of display:fixed when sticky.
+      this.navigation.style.maxWidth = flexWrapper.offsetWidth + 'px';
+    }
 
     this.createLookup(headings);
 
