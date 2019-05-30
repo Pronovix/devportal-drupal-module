@@ -18,7 +18,7 @@
     min-width: 20%;
     margin-right: 1rem;
   }
-  #guides__in-page-nav.guides__in-page-nav--sticky {
+  .guides__in-page-nav--sticky {
     position: fixed;
     top: 0;
     width: 20%;
@@ -63,7 +63,7 @@
   max-height: 80vh;
 }
 
-#guides__in-page-nav .guides__in-page-nav-li {
+.guides__in-page-nav-li {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -73,18 +73,18 @@
   cursor: pointer;
 }
 
-#guides__in-page-nav .guides__in-page-nav-li:hover {
+.guides__in-page-nav-li:hover {
   background: #fff;
 }
 
-#guides__in-page-nav .guides__in-page-nav-li a {
+.guides__in-page-nav-li a {
   display: inline-block;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
   width: 100%;
   color: #434343;
 }
-#guides__in-page-nav .guides__in-page-nav-li .guides__active-nav {
+.guides__active-nav {
   font-weight: bold;
   text-decoration: underline;
 }
