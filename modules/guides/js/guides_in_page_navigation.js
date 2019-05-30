@@ -231,7 +231,7 @@ Drupal.guidesInPageNavigation = {
       heading = headingList[i];
       if (!parent.getAttribute('data-parent-type')) {
         parent.setAttribute('data-parent-type', heading.nodeName);
-        parent.classList.add('guides__in-page-nav-ul--' + heading.nodeName.toLowerCase());
+        parent.classList.add('guides__in-page-nav-heading--' + heading.nodeName.toLowerCase());
       }
       lastInsertedChild = document.createElement('li');
       lastInsertedChild.classList.add('guides__in-page-nav-li');
