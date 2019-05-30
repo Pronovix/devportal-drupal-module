@@ -56,13 +56,14 @@ Drupal.guidesInPageNavigation = {
     // the content reaches the bottom of the admin toolbar.
     var scrollTop = window.pageYOffset + 80;
     var isNewSpySet = false;
-    var activeNav = null;
-    var item = null;
+    var activeNav, item;
 
     // Finding the active section in a pre-ordered (by distance) list.
     for (var i = 0; i < this.headingsOffsetTopLookup.length; i++) {
       item = this.headingsOffsetTopLookup[i];
       if (item.offsetTop <= scrollTop) {
+        // Special case, because visually the last element
+        // might not be at the top of the page
         if (this.isScrolledToBottom()) {
           item = this.headingsOffsetTopLookup[0];
         }
@@ -102,14 +103,12 @@ Drupal.guidesInPageNavigation = {
   },
   createLookup: function (headings) {
     var lookup = [];
-
     for (var i = 0; i < headings.length; i++) {
       lookup.push({
         headerId: headings[i].getAttribute('id'),
         offsetTop: headings[i].offsetTop
       });
     }
-
     // Sorting descending by distance from the top.
     lookup.sort(function (a, b) {
       return b.offsetTop - a.offsetTop;
@@ -131,9 +130,9 @@ Drupal.guidesInPageNavigation = {
     flexWrapper.setAttribute('id', 'guides__flex-wrapper');
     var nav = document.createElement('div');
     nav.setAttribute('id', 'guides__in-page-nav');
-    var navHeadings = [];
-    var heading = null;
 
+    // Preparing the headings.
+    var navHeadings = [], heading;
     for (var i = 0; i < headings.length; i++) {
       heading = headings[i];
       navHeadings.push(heading.cloneNode(true));
@@ -143,6 +142,7 @@ Drupal.guidesInPageNavigation = {
       heading.setAttribute('id', id);
     }
 
+    // Creating the link-tree
     var tree = this.createTree(navHeadings);
     nav.appendChild(tree);
 
@@ -166,16 +166,13 @@ Drupal.guidesInPageNavigation = {
 
     this.flexWrapper = flexWrapper;
     this.navigation = nav;
-
     this.toggleMobileLayout();
-
     this.createLookup(headings);
 
-    window.onresize = function () {
-      self.toggleMobileLayout();
-    };
-
     window.onload = function () {
+      window.onresize = function () {
+        self.toggleMobileLayout();
+      };
       window.addEventListener('scroll', function (e) {
         self.setSticky();
         self.setSpy();
@@ -185,7 +182,6 @@ Drupal.guidesInPageNavigation = {
     };
 
     this.isSetUp = true;
-
   },
   createTree: function (headingList) {
     var self = this;
@@ -230,21 +226,20 @@ Drupal.guidesInPageNavigation = {
       }
     }
 
-    var lastInsertedChild;
-    var link;
-    var href;
+    var lastInsertedChild, link, href, heading;
     for (var i = 0; i < headingList.length; i++) {
+      heading = headingList[i];
       if (!parent.getAttribute('data-parent-type')) {
-        parent.setAttribute('data-parent-type', headingList[i].nodeName);
-        parent.classList.add('guides__in-page-nav-ul--' + headingList[i].nodeName.toLowerCase());
+        parent.setAttribute('data-parent-type', heading.nodeName);
+        parent.classList.add('guides__in-page-nav-ul--' + heading.nodeName.toLowerCase());
       }
       lastInsertedChild = document.createElement('li');
       lastInsertedChild.classList.add('guides__in-page-nav-li');
-      href = headingList[i].innerText.toLocaleLowerCase().replace(/\s/g, '-');
+      href = heading.innerText.toLocaleLowerCase().replace(/\s/g, '-');
       link = document.createElement('a');
       link.setAttribute('href', '#' + href);
-      link.setAttribute('title', headingList[i].innerText);
-      link.innerText = headingList[i].innerText;
+      link.setAttribute('title', heading.innerText);
+      link.innerText = heading.innerText;
       link.addEventListener('click', function (e) {
         e.preventDefault();
         var id = this.getAttribute('href').slice(1);
@@ -275,9 +270,9 @@ Drupal.guidesInPageNavigation = {
       this.navigation.style.maxWidth = '';
     }
     else {
+      this.navigation.classList.remove('guides__util--hidden');
       // Fixed values must be set because of display:fixed when sticky.
       this.navigation.style.maxWidth = this.flexWrapper.offsetWidth + 'px';
-      this.navigation.classList.remove('guides__util--hidden');
     }
   }
 };
