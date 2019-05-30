@@ -38,8 +38,8 @@ content:
         options: options
         head: head
         patch: patch
-      show_top_bar: 0
-      sort_tags_by_name: 0
+      show_top_bar: false
+      sort_tags_by_name: false
     third_party_settings: {  }
     type: swagger_ui_file
     region: content
