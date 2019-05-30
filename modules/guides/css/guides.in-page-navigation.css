@@ -89,18 +89,18 @@
   text-decoration: underline;
 }
 
-.guides__in-page-nav-ul--h1 a {
+.guides__in-page-nav-heading--h1 a {
   padding-left: 0rem;
 }
-.guides__in-page-nav-ul--h2 a {
+.guides__in-page-nav-heading--h2 a {
   padding-left: 1rem;
 }
-.guides__in-page-nav-ul--h3 a {
+.guides__in-page-nav-heading--h3 a {
   padding-left: 2rem;
 }
-.guides__in-page-nav-ul--h4 a {
+.guides__in-page-nav-heading--h4 a {
   padding-left: 3rem;
 }
-.guides__in-page-nav-ul--h5 a {
+.guides__in-page-nav-heading--h5 a {
   padding-left: 4rem;
 }
