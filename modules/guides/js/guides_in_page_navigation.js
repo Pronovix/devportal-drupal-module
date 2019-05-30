@@ -11,6 +11,7 @@ Drupal.guidesInPageNavigation = {
   headingsOffsetTopLookup: null,
   navigation: null,
   flexWrapper: null,
+  mobileBtn: null,
   isScrolledToBottom: function () {
     return (window.innerHeight + window.pageYOffset) >= document.body.offsetHeight;
   },
@@ -124,7 +125,7 @@ Drupal.guidesInPageNavigation = {
     var self = this;
     var content = document.querySelector('.region-content');
     var mainBlock = document.querySelector('.block-system-main-block');
-    var headingsToFind = 'h2, h3';
+    var headingsToFind = 'h2';
     var headings = mainBlock.querySelectorAll(headingsToFind);
     var flexWrapper = document.createElement('div');
     flexWrapper.setAttribute('id', 'guides__flex-wrapper');
@@ -151,12 +152,10 @@ Drupal.guidesInPageNavigation = {
     openMobileBtn.setAttribute('id', 'guides__open-mobile');
     openMobileBtn.addEventListener('click', function () {
       if (nav.classList.contains('guides__util--hidden')) {
-        nav.classList.remove('guides__util--hidden');
-        this.innerHTML = '&gt';
+        self.openMobile();
       }
       else {
-        nav.classList.add('guides__util--hidden');
-        this.innerHTML = '&lt';
+        self.hideMobile();
       }
     });
 
@@ -164,6 +163,7 @@ Drupal.guidesInPageNavigation = {
     flexWrapper.appendChild(nav);
     content.insertBefore(flexWrapper, content.firstChild);
 
+    this.mobileBtn = openMobileBtn;
     this.flexWrapper = flexWrapper;
     this.navigation = nav;
     this.toggleMobileLayout();
@@ -244,6 +244,9 @@ Drupal.guidesInPageNavigation = {
         e.preventDefault();
         var id = this.getAttribute('href').slice(1);
         self.scrollTo(id);
+        if (screen.width <= 767) {
+          self.hideMobile();
+        }
       });
       lastInsertedChild.appendChild(link);
       parent.appendChild(lastInsertedChild);
@@ -274,5 +277,13 @@ Drupal.guidesInPageNavigation = {
       // Fixed values must be set because of display:fixed when sticky.
       this.navigation.style.maxWidth = this.flexWrapper.offsetWidth + 'px';
     }
+  },
+  openMobile: function () {
+    this.navigation.classList.remove('guides__util--hidden');
+    this.mobileBtn.innerHTML = '&gt';
+  },
+  hideMobile: function () {
+    this.navigation.classList.add('guides__util--hidden');
+    this.mobileBtn.innerHTML = '&lt';
   }
 };
