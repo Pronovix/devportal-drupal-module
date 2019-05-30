@@ -9,3 +9,11 @@ guide:
   css:
     theme:
       css/guides.guide.css: {}
+
+in_page_navigation:
+  version: 1.0
+  css:
+    layout:
+      css/guides.in-page-navigation.css: {}
+  js:
+    js/guides_in_page_navigation.js: {}
