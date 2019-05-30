@@ -47,7 +47,6 @@
   display: flex;
 }
 
-
 #guides__in-page-nav,
 #guides__in-page-nav ul,
 #guides__in-page-nav li {
@@ -84,6 +83,7 @@
   width: 100%;
   color: #434343;
 }
+
 .guides__active-nav {
   font-weight: bold;
   text-decoration: underline;
@@ -92,15 +92,19 @@
 .guides__in-page-nav-heading--h1 a {
   padding-left: 0rem;
 }
+
 .guides__in-page-nav-heading--h2 a {
   padding-left: 1rem;
 }
+
 .guides__in-page-nav-heading--h3 a {
   padding-left: 2rem;
 }
+
 .guides__in-page-nav-heading--h4 a {
   padding-left: 3rem;
 }
+
 .guides__in-page-nav-heading--h5 a {
   padding-left: 4rem;
 }
