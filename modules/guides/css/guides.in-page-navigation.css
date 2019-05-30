@@ -1,28 +1,31 @@
-@media screen and (max-width: 767px) {
+@media screen and (max-width: 900px) {
   #guides__flex-wrapper {
     position: fixed;
     right: 0rem;
-    width: 100%;
   }
+
   #guides__in-page-nav {
     clear: both;
   }
+
   #guides__open-mobile {
     display: block;
     float: right;
   }
 }
 
-@media screen and (min-width: 768px) {
+@media screen and (min-width: 901px) {
   #guides__flex-wrapper {
     min-width: 20%;
     margin-right: 1rem;
   }
+
   .guides__in-page-nav--sticky {
     position: fixed;
     top: 0;
     width: 20%;
   }
+
   #guides__open-mobile {
     display: none;
   }

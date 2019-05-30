@@ -7,6 +7,7 @@ Drupal.behaviors.guidesInPageNavigation = {
 };
 
 Drupal.guidesInPageNavigation = {
+  breakpoint: 900,
   isSetUp: false,
   headingsOffsetTopLookup: null,
   navigation: null,
@@ -244,7 +245,7 @@ Drupal.guidesInPageNavigation = {
         e.preventDefault();
         var id = this.getAttribute('href').slice(1);
         self.scrollTo(id);
-        if (screen.width <= 767) {
+        if (screen.width <= self.breakpoint) {
           self.hideMobile();
         }
       });
@@ -267,7 +268,7 @@ Drupal.guidesInPageNavigation = {
     }
   },
   toggleMobileLayout: function () {
-    if (screen.width <= 767) {
+    if (screen.width <= this.breakpoint) {
       this.navigation.classList.add('guides__util--hidden');
       this.flexWrapper.style.top = this.getToolbarHeight() + 'px';
       this.navigation.style.maxWidth = '';
