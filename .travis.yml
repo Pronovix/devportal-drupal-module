@@ -1,4 +1,46 @@
 language: php
 
+sudo: required
+
+services:
+  - docker
+
+addons:
+  apt:
+    packages:
+      - docker-ce
+
+cache:
+  directories:
+    - $HOME/.composer/cache/files
+
 notifications:
   email: false
+
+env:
+  global:
+    - DOCKER_COMPOSE_VERSION=1.18.0
+    - THREADS=4
+  matrix:
+    # Apigee Edge module tests.
+    - PHP_VERSION=7.1 DEPENDENCIES="--prefer-lowest" TEST_ROOT="modules/api_reference/tests"
+
+matrix:
+  allow_failures:
+    - env: PHP_VERSION=7.1 DRUPAL_CORE=8.7.x-dev DEPENDENCIES="--prefer-lowest" TEST_ROOT="modules/api_reference/tests"
+  fast_finish: true
+
+script:
+  - set -e
+  # Do not report warnings (like Drupal.Semantics.FunctionT.NotLiteralString) on Travis CI. Use selective disabling
+  # when Drupal Coder will support PHPCS >= 3.2.0.
+  # https://github.com/squizlabs/PHP_CodeSniffer/wiki/Advanced-Usage#ignoring-parts-of-a-file
+  - docker-compose run phpcs -s -n --colors --standard=/opt/drupal-module/phpcs.xml.dist /opt/drupal-module
+  # Do not exist if a PHPUnit test fails, we would like to run everything from
+  # after_* sections.
+  - set +e
+  - if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then docker-compose run php /opt/drupal-module/.travis/run-test.sh; fi
+
+after_failure:
+  # Push log file and browser output to an our logs repository.
+  - ./push-logs.sh
