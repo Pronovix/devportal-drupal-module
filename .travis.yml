@@ -30,6 +30,16 @@ matrix:
     - env: PHP_VERSION=7.1 DRUPAL_CORE=8.7.x-dev DEPENDENCIES="--prefer-lowest" TEST_ROOT="modules/api_reference/tests"
   fast_finish: true
 
+# TODO Cache Docker images and PHP service build (common parts of the built, like Drupal core install, for a day).
+before_install:
+  - sudo rm /usr/local/bin/docker-compose
+  - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
+  - chmod +x docker-compose
+  - sudo mv docker-compose /usr/local/bin
+  - cd .travis && chmod u+x *.sh
+  - docker-compose up -d --build
+  - docker-compose ps
+
 script:
   - set -e
   # Do not report warnings (like Drupal.Semantics.FunctionT.NotLiteralString) on Travis CI. Use selective disabling
