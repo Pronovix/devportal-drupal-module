@@ -18,7 +18,7 @@
         "drupal/node_view_permissions": "^1.2",
         "drupal/pathauto": "^1.4",
         "drupal/redirect": "^1.2",
-        "drupal/swagger_ui_formatter": "^2.2",
+        "drupal/swagger_ui_formatter": "^2.3",
         "drupal/views_accordion": "^1.2"
     }
 }
