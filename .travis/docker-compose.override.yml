@@ -1,0 +1,28 @@
+version: "3"
+
+services:
+  database:
+    environment:
+      MYSQL_MAX_ALLOWED_PACKET: 512M
+      MYSQL_WAIT_TIMEOUT: 28800
+  php:
+    volumes:
+      - log:/mnt/files/log
+    environment:
+      DRUPAL_CORE: ${DRUPAL_CORE:-}
+      DEPENDENCIES: ${DEPENDENCIES:-}
+      # Suppress deprecation warnings.
+      # https://api.drupal.org/api/drupal/vendor%21symfony%21phpunit-bridge%21DeprecationErrorHandler.php/8.5.x
+      SYMFONY_DEPRECATIONS_HELPER: disabled
+      THREADS: ${THREADS:-2}
+      TEST_ROOT: ${TEST_ROOT:-modules/contrib/apigee_edge/tests}
+      # We have to set this variable even if we set this to disabled, because
+      # otherwise xDebug does not get enabled and we need that for code coverage
+      # generation.
+      PHP_XDEBUG: 0
+  webserver:
+    environment:
+      APACHE_FCGI_PROXY_TIMEOUT: 180 # Just in case, wait more than usual in tests.
+
+volumes:
+  log:
