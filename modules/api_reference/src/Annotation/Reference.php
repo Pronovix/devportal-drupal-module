@@ -5,6 +5,8 @@ namespace Drupal\devportal_api_reference\Annotation;
 use Drupal\Component\Annotation\Plugin;
 
 /**
+ * The Reference class.
+ *
  * @Annotation
  */
 class Reference extends Plugin {

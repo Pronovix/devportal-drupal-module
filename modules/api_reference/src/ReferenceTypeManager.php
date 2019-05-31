@@ -48,6 +48,7 @@ class ReferenceTypeManager extends DefaultPluginManager {
    *   Path of the API reference file.
    *
    * @return \Drupal\devportal_api_reference\ReferenceInterface[]
+   *   The Reference Interface.
    */
   public function getInstancesFor(string $filename): array {
     $definitions = $this->getDefinitions();

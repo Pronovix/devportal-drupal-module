@@ -22,12 +22,13 @@ env:
     - DOCKER_COMPOSE_VERSION=1.18.0
     - THREADS=4
   matrix:
-    # Apigee Edge module tests.
+    # Devportal module tests.
     - PHP_VERSION=7.1 DEPENDENCIES="--prefer-lowest" TEST_ROOT="modules/api_reference/tests"
-
+    - PHP_VERSION=7.1 DEPENDENCIES="--prefer-lowest" TEST_ROOT="modules/tests"
 matrix:
   allow_failures:
     - env: PHP_VERSION=7.1 DRUPAL_CORE=8.7.x-dev DEPENDENCIES="--prefer-lowest" TEST_ROOT="modules/api_reference/tests"
+    - env: PHP_VERSION=7.1 DRUPAL_CORE=8.7.x-dev DEPENDENCIES="--prefer-lowest" TEST_ROOT="modules/tests"
   fast_finish: true
 
 # TODO Cache Docker images and PHP service build (common parts of the built, like Drupal core install, for a day).

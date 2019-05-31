@@ -2,6 +2,11 @@
 
 namespace Drupal\devportal_api_reference\Plugin;
 
+/**
+ * The OpenApiValidationException class.
+ *
+ * @package Drupal\devportal_api_reference\Plugin
+ */
 class OpenApiValidationException extends \Exception {
 
   /**
@@ -14,7 +19,7 @@ class OpenApiValidationException extends \Exception {
   /**
    * Returns the list of stored errors.
    *
-   * @return array
+   * @return array Error array
    */
   public function getErrors() {
     return $this->errors;

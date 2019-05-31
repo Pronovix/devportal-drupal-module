@@ -2,6 +2,8 @@
 
 namespace Drupal\devportal_api_reference\Plugin\Reference;
 
+use \stdClass;
+use \Exception;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Logger\LoggerChannelInterface;
@@ -56,7 +58,7 @@ abstract class OpenApi extends ReferenceBase implements ContainerFactoryPluginIn
   /**
    * {@inheritdoc}
    */
-  public function getVersion(?\stdClass $doc): ?string {
+  public function getVersion(?stdClass $doc): ?string {
     if (!$doc) {
       return NULL;
     }
@@ -67,7 +69,7 @@ abstract class OpenApi extends ReferenceBase implements ContainerFactoryPluginIn
   /**
    * {@inheritdoc}
    */
-  public function getTitle(?\stdClass $doc): ?string {
+  public function getTitle(?stdClass $doc): ?string {
     if (!$doc) {
       return NULL;
     }
@@ -78,7 +80,7 @@ abstract class OpenApi extends ReferenceBase implements ContainerFactoryPluginIn
   /**
    * {@inheritdoc}
    */
-  public function getDescription(?\stdClass $doc): ?string {
+  public function getDescription(?stdClass $doc): ?string {
     if (!$doc) {
       return NULL;
     }
@@ -108,12 +110,12 @@ abstract class OpenApi extends ReferenceBase implements ContainerFactoryPluginIn
    * @return bool
    *   TRUE if valid.
    */
-  abstract protected function isValid(\stdClass $data): bool;
+  abstract protected function isValid(stdClass $data): bool;
 
   /**
    * {@inheritdoc}
    */
-  public function parse(string $file_path): ?\stdClass {
+  public function parse(string $file_path): ?stdClass {
     $cid = $file_path . ':' . md5_file($file_path);
     $cached = $this->cache->get($cid);
     if ($cached) {
@@ -143,11 +145,11 @@ abstract class OpenApi extends ReferenceBase implements ContainerFactoryPluginIn
     elseif ($file_ext === 'json') {
       $openapi = json_decode($input, FALSE);
       if ($openapi === NULL) {
-        throw new \Exception("The JSON source file ({$file_path}) cannot be decoded (possible syntax error) or the encoded data is deeper then the recursion limit (512).");
+        throw new Exception("The JSON source file ({$file_path}) cannot be decoded (possible syntax error) or the encoded data is deeper then the recursion limit (512).");
       }
     }
     else {
-      throw new \Exception("Unsupported source file extension: {$file_ext}. Please use YAML or JSON source.");
+      throw new Exception("Unsupported source file extension: {$file_ext}. Please use YAML or JSON source.");
     }
 
     if (!$this->isValid($openapi)) {
@@ -167,7 +169,7 @@ abstract class OpenApi extends ReferenceBase implements ContainerFactoryPluginIn
   /**
    * {@inheritdoc}
    */
-  public function validate(\stdClass $content) {
+  public function validate(stdClass $content) {
     $validator = new Validator();
     $validator->validate($content, (object) [
       '$ref' => 'file://' . ($_SERVER['DOCUMENT_ROOT'] ?: getcwd()) . '/' . $this->getSchema(),

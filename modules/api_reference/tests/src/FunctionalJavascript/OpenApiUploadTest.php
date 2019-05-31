@@ -3,6 +3,8 @@
 namespace Drupal\Tests\devportal_api_reference\FunctionalJavascript;
 
 /**
+ * Class for Open API Upload tests.
+ *
  * @group devportal
  * @group api_reference
  */
