@@ -15,6 +15,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeGuesserInterface;
 
 /**
+ * The Api Reference class.
+ *
  * @FileType(
  *   id = "api_ref",
  *   label = @Translation("API Reference"),

@@ -19,7 +19,8 @@ class OpenApiValidationException extends \Exception {
   /**
    * Returns the list of stored errors.
    *
-   * @return array Error array
+   * @return array
+   *   Error array
    */
   public function getErrors() {
     return $this->errors;
@@ -29,6 +30,7 @@ class OpenApiValidationException extends \Exception {
    * Sets the list of stored errors.
    *
    * @param array $errors
+   *   Error array
    *
    * @return OpenApiValidationException
    */
@@ -49,7 +51,7 @@ class OpenApiValidationException extends \Exception {
    * Factory method that creates an instance from a list of validation errors.
    *
    * @param array $errors
-   * @param \Throwable|NULL $previous
+   * @param \Throwable|null $previous
    *
    * @return static
    */

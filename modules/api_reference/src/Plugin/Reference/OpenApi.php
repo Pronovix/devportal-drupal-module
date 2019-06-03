@@ -2,8 +2,8 @@
 
 namespace Drupal\devportal_api_reference\Plugin\Reference;
 
-use \stdClass;
-use \Exception;
+use stdClass;
+use Exception;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Logger\LoggerChannelInterface;

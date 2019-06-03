@@ -2,6 +2,7 @@
 
 namespace Drupal\devportal_api_reference;
 
+use stdClass;
 use Drupal\Component\Plugin\PluginInspectionInterface;
 use Drupal\node\NodeInterface;
 
@@ -30,7 +31,7 @@ interface ReferenceInterface extends PluginInspectionInterface {
    * @return null|string
    *   Version, or null on error.
    */
-  public function getVersion(?\stdClass $doc): ?string;
+  public function getVersion(?stdClass $doc): ?string;
 
   /**
    * Returns the raw data of the reference.
@@ -41,7 +42,7 @@ interface ReferenceInterface extends PluginInspectionInterface {
    * @return object|null
    *   Raw data or null if invalid.
    */
-  public function parse(string $file_path): ?\stdClass;
+  public function parse(string $file_path): ?stdClass;
 
   /**
    * Validates the parsed content of an API reference.
@@ -52,7 +53,7 @@ interface ReferenceInterface extends PluginInspectionInterface {
    * @throws \Exception
    *   Thrown on validation failure.
    */
-  public function validate(\stdClass $content);
+  public function validate(stdClass $content);
 
   /**
    * Returns the title of the API reference.
@@ -63,7 +64,7 @@ interface ReferenceInterface extends PluginInspectionInterface {
    * @return null|string
    *   Title, or null on error.
    */
-  public function getTitle(?\stdClass $doc): ?string;
+  public function getTitle(?stdClass $doc): ?string;
 
   /**
    * Returns the description of the API reference.
@@ -74,6 +75,6 @@ interface ReferenceInterface extends PluginInspectionInterface {
    * @return null|string
    *   Description, or null on error.
    */
-  public function getDescription(?\stdClass $doc): ?string;
+  public function getDescription(?stdClass $doc): ?string;
 
 }

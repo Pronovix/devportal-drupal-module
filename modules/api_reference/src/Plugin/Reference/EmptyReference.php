@@ -2,7 +2,7 @@
 
 namespace Drupal\devportal_api_reference\Plugin\Reference;
 
-use \stdClass;
+use stdClass;
 use Drupal\Core\Annotation\Translation;
 use Drupal\devportal_api_reference\ReferenceInterface;
 

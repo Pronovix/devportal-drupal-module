@@ -28,8 +28,6 @@ class GuidesController extends ControllerBase {
    *
    * @param \Drupal\Core\Routing\RouteMatchInterface $route_match
    *   The current route match.
-   * @param \Drupal\help\HelpSectionManager $help_manager
-   *   The help section manager.
    */
   public function __construct(RouteMatchInterface $route_match) {
     $this->routeMatch = $route_match;
@@ -44,18 +42,24 @@ class GuidesController extends ControllerBase {
     );
   }
 
+  /**
+   * The list guides method.
+   *
+   * @return array
+   */
   public function listGuides() {
     $guides = [];
     $guides_dir = DRUPAL_ROOT . (Settings::get('guides_dir') ?? '/guides');
 
-    foreach (array_diff(scandir($guides_dir), array('..', '.')) as $guide_dir) {
+    foreach (array_diff(scandir($guides_dir), ['..', '.']) as $guide_dir) {
       $dir = $guides_dir . '/' . $guide_dir;
       if (is_dir($dir)) {
         foreach (glob($dir . '/*.md') as $md) {
           if (file_exists($md)) {
             $parts = pathinfo($md);
             $link = Url::fromRoute('guides.guide', ['filename' => $parts['filename']]);
-            $link = Link::fromTextAndUrl(str_replace('_', ' ', $guide_dir), $link)->toString();
+            $link = Link::fromTextAndUrl(str_replace('_', ' ', $guide_dir), $link)
+              ->toString();
             $guides[] = [
               '#markup' => $link,
             ];
@@ -67,7 +71,7 @@ class GuidesController extends ControllerBase {
     if (!empty($guides)) {
       return [
         '#theme' => 'item_list',
-        '#items' => $guides
+        '#items' => $guides,
       ];
     }
     else {
@@ -77,6 +81,11 @@ class GuidesController extends ControllerBase {
     }
   }
 
+  /**
+   * @param $filename
+   *
+   * @return array
+   */
   public function guideContent($filename) {
     $guides_dir = Settings::get('guides_dir') ?? '/guides';
     $target = [
@@ -84,7 +93,10 @@ class GuidesController extends ControllerBase {
       'file' => FALSE,
     ];
 
-    foreach (array_diff(scandir(DRUPAL_ROOT . $guides_dir), array('..', '.')) as $guide_dir) {
+    foreach (array_diff(scandir(DRUPAL_ROOT . $guides_dir), [
+      '..',
+      '.',
+    ]) as $guide_dir) {
       $dir = DRUPAL_ROOT . $guides_dir . '/' . $guide_dir;
       $file = $dir . '/' . $filename . '.md';
       if (file_exists($file)) {
@@ -106,10 +118,10 @@ class GuidesController extends ControllerBase {
       '#attached' => [
         'library' => [
           'guides/guide',
-          'guides/in_page_navigation'
-        ]
-      ]
+          'guides/in_page_navigation',
+        ],
+      ],
     ];
   }
-}
 
+}

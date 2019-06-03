@@ -3,6 +3,8 @@
 namespace Drupal\devportal_api_reference\Plugin\Reference;
 
 /**
+ * The OpenAPI3 class.
+ *
  * @Reference(
  *   id = "openapi3",
  *   label = @Translation("OpenAPI 3"),
