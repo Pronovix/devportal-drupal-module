@@ -13,6 +13,16 @@ class OpenApiUploadTest extends ApiRefTestBase {
   /**
    * A simple file upload.
    */
+  public function testPhpUnit() {
+
+    $var = true;
+    $this->assertFalse($var);
+
+  }
+
+  /**
+   * A simple file upload.
+   */
   public function testPetstoreUpload() {
     $this->drupalLogin($this->rootUser);
 
