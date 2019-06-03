@@ -25,7 +25,7 @@ interface ReferenceInterface extends PluginInspectionInterface {
   /**
    * Returns a version of the API reference.
    *
-   * @param \stdClass $doc
+   * @param null|\stdClass $doc
    *   Parsed reference file.
    *
    * @return null|string
@@ -47,7 +47,7 @@ interface ReferenceInterface extends PluginInspectionInterface {
   /**
    * Validates the parsed content of an API reference.
    *
-   * @param \stdClass $content
+   * @param null|\stdClass $content
    *   Content from ReferenceInterface::parse().
    *
    * @throws \Exception
@@ -58,7 +58,7 @@ interface ReferenceInterface extends PluginInspectionInterface {
   /**
    * Returns the title of the API reference.
    *
-   * @param \stdClass $doc
+   * @param null|\stdClass $doc
    *   Parsed reference file.
    *
    * @return null|string
@@ -69,7 +69,7 @@ interface ReferenceInterface extends PluginInspectionInterface {
   /**
    * Returns the description of the API reference.
    *
-   * @param \stdClass $doc
+   * @param null|\stdClass $doc
    *   Parsed reference file.
    *
    * @return null|string
