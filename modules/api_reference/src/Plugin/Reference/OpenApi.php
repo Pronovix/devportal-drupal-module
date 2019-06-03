@@ -20,11 +20,15 @@ use Symfony\Component\Yaml\Yaml;
 abstract class OpenApi extends ReferenceBase implements ContainerFactoryPluginInterface {
 
   /**
+   * The Cache Backend Interface.
+   *
    * @var \Drupal\Core\Cache\CacheBackendInterface
    */
   protected $cache;
 
   /**
+   * The Logger Channel Interface.
+   *
    * @var \Drupal\Core\Logger\LoggerChannelInterface
    */
   protected $logger;

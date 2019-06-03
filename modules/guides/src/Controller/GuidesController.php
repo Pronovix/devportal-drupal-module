@@ -46,6 +46,7 @@ class GuidesController extends ControllerBase {
    * The list guides method.
    *
    * @return array
+   *   Returns array to the theme
    */
   public function listGuides() {
     $guides = [];
@@ -82,9 +83,13 @@ class GuidesController extends ControllerBase {
   }
 
   /**
-   * @param $filename
+   * The guide content method.
+   *
+   * @param string $filename
+   *   The filename.
    *
    * @return array
+   *   The return array.
    */
   public function guideContent($filename) {
     $guides_dir = Settings::get('guides_dir') ?? '/guides';

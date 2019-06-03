@@ -27,6 +27,8 @@ use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeGuesserInterface;
 class ApiRef extends FileTypeBase {
 
   /**
+   * The Module Handler Interface.
+   *
    * @var \Drupal\Core\Extension\ModuleHandlerInterface
    */
   protected $moduleHandler;

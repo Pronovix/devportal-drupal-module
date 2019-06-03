@@ -30,11 +30,12 @@ class OpenApiValidationException extends \Exception {
    * Sets the list of stored errors.
    *
    * @param array $errors
-   *   Error array
+   *   Error array.
    *
    * @return OpenApiValidationException
+   *   Return errors.
    */
-  public function setErrors($errors) {
+  public function setErrors($errors: array) {
     $this->errors = $errors;
     return $this;
   }
@@ -51,7 +52,9 @@ class OpenApiValidationException extends \Exception {
    * Factory method that creates an instance from a list of validation errors.
    *
    * @param array $errors
+   *   Error array.
    * @param \Throwable|null $previous
+   *   Message or null.
    *
    * @return static
    */

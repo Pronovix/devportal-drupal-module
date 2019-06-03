@@ -7,6 +7,8 @@ use Drupal\Core\Annotation\Translation;
 use Drupal\devportal_api_reference\ReferenceInterface;
 
 /**
+ * The Empty Reference class.
+ *
  * @Reference(
  *   id = "empty",
  *   label = @Translation("Dummy reference plugin"),

@@ -1,6 +1,11 @@
 <?php
 
 /**
+ * @file
+ * The Devportal module.
+ */
+
+/**
  * Implements hook_toolbar_alter().
  */
 function devportal_toolbar_alter(&$items) {
