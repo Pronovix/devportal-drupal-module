@@ -50,8 +50,3 @@ script:
   # Do not exist if a PHPUnit test fails, we would like to run everything from
   # after_* sections.
   - set +e
-  - if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then docker-compose run php /opt/drupal-module/.travis/run-test.sh; fi
-
-after_failure:
-  # Push log file and browser output to an our logs repository.
-  - ./push-logs.sh
