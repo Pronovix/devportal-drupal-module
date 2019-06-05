@@ -50,3 +50,4 @@ script:
   # Do not exist if a PHPUnit test fails, we would like to run everything from
   # after_* sections.
   - set +e
+  - docker-compose run php /opt/drupal-module/.travis/run-test.sh
