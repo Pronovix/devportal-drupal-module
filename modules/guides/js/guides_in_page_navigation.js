@@ -13,6 +13,7 @@ Drupal.guidesInPageNavigation = {
   navigation: null,
   flexWrapper: null,
   mobileBtn: null,
+  sortedHeadings: null,
   isScrolledToBottom: function () {
     return (window.innerHeight + window.pageYOffset) >= document.body.offsetHeight;
   },
@@ -56,18 +57,18 @@ Drupal.guidesInPageNavigation = {
   setSpy: function () {
     // 80 enables the spy to trigger a bit sooner than when
     // the content reaches the bottom of the admin toolbar.
-    var scrollTop = window.pageYOffset + 80;
+    var scrollTop = window.pageYOffset + this.getToolbarHeight() + 80;
     var isNewSpySet = false;
     var activeNav, item;
 
     // Finding the active section in a pre-ordered (by distance) list.
-    for (var i = 0; i < this.headingsOffsetTopLookup.length; i++) {
-      item = this.headingsOffsetTopLookup[i];
+    for (var i = 0; i < this.sortedHeadings.length; i++) {
+      item = this.sortedHeadings[i];
       if (item.offsetTop <= scrollTop) {
         // Special case, because visually the last element
         // might not be at the top of the page
         if (this.isScrolledToBottom()) {
-          item = this.headingsOffsetTopLookup[0];
+          item = this.sortedHeadings[0];
         }
 
         activeNav = this.navigation.querySelector('a.guides__active-nav');
@@ -75,16 +76,17 @@ Drupal.guidesInPageNavigation = {
         // Removing the active status.
         if (activeNav) {
           // Do nothing if the active section is the same.
-          if (activeNav.getAttribute('href').slice(1) === item.headerId) {
+          if (activeNav.getAttribute('href').slice(1) === item.getAttribute('id')) {
             return;
           }
           else {
             activeNav.classList.remove('guides__active-nav');
+            activeNav.blur();
           }
         }
 
         // Adding the active status to the new header.
-        var link = this.navigation.querySelector('a[href*=' + item.headerId + ']');
+        var link = this.navigation.querySelector('a[href*=' + item.getAttribute('id') + ']');
         link.classList.add('guides__active-nav');
         isNewSpySet = true;
         break;
@@ -100,22 +102,8 @@ Drupal.guidesInPageNavigation = {
       this.updateUrl(null);
     }
     else {
-      this.updateUrl(item.headerId);
+      this.updateUrl(item.getAttribute('id'));
     }
-  },
-  createLookup: function (headings) {
-    var lookup = [];
-    for (var i = 0; i < headings.length; i++) {
-      lookup.push({
-        headerId: headings[i].getAttribute('id'),
-        offsetTop: headings[i].offsetTop
-      });
-    }
-    // Sorting descending by distance from the top.
-    lookup.sort(function (a, b) {
-      return b.offsetTop - a.offsetTop;
-    });
-    this.headingsOffsetTopLookup = lookup;
   },
   outline: function (context, settings) {
     // There's no .once() method without jQuery.
@@ -128,6 +116,9 @@ Drupal.guidesInPageNavigation = {
     var mainBlock = document.querySelector('.block-system-main-block');
     var headingsToFind = 'h2';
     var headings = mainBlock.querySelectorAll(headingsToFind);
+    this.sortedHeadings = Array.prototype.slice.call(headings).sort(function (a, b) {
+      return b.offsetTop - a.offsetTop;
+    });
     var flexWrapper = document.createElement('div');
     flexWrapper.setAttribute('id', 'guides__flex-wrapper');
     var nav = document.createElement('div');
@@ -168,7 +159,6 @@ Drupal.guidesInPageNavigation = {
     this.flexWrapper = flexWrapper;
     this.navigation = nav;
     this.toggleMobileLayout();
-    this.createLookup(headings);
 
     window.onload = function () {
       window.onresize = function () {
