@@ -27,6 +27,7 @@
         "behat/mink": "dev-master#153e4bb",
         "behat/mink-selenium2-driver": "dev-master#93474c6",
         "dealerdirect/phpcodesniffer-composer-installer": "^0.5.0",
+        "instaclick/php-webdriver": "^1.4.5",
         "phpunit/phpunit": "^6.5",
         "webflo/drupal-core-require-dev": "^8.7"
     }
