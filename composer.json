@@ -1,6 +1,7 @@
 {
     "name": "drupal/devportal",
     "type": "drupal-module",
+    "description": "Common devportal functionality",
     "license": "GPL-2.0+",
     "require": {
         "php": "^7.1",
@@ -11,6 +12,7 @@
         "justinrainbow/json-schema": "^5.2",
         "drupal/apigee_edge": "^1.0rc2",
         "drupal/contact_emails": "^1.16",
+        "drupal/core": "^8.7",
         "drupal/eu_cookie_compliance": "^1.5",
         "drupal/google_tag": "^1.1",
         "drupal/honeypot": "^1.29",
@@ -20,5 +22,10 @@
         "drupal/redirect": "^1.2",
         "drupal/swagger_ui_formatter": "^2.3",
         "drupal/views_accordion": "^1.2"
+    },
+    "require-dev": {
+        "dealerdirect/phpcodesniffer-composer-installer": "^0.5.0",
+        "phpunit/phpunit": "^6.5",
+        "webflo/drupal-core-require-dev": "^8.7"
     }
 }
