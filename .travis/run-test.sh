@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# Based on https://github.com/apigee/apigee-edge-drupal/blob/8.x-1.0/.travis/run-test.sh.
 
 set -e
 
