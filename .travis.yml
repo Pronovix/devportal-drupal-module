@@ -58,3 +58,7 @@ script:
   # after_* sections.
   - set +e
   - docker-compose run --rm php /opt/drupal-module/.travis/run-test.sh
+
+after_failure:
+  # Push log file and browser output to an our logs repository.
+  - ./push-logs.sh
