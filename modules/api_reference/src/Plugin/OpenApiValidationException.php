@@ -2,6 +2,9 @@
 
 namespace Drupal\devportal_api_reference\Plugin;
 
+/**
+ * Exception for OpenApi validation errors.
+ */
 class OpenApiValidationException extends \Exception {
 
   /**
@@ -15,6 +18,7 @@ class OpenApiValidationException extends \Exception {
    * Returns the list of stored errors.
    *
    * @return array
+   *   Array of validation errors.
    */
   public function getErrors() {
     return $this->errors;
@@ -24,10 +28,12 @@ class OpenApiValidationException extends \Exception {
    * Sets the list of stored errors.
    *
    * @param array $errors
+   *   Array of errors.
    *
-   * @return OpenApiValidationException
+   * @return \self
+   *   New self.
    */
-  public function setErrors($errors) {
+  public function setErrors(array $errors) {
     $this->errors = $errors;
     return $this;
   }
@@ -44,13 +50,16 @@ class OpenApiValidationException extends \Exception {
    * Factory method that creates an instance from a list of validation errors.
    *
    * @param array $errors
-   * @param \Throwable|NULL $previous
+   *   Array of validation errors.
+   * @param \Throwable|null $previous
+   *   The previous exception or NULL.
    *
-   * @return static
+   * @return \self
+   *   New OpenApiValidationException.
    */
   public static function fromErrors(array $errors, \Throwable $previous = NULL) {
-    return new static(implode(PHP_EOL, array_map(function ($error) {
-      $msg = "";
+    return new self(implode(PHP_EOL, array_map(function ($error) {
+      $msg = '';
 
       if ($error['property']) {
         $msg .= " [{$error['property']}]";

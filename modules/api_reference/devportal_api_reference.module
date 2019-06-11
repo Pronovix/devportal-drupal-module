@@ -11,7 +11,6 @@ use Drupal\file\Entity\File;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\file\FileInterface;
-use Drupal\filter\Entity\FilterFormat;
 use Drupal\node\NodeInterface;
 use Drupal\taxonomy\Entity\Term;
 use Symfony\Component\HttpFoundation\Request;
@@ -205,6 +204,7 @@ function devportal_api_reference_form_node_api_reference_edit_form_alter(&$form,
  * @param \Drupal\Core\Form\FormStateInterface $form_state
  *   Form state object.
  * @param bool $is_new
+ *   TRUE if the node is new, FALSE otherwise.
  */
 function _devportal_api_reference_allow_skip_upload_on_node_form(array &$form, FormStateInterface $form_state, bool $is_new) {
   array_unshift($form['#validate'], 'devportal_api_reference_api_reference_validate');

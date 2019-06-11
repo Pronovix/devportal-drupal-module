@@ -5,7 +5,11 @@ namespace Drupal\devportal_api_reference\Annotation;
 use Drupal\Component\Annotation\Plugin;
 
 /**
+ * Reference plugin annotation.
+ *
  * @Annotation
+ *
+ * @see \Drupal\devportal_api_reference\Plugin\Reference\ReferenceBase
  */
 class Reference extends Plugin {
 

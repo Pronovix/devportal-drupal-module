@@ -3,6 +3,8 @@
 namespace Drupal\devportal_api_reference\Plugin\Reference;
 
 /**
+ * Swagger (OpenApi) 2.0 definition.
+ *
  * @Reference(
  *   id = "swagger",
  *   label = @Translation("Swagger (OpenAPI 2)"),

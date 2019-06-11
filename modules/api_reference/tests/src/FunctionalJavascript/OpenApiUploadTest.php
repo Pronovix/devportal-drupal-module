@@ -3,6 +3,8 @@
 namespace Drupal\Tests\devportal_api_reference\FunctionalJavascript;
 
 /**
+ * Validates OpenAPI file uploads.
+ *
  * @group devportal
  * @group api_reference
  */
