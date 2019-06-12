@@ -2,10 +2,11 @@
 
 namespace Drupal\devportal_api_reference\Plugin\Reference;
 
-use Drupal\Core\Annotation\Translation;
 use Drupal\devportal_api_reference\ReferenceInterface;
 
 /**
+ * Null reference.
+ *
  * @Reference(
  *   id = "empty",
  *   label = @Translation("Dummy reference plugin"),

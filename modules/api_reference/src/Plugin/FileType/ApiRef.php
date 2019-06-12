@@ -15,6 +15,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeGuesserInterface;
 
 /**
+ * Api reference file type.
+ *
  * @FileType(
  *   id = "api_ref",
  *   label = @Translation("API Reference"),
@@ -25,6 +27,8 @@ use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeGuesserInterface;
 class ApiRef extends FileTypeBase {
 
   /**
+   * The module handler service.
+   *
    * @var \Drupal\Core\Extension\ModuleHandlerInterface
    */
   protected $moduleHandler;

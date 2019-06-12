@@ -7,6 +7,9 @@ use Drupal\node\NodeInterface;
 
 /**
  * A handler class for an API reference type.
+ *
+ * phpcs:disable Drupal.Commenting.FunctionComment
+ * Disabled because it does not handle ?\stdClass
  */
 interface ReferenceInterface extends PluginInspectionInterface {
 
@@ -24,7 +27,7 @@ interface ReferenceInterface extends PluginInspectionInterface {
   /**
    * Returns a version of the API reference.
    *
-   * @param \stdClass $doc
+   * @param object $doc
    *   Parsed reference file.
    *
    * @return null|string
@@ -46,7 +49,7 @@ interface ReferenceInterface extends PluginInspectionInterface {
   /**
    * Validates the parsed content of an API reference.
    *
-   * @param \stdClass $content
+   * @param object $content
    *   Content from ReferenceInterface::parse().
    *
    * @throws \Exception
@@ -57,7 +60,7 @@ interface ReferenceInterface extends PluginInspectionInterface {
   /**
    * Returns the title of the API reference.
    *
-   * @param \stdClass $doc
+   * @param object $doc
    *   Parsed reference file.
    *
    * @return null|string
@@ -68,7 +71,7 @@ interface ReferenceInterface extends PluginInspectionInterface {
   /**
    * Returns the description of the API reference.
    *
-   * @param \stdClass $doc
+   * @param object $doc
    *   Parsed reference file.
    *
    * @return null|string

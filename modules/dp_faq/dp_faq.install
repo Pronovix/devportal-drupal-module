@@ -22,7 +22,7 @@ function dp_faq_update_8001() {
 }
 
 /**
- * Set the accordion height to 'content'
+ * Set the accordion height to 'content'.
  */
 function dp_faq_update_8002() {
   $config_factory = \Drupal::configFactory();

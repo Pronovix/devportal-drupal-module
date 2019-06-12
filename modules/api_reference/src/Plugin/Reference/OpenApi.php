@@ -4,10 +4,10 @@ namespace Drupal\devportal_api_reference\Plugin\Reference;
 
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Cache\CacheBackendInterface;
-use Drupal\Core\Logger\LoggerChannelInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\devportal_api_reference\Plugin\OpenApiValidationException;
 use JsonSchema\Validator;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
@@ -18,12 +18,16 @@ use Symfony\Component\Yaml\Yaml;
 abstract class OpenApi extends ReferenceBase implements ContainerFactoryPluginInterface {
 
   /**
+   * The cache backend.
+   *
    * @var \Drupal\Core\Cache\CacheBackendInterface
    */
   protected $cache;
 
   /**
-   * @var \Drupal\Core\Logger\LoggerChannelInterface
+   * The logger.
+   *
+   * @var \Psr\Log\LoggerInterface
    */
   protected $logger;
 
@@ -47,7 +51,7 @@ abstract class OpenApi extends ReferenceBase implements ContainerFactoryPluginIn
   /**
    * {@inheritdoc}
    */
-  public function __construct(array $configuration, string $plugin_id, array $plugin_definition, CacheBackendInterface $cache, LoggerChannelInterface $logger) {
+  public function __construct(array $configuration, string $plugin_id, array $plugin_definition, CacheBackendInterface $cache, LoggerInterface $logger) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->cache = $cache;
     $this->logger = $logger;
@@ -102,7 +106,7 @@ abstract class OpenApi extends ReferenceBase implements ContainerFactoryPluginIn
    * used for a given file. Since different OpenAPI versions use the same
    * formats (YAML and JSON), this function is need to tell which one it is.
    *
-   * @param \stdClass $data
+   * @param object $data
    *   OpenAPI data structure.
    *
    * @return bool
