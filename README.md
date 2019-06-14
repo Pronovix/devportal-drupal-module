@@ -34,6 +34,11 @@ INSTALLATION
  * Install the Developer portal module as you would normally install a
    contributed Drupal module. Visit https://www.drupal.org/node/1897420 for
    further information.
+ * Make sure the dependencies for all the (sub)modules you want to enable are
+   met (recursively). An example: as the devportal_api_reference submodule
+   depends on the swagger_ui_formatter module, you should also check the
+   README of the latter, as it might contain some useful Composer-related
+   information about pulling in its JS dependencies.
 
 
 CONFIGURATION
