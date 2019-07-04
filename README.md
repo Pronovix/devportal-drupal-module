@@ -12,20 +12,51 @@ INTRODUCTION
 ------------
 
 The Devportal module allows you to expose API reference documentation by
-uploading Swagger/OpenAPI files - as well as create, edit, import and publish
+publishing Swagger/OpenAPI files - as well as create, edit, import and publish
 conceptual documentation on your Drupal site.
 
  * For a full description of the module, visit the project page:
    https://www.drupal.org/project/devportal
+   
+ * To fully understand the capabilites of the 'Page builder' module, read this overview:
+   https://docs.pronovix.net/devportal_product/components/content_management/advanced_content_management
+   
+ * For more informations about the 'FAQ' module, click here:
+  https://docs.pronovix.net/devportal_product/components/content_management/faq
+  
+ * For content editors, we recommend to read the folowing page about the 'Guides' module:
+  https://docs.pronovix.net/devportal_product/components/user_guides
 
- * To submit bug reports and feature suggestions, or to track changes:
+  * To submit bug reports and feature suggestions, or to track changes:
    https://www.drupal.org/project/issues/devportal
 
 
 REQUIREMENTS
 ------------
 
-This module requires no modules outside of Drupal core.
+This module requires only Drupal core, but optional modules can be added, such as:
+
+* [Apigee Edge](https://www.drupal.org/project/apigee_edge)
+
+* [Contact Emails](https://www.drupal.org/project/contact_emails)
+
+* [EU Cookie Compilance](https://www.drupal.org/project/eu_cookie_compliance)
+
+* [Google TagManager](https://www.drupal.org/project/google_tag)
+
+* [Honeypot](https://www.drupal.org/project/honeypot)
+
+* [Metatag](https://www.drupal.org/project/metatag)
+
+* [Node view permissions](https://www.drupal.org/project/node_view_permissions)
+
+* [Pathauto](https://www.drupal.org/project/pathauto)
+
+* [Redirect](https://www.drupal.org/project/redirect)
+
+* [Swagger UI Field Formatter](https://www.drupal.org/project/swagger_ui_formatter)
+
+* [Views Accordion](https://www.drupal.org/project/views_accordion)
 
 
 INSTALLATION
