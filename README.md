@@ -18,17 +18,14 @@ conceptual documentation on your Drupal site.
  * For a full description of the module, visit the project page:
    https://www.drupal.org/project/devportal
    
- * To fully understand the capabilites of the 'Page builder' module, read this overview:
-   https://docs.pronovix.net/devportal_product/components/content_management/advanced_content_management
-   
- * For more informations about the 'FAQ' module, click here:
-  https://docs.pronovix.net/devportal_product/components/content_management/faq
-  
- * For content editors, we recommend to read the folowing page about the 'Guides' module:
-  https://docs.pronovix.net/devportal_product/components/user_guides
-
-  * To submit bug reports and feature suggestions, or to track changes:
+ * To submit bug reports and feature suggestions, or to track changes:
    https://www.drupal.org/project/issues/devportal
+   
+ * The customization capabilites of the Devportal module can be expanded by the 'Page builder' module. With it, the user can create highly customisable pages with reusable building blocks.
+   
+ * You can add the 'FAQ' custom module to your Devportal. Questions can be grouped by topics and these topics can be used as filters on the FAQ listing page. 
+  
+ * If you are a content editor, we recommend you to enable the 'Guides' module, which describes the custom functionalities and collects the links for the related core drupal functionalities.
 
 
 REQUIREMENTS
