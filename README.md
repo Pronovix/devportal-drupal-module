@@ -1,5 +1,4 @@
-CONTENTS OF THIS FILE
----------------------
+# CONTENTS OF THIS FILE
 
  * Introduction
  * Requirements
@@ -7,9 +6,7 @@ CONTENTS OF THIS FILE
  * Configuration
  * Maintainers
 
-
-INTRODUCTION
-------------
+# INTRODUCTION
 
 The Devportal module allows you to expose API reference documentation by
 publishing Swagger/OpenAPI files - as well as create, edit, import and publish
@@ -17,19 +14,17 @@ conceptual documentation on your Drupal site.
 
  * For a full description of the module, visit the project page:
    https://www.drupal.org/project/devportal
-   
+
  * To submit bug reports and feature suggestions, or to track changes:
    https://www.drupal.org/project/issues/devportal
-   
- * The customization capabilites of the Devportal module can be expanded by the 'Page builder' module. With it, the user can create highly customisable pages with reusable building blocks.
-   
- * You can add the 'FAQ' custom module to your Devportal. Questions can be grouped by topics and these topics can be used as filters on the FAQ listing page. 
-  
- * If you are a content editor, we recommend you to enable the 'Guides' module, which describes the custom functionalities and collects the links for the related core drupal functionalities.
 
+ * The customization capabilities of the Devportal module can be expanded by the 'Page builder' module. With it, the user can create highly customizable pages with reusable building blocks.
 
-REQUIREMENTS
-------------
+ * You can add the 'FAQ' custom module to your Devportal. Questions can be grouped by topics and these topics can be used as filters on the FAQ listing page.
+
+ * We recommend you to enable the 'Guides' module, which describes the custom functionalities and collects the links for the related core Drupal capabilities. It is a useful tool for content editors.
+
+# REQUIREMENTS
 
 This module requires only Drupal core, but optional modules can be added, such as:
 
@@ -37,9 +32,9 @@ This module requires only Drupal core, but optional modules can be added, such a
 
 * [Contact Emails](https://www.drupal.org/project/contact_emails)
 
-* [EU Cookie Compilance](https://www.drupal.org/project/eu_cookie_compliance)
+* [EU Cookie Compliance](https://www.drupal.org/project/eu_cookie_compliance)
 
-* [Google TagManager](https://www.drupal.org/project/google_tag)
+* [Google Tag Manager](https://www.drupal.org/project/google_tag)
 
 * [Honeypot](https://www.drupal.org/project/honeypot)
 
@@ -55,9 +50,7 @@ This module requires only Drupal core, but optional modules can be added, such a
 
 * [Views Accordion](https://www.drupal.org/project/views_accordion)
 
-
-INSTALLATION
-------------
+# INSTALLATION
 
  * Install the Developer portal module as you would normally install a
    contributed Drupal module. Visit https://www.drupal.org/node/1897420 for
@@ -68,17 +61,13 @@ INSTALLATION
    README of the latter, as it might contain some useful Composer-related
    information about pulling in its JS dependencies.
 
-
-CONFIGURATION
--------------
+# CONFIGURATION
 
     1. Navigate to Administration > Extend and enable the module.
     2. Navigate to Administration > Devportal > Configuration to manage
        Devportal configurations.
 
-
-MAINTAINERS
------------
+# MAINTAINERS
 
  * tamasd - https://www.drupal.org/u/tamasd
  * Balazs Wittmann (balazswmann) - https://www.drupal.org/u/balazswmann
