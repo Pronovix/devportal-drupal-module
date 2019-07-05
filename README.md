@@ -20,8 +20,8 @@ conceptual documentation on your Drupal site.
 
  * You can add the 'FAQ' submodule to your Devportal. Questions can be grouped by topics and these topics can be used as filters on the FAQ listing page.
 
- * We recommend you to enable the 'Guides' module, which gives the ability for writers to upload docs in Markdown. It is a useful tool for content editors. Read more here:
-https://github.com/Pronovix/devportal-drupal-module/blob/8.x-2.x/modules/guides/README.md
+ * We recommend you to enable the 'Guides' submodule, which gives the ability for writers to upload docs in Markdown. It is a useful tool for content editors. Read more [here](/modules/guides/README.md).
+
 
 ## REQUIREMENTS
 
