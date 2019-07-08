@@ -1,0 +1,114 @@
+version: "3"
+
+services:
+  database:
+    # 10.2 is the default database because it has InnoDB 5.7, older versions are not supported by our modules.
+    # https://stackoverflow.com/questions/1814532/1071-specified-key-was-too-long-max-key-length-is-767-bytes/41298282
+    image: ${DB_IMAGE:-wodby/mariadb:10.2}
+    container_name: "${COMPOSE_PROJECT_NAME:-drupal_module_template}_database"
+    stop_grace_period: 30s
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-password}
+      MYSQL_DATABASE: ${DB_NAME:-drupal}
+      MYSQL_USER: ${DB_USER:-drupal}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-password}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-password}
+      POSTGRES_DB: ${DB_NAME:-drupal}
+      POSTGRES_USER: ${DB_USER:-drupal}
+    volumes:
+      - database_data:/var/lib/mysql
+#      - database_data:/var/lib/postgresql/data
+
+  php:
+    # Building a project specific PHP image is beneficial for us, because PhpStorm's PHPCS integration only allows
+    # to run PHPCS from a Docker image. It does not support to run PHPCS inside a container created by docker-compose.
+    # See more details about PHPCS configuration in DEVELOPMENT_AND_TESTING.md
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - PHP_IMAGE=${PHP_IMAGE:-wodby/drupal-php:7.2-dev-4.5.0}
+    container_name: "${COMPOSE_PROJECT_NAME:-drupal_module_template}_php"
+    working_dir: /mnt/files/drupal_module/.dev
+    environment:
+      ### DEVELOPMENT ENVIRONMENT ###
+      COLUMNS: 80
+      COMPOSER_DISABLE_XDEBUG_WARN: 1
+      PHP_SENDMAIL_PATH: /usr/sbin/sendmail -t -i -S mailhog:1025
+      # (Xdebug can be toggled in CI environments by settings these env vars.)
+      PHP_XDEBUG: ${PHP_XDEBUG:-1}
+      PHP_XDEBUG_DEFAULT_ENABLE: ${PHP_XDEBUG_DEFAULT_ENABLE:-1}
+      PHP_XDEBUG_REMOTE_CONNECT_BACK: 0
+      PHP_XDEBUG_IDEKEY: PHPSTORM
+      PHP_XDEBUG_MAX_NESTING_LEVEL: 400
+      PHP_IDE_CONFIG: serverName=docker
+      # This is the default IP of the docker0 interface on Linux.
+      # More details: https://wodby.com/docs/stacks/drupal/local/#xdebug
+      # (The default host can be overridden from .bashrc/.zshrc with this environment variable.)
+      PHP_XDEBUG_REMOTE_HOST: ${PHP_XDEBUG_REMOTE_HOST:-172.17.0.1} # Linux
+      # PHP_XDEBUG_REMOTE_HOST: host.docker.internal # Docker 18.03+ Mac/Win
+      # Share Composer authentication tokens from the host with the container.
+      # 0 as fallback value works thanks for this implementation:
+      # https://github.com/composer/composer/blob/79af9d45afb6bcaac8b73ae6a8ae24414ddf8b4b/src/Composer/Factory.php#L204
+      COMPOSER_AUTH: ${COMPOSER_AUTH:-0}
+      ### TESTING ENVIRONMENT ###
+      # Run PHP-FPM as the default user (instead of www-data) to eliminate permission issues in testing.
+      PHP_FPM_USER: wodby
+      PHP_FPM_GROUP: wodby
+      DB_HOST: ${DB_HOST:-database}
+      DB_USER: ${DB_USER:-drupal}
+      DB_PASSWORD: ${DB_PASSWORD-password}
+      DB_NAME: ${DB_NAME:-drupal}
+      DB_DRIVER: ${DB_DRIVER:-mysql}
+      SIMPLETEST_BASE_URL: http://webserver
+      SIMPLETEST_DB: ${DB_DRIVER:-mysql}://${DB_USER:-drupal}:${DB_PASSWORD-password}@${DB_HOST:-database}/${DB_NAME:-drupal}
+      # Suppress deprecation warnings by default.
+      # https://api.drupal.org/api/drupal/vendor%21symfony%21phpunit-bridge%21DeprecationErrorHandler.php/8.5.x
+      SYMFONY_DEPRECATIONS_HELPER: ${SYMFONY_DEPRECATIONS_HELPER:-disabled}
+      MINK_DRIVER_ARGS_WEBDRIVER: '["chrome",{"browserName":"chrome","chromeOptions":{"args":["--disable-gpu","--headless","--no-sandbox","--disable-dev-shm-usage"]}},"http://chrome:9515"]'
+      BROWSERTEST_OUTPUT_DIRECTORY: "/mnt/files/drupal_module/.dev/build/sites/simpletest/browser_output"
+    volumes:
+      - ..:/mnt/files/drupal_module
+
+  webserver:
+    image: ${WEBSERVER_IMAGE:-wodby/nginx:1.17}
+    container_name: "${COMPOSE_PROJECT_NAME:-drupal_module_template}_webserver"
+    ports:
+      - 80
+    depends_on:
+      - php
+    environment:
+      APACHE_BACKEND_HOST: php
+      APACHE_SERVER_ROOT: ${WEB_ROOT:-/mnt/files/drupal_module/.dev/build}
+      NGINX_STATIC_CONTENT_OPEN_FILE_CACHE: "off"
+      NGINX_BACKEND_HOST: php
+      NGINX_VHOST_PRESET: drupal8
+      NGINX_SERVER_ROOT: ${WEB_ROOT:-/mnt/files/drupal_module/.dev/build}
+      NGINX_STATIC_404_TRY_INDEX: 1
+    volumes:
+      - ..:/mnt/files/drupal_module
+
+  chrome:
+    image: drupalci/webdriver-chromedriver:production
+    container_name: "${COMPOSE_PROJECT_NAME:-drupal_module_template}_chrome"
+    depends_on:
+      - webserver
+    ulimits:
+      core:
+        soft: -1
+        hard: -1
+    entrypoint:
+      - chromedriver
+      - "--log-path=/tmp/chromedriver.log"
+      - "--verbose"
+      - "--whitelisted-ips="
+
+  mailhog:
+    image: mailhog/mailhog
+    container_name: "${COMPOSE_PROJECT_NAME:-drupal_module_template}_mailhog"
+    ports:
+      - 8025
+
+volumes:
+  # Persistent database storage.
+  database_data:

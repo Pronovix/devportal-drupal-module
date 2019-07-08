@@ -1,2 +1,19 @@
+# Files and folders related to builds.
+build
+vendor
+node_modules
+composer.lock
+yarn.lock
+package-lock.json
+
+# Project specific files and folders.
+docker-compose.*.yml
+runner.yml
+testrunner
+tests/behat/failures/*
+*.sql
+*.sql.gz
 .idea
-*.iml
+
+# Other junk.
+.DS_Store

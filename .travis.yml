@@ -23,42 +23,38 @@ env:
   global:
     - DOCKER_COMPOSE_VERSION=1.24.0
     - THREADS=4
-    - DRUPAL_MODULE_NAME=devportal
+    - COMPOSER_GLOBAL_OPTIONS="--no-interaction --no-suggest -o"
   matrix:
     - CHECK_CS=true
-    # Run API Reference sub-module tests.
-    - TEST_ROOT="modules/contrib/${DRUPAL_MODULE_NAME}/modules/api_reference/tests"
-    - TEST_ROOT="modules/contrib/${DRUPAL_MODULE_NAME}/modules/api_reference/tests" DEPENDENCIES="--prefer-lowest"
-    - TEST_ROOT="modules/contrib/${DRUPAL_MODULE_NAME}/modules/api_reference/tests" DB_DRIVER=pgsql DB_IMAGE=wodby/postgres:9.6-1.3.1
-    - TEST_ROOT="modules/contrib/${DRUPAL_MODULE_NAME}/modules/api_reference/tests" PHP_IMAGE=wodby/drupal-php:7.2-dev-4.5.0
-    - TEST_ROOT="modules/contrib/${DRUPAL_MODULE_NAME}/modules/api_reference/tests" DRUPAL_CORE=8.7.x-dev DEPENDENCIES="--prefer-lowest"
+    - RUN_PHPUNIT_TESTS=true
+    - RUN_PHPUNIT_TESTS=true DEPENDENCIES="--prefer-lowest"
+    - RUN_PHPUNIT_TESTS=true DB_DRIVER=pgsql DB_IMAGE=wodby/postgres:9.6
+    - RUN_PHPUNIT_TESTS=true PHP_IMAGE=wodby/drupal-php:7.1
+    - RUN_PHPUNIT_TESTS=true PHP_IMAGE=wodby/drupal-php:7.3
+    - RUN_PHPUNIT_TESTS=true DB_IMAGE=wodby/mariadb:10.3
+    # Uncomment this line below if you also have Behat tests.
+    # - RUN_BEHAT_TESTS=true
+    # TODO Restore ability to run tests with latest Drupal 8.x dev.
 
 matrix:
-  allow_failures:
-    - env: TEST_ROOT="modules/contrib/${DRUPAL_MODULE_NAME}/modules/api_reference/tests" DRUPAL_CORE=8.7.x-dev DEPENDENCIES="--prefer-lowest"
   fast_finish: true
 
-# TODO Cache PHP service builds (common parts of the built, like Drupal core install, for a day or so).
 before_install:
-  - sudo rm /usr/local/bin/docker-compose
-  - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
-  - chmod +x docker-compose
-  - sudo mv docker-compose /usr/local/bin
-  - cd .travis && chmod u+x *.sh
-  - docker-compose up -d --build
-  - docker-compose ps
-  - docker-compose run --rm php /opt/drupal-module/.travis/prepare-test-env.sh
+  - |
+    sudo rm /usr/local/bin/docker-compose
+    curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
+    chmod +x docker-compose && sudo mv docker-compose /usr/local/bin
+  # Dummy permission fix for Travis CI because the default "travis" user's user id is not 1000 as you can see from the
+  # the output of the "id" command:
+  # uid=2000(travis) gid=2000(travis) groups=2000(travis),999(docker)
+  # 1000 is usually the default user id of the first user in Linux systems. This is the id of the "wodby" user inside
+  # the containers we use and if we do not fix this difference between the host and containers then we get file
+  # permission issues while the build is running.
+  - sudo chown -R 1000:travis . $HOME/.composer
+  - cd .dev && mv travis.docker-compose.override.yml docker-compose.override.yml && sudo chmod g+x .ci/*.sh
+  - docker-compose pull && docker-compose up -d && docker-compose ps
 
 script:
   - set -e
-  # Do not report warnings (like Drupal.Semantics.FunctionT.NotLiteralString) on Travis CI.
-  # TODO Use selective disabling instead in tested files.
-  - if [ -n "${CHECK_CS}" ]; then docker-compose run --rm php vendor/bin/phpcs -s -n --colors --standard=build/modules/contrib/${DRUPAL_MODULE_NAME}/phpcs.xml.dist build/modules/contrib/${DRUPAL_MODULE_NAME}; fi
-  # Do not exist if a PHPUnit test fails, we would like to run all scripts from
-  # after_* sections.
-  - set +e
-  - docker-compose run --rm php /opt/drupal-module/.travis/run-test.sh
-
-after_failure:
-  # Push log file and browser output to an our logs repository.
-  - ./push-logs.sh
+  - .ci/check-cs.sh
+  - .ci/run-phpunit-tests.sh

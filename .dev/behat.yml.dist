@@ -1,0 +1,44 @@
+default:
+  suites:
+    default:
+      paths:
+        - "%paths.base%/build/modules/drupal_module/tests/behat/features"
+      contexts:
+        - Drupal\DrupalExtension\Context\DrupalContext
+        - Drupal\DrupalExtension\Context\MinkContext
+        - Drupal\DrupalExtension\Context\MessageContext
+        - Drupal\DrupalExtension\Context\DrushContext
+        - Drupal\DrupalExtension\Context\ConfigContext
+  extensions:
+    Behat\MinkExtension:
+      base_url: 'http://webserver'
+      browser_name: 'chrome'
+      default_session: 'selenium2'
+      goutte: ~
+      selenium2:
+        wd_host: 'http://chrome:9515'
+        browser: 'chrome'
+        capabilities:
+          chrome:
+            switches:
+              - "--disable-gpu"
+              - "--headless"
+              - "--no-sandbox"
+              - "--disable-dev-shm-usage"
+      files_path: "%paths.base%/build/modules/drupal_module/tests/behat/files"
+    Drupal\DrupalExtension:
+      blackbox: ~
+      api_driver: 'drupal'
+      drupal:
+        drupal_root: '%paths.base%/build'
+      drush:
+        root: "%paths.base%/build"
+      subcontexts:
+        paths:
+          # Allow any installed modules to define subcontexts.
+          - "%paths.base%/build/modules"
+    Bex\Behat\ScreenshotExtension:
+      screenshot_taking_mode: failed_steps
+      image_drivers:
+        local:
+          screenshot_directory: "%paths.base%/build/modules/drupal_module/tests/behat/failures"

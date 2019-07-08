@@ -1,0 +1,25 @@
+version: "3"
+
+services:
+
+  database:
+    ports:
+      - 3306
+
+  php:
+    volumes:
+      # Mount cached files by Composer from the host.
+      - $HOME/.composer/cache/files:/home/wodby/.composer/cache/files
+
+  node:
+    image: ${NODE_IMAGE:-wodby/node:9}
+    container_name: "${COMPOSE_PROJECT_NAME:-my_project}_node"
+    # Should point to a directory with package.json.
+    working_dir: /mnt/files/drupal_module/.npm
+    volumes:
+      - ..:/mnt/files/drupal_module
+    command: sh -c 'yarn install && ./node_modules/.bin/gulp watch'
+
+  webserver:
+    environment:
+      APACHE_FCGI_PROXY_TIMEOUT: 3600 # Do not "Gateway timeout" while I am debugging with xDebug.

@@ -1,0 +1,80 @@
+# You can override or extend these if you create a runner.yml file in the same folder.
+drupal:
+  root: "build"
+  base_url: "http://webserver"
+  site:
+    name: "Devportal module development environment"
+    profile: "minimal"
+  database:
+    # TODO Retrieve this information from the related environment variables.
+    scheme: "mysql"
+    host: "database"
+    port: "3306"
+    name: "drupal"
+    user: "drupal"
+    password: "password"
+  pre_install:
+    # Pre-create the public files directory with proper permissions.
+    - { task: "mkdir", dir: "${drupal.root}/sites/default/files", mode: 6775}
+    - { task: "chgrp", file: "${drupal.root}/sites/default/files", group: "www-data", recursive: true}
+  post_install:
+    # Pre-configuring the dev instance.
+    - "drush theme:enable bartik -y"
+    - "drush theme:enable seven -y"
+    - "drush config-set system.theme default bartik -y"
+    - "drush config-set system.theme admin seven -y"
+    - "drush config-set node.settings use_admin_theme 1 -y"
+    - "drush config-set system.date country.default HU -y"
+    - "drush config-set system.date timezone.default Europe/Budapest -y"
+    - "drush config-set system.date first_day 1 -y"
+    # Enabling development modules.
+    - "drush en admin_toolbar devel config_devel -y"
+    # Enabling the current module.
+    - "drush en devportal -y"
+  settings:
+    settings:
+      extension_discovery_scan_tests: true
+      file_scan_ignore_directories:
+        - "node_modules"
+        - "bower_components"
+        - "vendor"
+        - "${drupal.root}"
+      file_private_path: "/mnt/files/private"
+      trusted_host_patterns:
+        - "^webserver$"
+        - "^localhost$"
+
+commands:
+  # Setup and re-install the site anytime.
+  drupal:site-setup:
+    # Ensures that the default dir is always writable.
+    - "sudo -u root chmod -R 6775 ${drupal.root}/sites/default"
+    # Remove public files from the previous install.
+    - "sudo -u root rm -rf ${drupal.root}/sites/default/files"
+    # Always re-generate the settings.php.
+    - "sudo -u root rm -f ${drupal.root}/sites/default/settings.php"
+    - { task: "symlink", from: "../../..", to: "${drupal.root}/modules/drupal_module" }
+    - { task: "run", command: "drupal:drush-setup" }
+    - { task: "run", command: "drupal:settings-setup"}
+    - { task: "run", command: "drupal:site-install" }
+  # Handy shortcut to capture information about installed dependencies.
+  composer:debug:
+    - "composer --version"
+    - "composer show -f json"
+  # Prepares the environment for PHPUnit testing.
+  phpunit:setup:
+    - { task: "symlink", from: "../../..", to: "${drupal.root}/modules/drupal_module" }
+    # TODO Download the latest release by default, allow to pass the expected version.
+    - "curl -s -L -o testrunner https://github.com/Pronovix/testrunner/releases/download/v0.4/testrunner-linux-amd64"
+    - "chmod u+x testrunner"
+    - "chmod u+x phpunit-wrapper.sh"
+    # TODO Retrieve the path from the BROWSERTEST_OUTPUT_DIRECTORY env var.
+    - "mkdir -p build/sites/simpletest/browser_output"
+  # Prepares the environment for Behat testing.
+  behat:setup:
+    - { task: "run", command: "drupal:site-setup" }
+    # Use the same default timezone as PHPUnit tests.
+    # "The Australia/Sydney timezone is chosen so all tests are run using an edge case scenario
+    # (UTC+10  and DST). This choice is made to prevent timezone related regressions." (quoted from
+    # the install_begin_request() function.)
+    - "drush config-set system.date timezone.default Australia/Sydney -y"

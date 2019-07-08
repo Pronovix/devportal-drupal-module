@@ -1,0 +1,20 @@
+diff --git a/core/tests/bootstrap.php b/core/tests/bootstrap.php
+index 82a1830547..3006e5b64a 100644
+--- a/core/tests/bootstrap.php
++++ b/core/tests/bootstrap.php
+@@ -22,7 +22,14 @@
+  */
+ function drupal_phpunit_find_extension_directories($scan_directory) {
+   $extensions = [];
+-  $dirs = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($scan_directory, \RecursiveDirectoryIterator::FOLLOW_SYMLINKS));
++  // Do not scan the .dev folder in the symlinked module again for extension
++  // because that leads to an infinite loop. This could happen because the
++  // module is symlinked to .dev/build/modules/drupal_module (with Drupal
++  // core and vendor files and the module itself again) and FOLLOW_SYMLINKS
++  // flag is enabled on the RecursiveDirectoryIterator.
++  $dirs = new \RecursiveIteratorIterator(new RecursiveCallbackFilterIterator(new \RecursiveDirectoryIterator($scan_directory, \RecursiveDirectoryIterator::FOLLOW_SYMLINKS), function ($file, $key, $iterator) {
++    return strpos($file->getPathname(), '/mnt/files/drupal_module/.dev/build/modules/drupal_module/.dev') !== 0;
++  }));
+   foreach ($dirs as $dir) {
+     if (strpos($dir->getPathname(), '.info.yml') !== FALSE) {
+       // Cut off ".info.yml" from the filename for use as the extension name. We

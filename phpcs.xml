@@ -1,12 +1,17 @@
 <?xml version="1.0"?>
 
-<ruleset name="Devportal module coding standards">
+<ruleset name="devportal_module_standards">
   <exclude-pattern>*/.git/*</exclude-pattern>
   <exclude-pattern>*/config/*</exclude-pattern>
   <exclude-pattern>*/css/*</exclude-pattern>
   <exclude-pattern>*/js/*</exclude-pattern>
   <exclude-pattern>\.md</exclude-pattern>
+  <!--  Prevent infinite recursion if PHPCS is running inside the container where the current folder is also mounted to
+ .dev/build/modules/drupal_module -->
+  <exclude-pattern>*/.dev/*</exclude-pattern>
 
   <rule ref="Drupal"/>
+
+  <rule ref="DrupalPractice"/>
 
 </ruleset>
