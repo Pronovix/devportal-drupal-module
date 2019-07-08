@@ -1,11 +1,11 @@
-# Files.
+# Exclude files and folders from the prefer-dist installs.
 .*                              export-ignore
-phpcs.xml.dist                  export-ignore
+phpcs.xml                       export-ignore
 
-# Folders.
 .github                         export-ignore
-.travis                         export-ignore
+.dev                            export-ignore
 tests                           export-ignore
+docs                            export-ignore
 
 # Drupal specific files should be identified & highlighted as PHP files on Github.
 *.module linguist-language=PHP

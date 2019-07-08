@@ -1,13 +1,22 @@
 {
-    "name": "drupal/devportal_module_tests",
-    "license": "GPL-2.0+",
+    "name": "pronovix/drupal-module-template-dev-test-env",
+    "description": "Pronovix Drupal module development and testing environment.",
     "type": "project",
-    "description": "Builds a test environment for the Devportal module.",
     "require": {
+        "bex/behat-screenshot": "^1.2",
         "bower-asset/swagger-ui": "^3.22",
         "composer/installers": "^1.6",
+        "consolidation/robo": "^1.4.0",
+        "cweagans/composer-patches": "^1.6.5",
+        "dealerdirect/phpcodesniffer-composer-installer": "^0.5.0",
         "drupal-composer/drupal-scaffold": "^2.6.1",
+        "drupal/admin_toolbar": "^1.27",
+        "drupal/config_devel": "^1.2",
+        "drupal/devel": "^2.0",
+        "drush/drush": "^9.0",
+        "nuvoleweb/robo-config": "^0.2.2",
         "oomphinc/composer-installers-extender": "^1.1",
+        "openeuropa/task-runner": "^0.8.0",
         "wikimedia/composer-merge-plugin": "dev-capture-input-options",
         "zaporylie/composer-drupal-optimizations": "^1.0"
     },
@@ -22,26 +31,23 @@
         },
         {
             "type": "vcs",
-            "_comment1": "We have to install it from here until this PR is open: https://github.com/wikimedia/composer-merge-plugin/pull/169.",
             "url": "https://github.com/mxr576/composer-merge-plugin",
             "no-api": true
         }
     ],
+    "_comment": [
+        "REQUIRE: wikimedia/composer-merge-plugin:dev-capture-input-options is required for highest-lowest testing. https://github.com/wikimedia/composer-merge-plugin/pull/169",
+        "REQUIRE: consolidation/robo:^1.4.0 constraint is required for lowest testing.",
+        "REQUIRE: nuvoleweb/robo-config:^0.2.2 constraint is required for lowest testing."
+    ],
     "config": {
         "sort-packages": true,
-        "optimize-autoloader": true,
-        "preferred-install": "dist"
+        "optimize-autoloader": true
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
     "extra": {
-        "merge-plugin": {
-            "include": [
-                "../composer.json"
-            ],
-            "merge-extra": true,
-            "merge-extra-deep": true
-        },
+        "enable-patching": true,
         "installer-types": ["npm-asset", "bower-asset"],
         "installer-paths": {
             "build/core": ["type:drupal-core"],
@@ -57,7 +63,18 @@
                 "type:bower-asset"
             ]
         },
-        "enable-patching": true,
+        "merge-plugin": {
+            "require": [
+                "../composer.json"
+            ],
+            "merge-extra": true,
+            "merge-extra-deep": true
+        },
+        "patches": {
+            "drupal/core": {
+                "Skip dev env from extension discovery in testing": "patches/drupal-skip-dev-env-from-extension-discovery-in-testing.patch"
+            }
+        },
         "patchLevel": {
             "drupal/core": "-p2"
         }

@@ -1,0 +1,10 @@
+# Overrides for Travis CI.
+version: "3"
+
+services:
+  php:
+    environment:
+      COMPOSER_HOME: "/mnt/files/composer"
+    volumes:
+      # Mount cached files by Composer from the host.
+      - $HOME/.composer:/mnt/files/composer
