@@ -29,10 +29,10 @@
 use Drupal\Core\Form\FormStateInterface;
 
 /**
- * Implements hook_form_alter().
+ * Implements hook_form_FORM_ID_alter().
  */
 function dp_faq_form_views_exposed_form_alter(array &$form, FormStateInterface $form_state, string $form_id): void {
-  if ($form["#id"] === 'views-exposed-form-devportal-faq-page-1') {
+  if ($form['#id'] === 'views-exposed-form-devportal-faq-page-1') {
     $form['#attached']['library'][] = 'dp_faq/faq';
   }
 }

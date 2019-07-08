@@ -19,7 +19,9 @@ abstract class ApiRefTestBase extends JavascriptTestBase {
   protected const VERSION_NAME = 'field_version[0][value]';
   protected const FILEFIELD_NAME = 'files[field_source_file_0]';
 
-
+  /**
+   * {@inheritdoc}
+   */
   protected static $modules = [
     'devportal_api_reference',
     'block',
