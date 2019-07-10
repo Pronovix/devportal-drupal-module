@@ -3,7 +3,7 @@
 namespace Drupal\devportal_api_reference\Plugin\Reference;
 
 /**
- * OpenApi 3 definition.
+ * OpenApi 3.0.x definition.
  *
  * @Reference(
  *   id = "openapi3",
@@ -25,7 +25,7 @@ class OpenApi3 extends OpenApi {
    * {@inheritdoc}
    */
   protected function isValid(\stdClass $data): bool {
-    return ($data->openapi ?? NULL) === '3.0.0';
+    return preg_match('/^3\.0\.[\d]+$/', ($data->openapi ?? '')) !== FALSE;
   }
 
 }

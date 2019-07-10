@@ -11,15 +11,34 @@ namespace Drupal\Tests\devportal_api_reference\FunctionalJavascript;
 class OpenApiUploadTest extends ApiRefTestBase {
 
   /**
-   * A simple file upload.
+   * Provides a list of files to upload.
+   *
+   * @return array
+   *   File list.
    */
-  public function testPetstoreUpload() {
+  public function uploadProvider(): array {
+    return [
+      '3.0.0' => ['petstore-openapi.yaml'],
+      '3.0.1' => ['petstore-openapi-3.0.1.yaml'],
+      '3.0.2' => ['petstore-openapi-3.0.2.yaml'],
+    ];
+  }
+
+  /**
+   * A simple file upload.
+   *
+   * @param string $filename
+   *   File to upload.
+   *
+   * @dataProvider uploadProvider
+   */
+  public function testPetstoreUpload(string $filename): void {
     $this->drupalLogin($this->rootUser);
 
     $this->drupalGet('node/add/api_reference');
     $this->createScreenshot(__FUNCTION__);
 
-    $this->uploadFile('petstore-openapi.yaml');
+    $this->uploadFile($filename);
 
     $this->submitForm([], 'Save');
     $this->createScreenshot(__FUNCTION__ . '_after_submit');
@@ -32,13 +51,13 @@ class OpenApiUploadTest extends ApiRefTestBase {
       ->getStorage('node')
       ->load(1);
     $version = $node->get('field_version')->getValue()[0]['value'];
-    $this->assertEquals('1.0.0', $version);
+    self::assertEquals('1.0.0', $version);
   }
 
   /**
    * Tests the propose mode.
    */
-  public function testPropose() {
+  public function testPropose(): void {
     $this->drupalLogin($this->rootUser);
     $session = $this->getSession();
 
@@ -87,7 +106,7 @@ class OpenApiUploadTest extends ApiRefTestBase {
   /**
    * Tests revision handling.
    */
-  public function testRevisions() {
+  public function testRevisions(): void {
     $this->drupalLogin($this->rootUser);
 
     $this->drupalGet('node/add/api_reference');
@@ -137,7 +156,7 @@ class OpenApiUploadTest extends ApiRefTestBase {
   /**
    * Tests the 'allow_version_duplication' setting.
    */
-  public function testVersionDuplication() {
+  public function testVersionDuplication(): void {
     $this->drupalLogin($this->rootUser);
     $this
       ->config('devportal_api_reference.settings')
@@ -164,7 +183,7 @@ class OpenApiUploadTest extends ApiRefTestBase {
   /**
    * Tests the default mode hidden setting.
    */
-  public function testDefaultModeSetting() {
+  public function testDefaultModeSetting(): void {
     $this->drupalLogin($this->rootUser);
     $this
       ->config('devportal_api_reference.settings')
