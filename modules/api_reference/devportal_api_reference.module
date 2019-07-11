@@ -82,7 +82,7 @@ function devportal_api_reference_api_reference_validate(array $form, FormStateIn
       list(, $version, , $doc, $type) = _devportal_api_reference_get_data_from_file($file->getFileUri());
 
       if (devportal_api_reference_check_api_version($node, $version)) {
-        \Drupal::messenger()->addError('This version has been added before.');
+        \Drupal::messenger()->addError('This version has been added before or missing.');
         $form_state->unsetValue('field_source_file');
         return;
       }
@@ -336,7 +336,7 @@ function _devportal_api_reference_get_data_from_file(string $uri): ?array {
  *
  * @param \Drupal\node\NodeInterface $node
  *   The API Reference node entity.
- * @param string $version
+ * @param string|null $version
  *   The API version to check.
  *
  * @return bool
@@ -346,9 +346,14 @@ function _devportal_api_reference_get_data_from_file(string $uri): ?array {
  * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
  * @throws \Exception
  */
-function devportal_api_reference_check_api_version(NodeInterface $node, string $version) {
+function devportal_api_reference_check_api_version(NodeInterface $node, ?string $version) {
   if (\Drupal::config('devportal_api_reference.settings')->get('allow_version_duplication')) {
     return FALSE;
+  }
+
+
+  if ($version === NULL) {
+    return TRUE;
   }
 
   $previous_files = devportal_api_reference_get_previous_files($node->id());
