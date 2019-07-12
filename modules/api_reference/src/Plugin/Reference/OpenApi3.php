@@ -25,7 +25,11 @@ class OpenApi3 extends OpenApi {
    * {@inheritdoc}
    */
   protected function isValid(\stdClass $data): bool {
-    return preg_match('/^3\.0\.[\d]+$/', ($data->openapi ?? '')) !== FALSE;
+    if ($data->openapi === NULL) {
+      return FALSE;
+    }
+
+    return preg_match('/^3\.0\.[\d]+$/', (string) $data->openapi) !== FALSE;
   }
 
 }

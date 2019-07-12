@@ -21,14 +21,14 @@ use Symfony\Component\HttpFoundation\Request;
  * @return array
  *   An array of node bundles.
  */
-function devportal_api_reference_bundles() {
+function devportal_api_reference_bundles(): array {
   return ['api_reference'];
 }
 
 /**
  * Implements hook_menu_links_discovered_alter().
  */
-function devportal_api_reference_menu_links_discovered_alter(&$links) {
+function devportal_api_reference_menu_links_discovered_alter(array &$links): void {
   // Add menu links for API Reference bundles.
   foreach (\Drupal::entityTypeManager()->getStorage('node_type')->loadMultiple() as $type) {
     if (in_array($type->id(), devportal_api_reference_bundles(), TRUE)) {
@@ -45,7 +45,7 @@ function devportal_api_reference_menu_links_discovered_alter(&$links) {
       $links["entity.api_ref.configuration.{$type->id()}"] = [
         'title' => $type->label(),
         'parent' => 'system.admin_devportal_config',
-        'description' => t("Manage %type configuration.", ['%type' => $type->label()]),
+        'description' => t('Manage %type configuration.', ['%type' => $type->label()]),
         'route_name' => 'entity.node_type.edit_form',
         'route_parameters' => [
           'node_type' => $type->id(),
@@ -58,7 +58,7 @@ function devportal_api_reference_menu_links_discovered_alter(&$links) {
 /**
  * Implements hook_form_FORM_ID_alter().
  */
-function devportal_api_reference_form_node_api_reference_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+function devportal_api_reference_form_node_api_reference_form_alter(array &$form, FormStateInterface $form_state, string $form_id): void {
   _devportal_api_reference_allow_skip_upload_on_node_form($form, $form_state, TRUE);
 }
 
@@ -70,16 +70,21 @@ function devportal_api_reference_form_node_api_reference_form_alter(&$form, Form
  * @param Drupal\Core\Form\FormStateInterface $form_state
  *   The form_state object.
  */
-function devportal_api_reference_api_reference_validate(array $form, FormStateInterface $form_state) {
+function devportal_api_reference_api_reference_validate(array $form, FormStateInterface $form_state): void {
   /** @var \Drupal\node\Entity\Node $node */
   $node = $form_state->getFormObject()->getEntity();
 
   $source = $form_state->getValue('field_source_file');
   try {
-    if (($fid = ($source[0]["fids"][0] ?? NULL))) {
+    if ($fid = ($source[0]['fids'][0] ?? NULL)) {
       $file = File::load($fid);
+      if (!$file) {
+        \Drupal::messenger()->addError('An error occoured while saving the file.');
+        $form_state->unsetValue('field_source_file');
+        return;
+      }
       /** @var \Drupal\devportal_api_reference\ReferenceInterface $type */
-      list(, $version, , $doc, $type) = _devportal_api_reference_get_data_from_file($file->getFileUri());
+      [, $version, , $doc, $type] = _devportal_api_reference_get_data_from_file($file->getFileUri());
 
       if (devportal_api_reference_check_api_version($node, $version)) {
         \Drupal::messenger()->addError('This version has been added before or missing.');
@@ -93,9 +98,9 @@ function devportal_api_reference_api_reference_validate(array $form, FormStateIn
         $form_state->setValue($field_name, $value);
       }
     }
-    elseif (($oldfids = ($form_state->get('field_source_file_tmp')["fids"][0] ?? NULL))) {
+    elseif ($oldfids = ($form_state->get('field_source_file_tmp')['fids'][0] ?? NULL)) {
       // If no source file was uploaded use the last uploaded source file.
-      $source[0]["fids"][0] = $oldfids;
+      $source[0]['fids'][0] = $oldfids;
       $form_state->setValue('field_source_file', $source);
     }
   }
@@ -108,7 +113,7 @@ function devportal_api_reference_api_reference_validate(array $form, FormStateIn
 /**
  * Implements hook_devportal_api_reference_fields().
  */
-function devportal_api_reference_devportal_api_reference_fields(ReferenceInterface $type, \stdClass $doc, FileInterface $file, ?Request $request = NULL) {
+function devportal_api_reference_devportal_api_reference_fields(ReferenceInterface $type, \stdClass $doc, FileInterface $file, ?Request $request = NULL): array {
   $description = (string) $type->getDescription($doc);
   return [
     'title' => [['value' => (string) $type->getTitle($doc)]],
@@ -133,14 +138,14 @@ function devportal_api_reference_devportal_api_reference_fields(ReferenceInterfa
  * @param \Drupal\Core\Form\FormStateInterface $form_state
  *   Form state object.
  */
-function devportal_api_reference_api_reference_submit(array $form, FormStateInterface $form_state) {
+function devportal_api_reference_api_reference_submit(array $form, FormStateInterface $form_state): void {
   $key = ['revision_log', 0, 'value'];
 
   $source = $form_state->getValue('field_source_file');
   if (($fid = ($source[0]['fids'][0] ?? NULL)) && $form_state->getValue('revision')) {
     /** @var \Drupal\file\Entity\File $file */
     $file = File::load($fid);
-    list(, $version,) = _devportal_api_reference_get_data_from_file($file->getFileUri());
+    [, $version] = _devportal_api_reference_get_data_from_file($file->getFileUri());
     $message = $form_state->getValue($key);
     $message .= ($message ? PHP_EOL . PHP_EOL : '') . t('Version: @version', [
       '@version' => $version,
@@ -152,7 +157,7 @@ function devportal_api_reference_api_reference_submit(array $form, FormStateInte
 /**
  * Implements hook_form_FORM_ID_alter().
  */
-function devportal_api_reference_form_node_api_reference_edit_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+function devportal_api_reference_form_node_api_reference_edit_form_alter(array &$form, FormStateInterface $form_state, string $form_id): void {
   _devportal_api_reference_allow_skip_upload_on_node_form($form, $form_state, FALSE);
 
   /** @var \Drupal\node\Entity\Node $node */
@@ -164,8 +169,8 @@ function devportal_api_reference_form_node_api_reference_edit_form_alter(&$form,
   // will have an object assigned to it. By default set the default_value to
   // NULL.
   if ($form_state->getTriggeringElement() === NULL) {
-    $form_state->set('field_source_file_tmp', $form["field_source_file"]["widget"][0]["#default_value"]);
-    $form["field_source_file"]["widget"][0]["#default_value"] = NULL;
+    $form_state->set('field_source_file_tmp', $form['field_source_file']['widget'][0]['#default_value']);
+    $form['field_source_file']['widget'][0]['#default_value'] = NULL;
   }
 
   // Get the revisions of this node, and create an array of the files contained
@@ -184,7 +189,7 @@ function devportal_api_reference_form_node_api_reference_edit_form_alter(&$form,
   ];
   /** @var \Drupal\file\FileInterface $file */
   foreach ($previous_files as $file) {
-    list(, $version,) = _devportal_api_reference_get_data_from_file($file->getFileUri());
+    [, $version] = _devportal_api_reference_get_data_from_file($file->getFileUri());
     $form['previous_files'][] = [
       '#theme' => 'file_link',
       '#file' => $file,
@@ -206,7 +211,7 @@ function devportal_api_reference_form_node_api_reference_edit_form_alter(&$form,
  * @param bool $is_new
  *   TRUE if the node is new, FALSE otherwise.
  */
-function _devportal_api_reference_allow_skip_upload_on_node_form(array &$form, FormStateInterface $form_state, bool $is_new) {
+function _devportal_api_reference_allow_skip_upload_on_node_form(array &$form, FormStateInterface $form_state, bool $is_new): void {
   array_unshift($form['#validate'], 'devportal_api_reference_api_reference_validate');
   array_unshift($form['actions']['submit']['#submit'], 'devportal_api_reference_api_reference_submit');
   $form['#prefix'] = '<div id="api-reference-node">';
@@ -297,7 +302,7 @@ function _devportal_api_reference_node_form_callback(array &$form, FormStateInte
  * @param \Drupal\Core\Form\FormStateInterface $form_state
  *   Form state object.
  */
-function _devportal_api_reference_node_form_submit(array &$form, FormStateInterface $form_state) {
+function _devportal_api_reference_node_form_submit(array &$form, FormStateInterface $form_state): void {
   $form_state->setRebuild(TRUE);
 }
 
@@ -346,11 +351,10 @@ function _devportal_api_reference_get_data_from_file(string $uri): ?array {
  * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
  * @throws \Exception
  */
-function devportal_api_reference_check_api_version(NodeInterface $node, ?string $version) {
+function devportal_api_reference_check_api_version(NodeInterface $node, ?string $version): bool {
   if (\Drupal::config('devportal_api_reference.settings')->get('allow_version_duplication')) {
     return FALSE;
   }
-
 
   if ($version === NULL) {
     return TRUE;
@@ -358,7 +362,7 @@ function devportal_api_reference_check_api_version(NodeInterface $node, ?string 
 
   $previous_files = devportal_api_reference_get_previous_files($node->id());
   foreach ($previous_files as $file) {
-    list(, $previous_version,) = _devportal_api_reference_get_data_from_file($file->getFileUri());
+    [, $previous_version] = _devportal_api_reference_get_data_from_file($file->getFileUri());
     if ($version === $previous_version) {
       return TRUE;
     }
@@ -369,7 +373,7 @@ function devportal_api_reference_check_api_version(NodeInterface $node, ?string 
 /**
  * Returns the files previously added to the node.
  *
- * @param int $nid
+ * @param int|null $nid
  *   The node ID.
  *
  * @return array
@@ -377,7 +381,11 @@ function devportal_api_reference_check_api_version(NodeInterface $node, ?string 
  *
  * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
  */
-function devportal_api_reference_get_previous_files($nid) {
+function devportal_api_reference_get_previous_files(?int $nid): array {
+  if ($nid === NULL) {
+    return [];
+  }
+
   $previous_files = [];
 
   $query = \Drupal::entityQuery('node');
@@ -386,14 +394,14 @@ function devportal_api_reference_get_previous_files($nid) {
     ->allRevisions()
     ->execute();
 
-  foreach ($revision_ids as $vid => $nid) {
+  foreach (array_keys($revision_ids) as $vid) {
     /** @var \Drupal\node\NodeInterface $revision */
     $revision = \Drupal::entityTypeManager()
       ->getStorage('node')
       ->loadRevision($vid);
     $source = $revision->get('field_source_file')->getValue();
     if (!empty($source)) {
-      $previous_files[] = File::load($source[0]["target_id"]);
+      $previous_files[] = File::load($source[0]['target_id']);
     }
   }
 
@@ -414,12 +422,12 @@ function devportal_api_reference_get_previous_files($nid) {
  * @return array
  *   Returns an array of unique objects.
  */
-function devportal_api_reference_get_unique_files(array $array) {
+function devportal_api_reference_get_unique_files(array $array): array {
   $duplicate_keys = [];
   $tmp = [];
   foreach ($array as $key => $val) {
     $uri = $val->getFileUri();
-    if (!in_array($uri, $tmp) && file_exists($uri)) {
+    if (!in_array($uri, $tmp, TRUE) && file_exists($uri)) {
       $tmp[] = $uri;
     }
     else {
@@ -435,7 +443,7 @@ function devportal_api_reference_get_unique_files(array $array) {
 /**
  * Implements hook_ENTITY_TYPE_presave().
  */
-function devportal_api_reference_node_presave(ContentEntityInterface $entity) {
+function devportal_api_reference_node_presave(ContentEntityInterface $entity): void {
   if ($entity->bundle() === 'api_reference') {
     // Force set revision_translation_affected column in node_field_revision
     // table to TRUE, so that all revisions in the database will be viewable on
