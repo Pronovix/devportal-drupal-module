@@ -3,14 +3,14 @@
 namespace Drupal\Tests\devportal_api_reference\FunctionalJavascript;
 
 use Drupal\FunctionalJavascriptTests\DrupalSelenium2Driver;
-use Drupal\FunctionalJavascriptTests\JavascriptTestBase;
+use Drupal\FunctionalJavascriptTests\WebDriverTestBase;
 use Drupal\Tests\file\Functional\FileFieldCreationTrait;
 use Drupal\Tests\TestFileCreationTrait;
 
 /**
  * Base class for API Reference tests.
  */
-abstract class ApiRefTestBase extends JavascriptTestBase {
+abstract class ApiRefTestBase extends WebDriverTestBase {
 
   use FileFieldCreationTrait;
   use TestFileCreationTrait;
