@@ -24,7 +24,7 @@ class APIRefBundleAccessCheck implements AccessInterface {
    *   A \Drupal\Core\Access\AccessInterface constant value.
    */
   public function access(AccountInterface $account, NodeInterface $node = NULL) {
-    if (in_array($node->bundle(), devportal_api_reference_bundles(), TRUE)) {
+    if (in_array($node->bundle(), DEVPORTAL_API_REFERENCE_BUNDLES, TRUE)) {
       return AccessResult::allowed();
     }
     // No opinion.

@@ -17,41 +17,34 @@ use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Provides the list of API Reference related node bundles.
- *
- * @return array
- *   An array of node bundles.
  */
-function devportal_api_reference_bundles(): array {
-  return ['api_reference'];
-}
+const DEVPORTAL_API_REFERENCE_BUNDLES = ['api_reference'];
 
 /**
  * Implements hook_menu_links_discovered_alter().
  */
 function devportal_api_reference_menu_links_discovered_alter(array &$links): void {
   // Add menu links for API Reference bundles.
-  foreach (\Drupal::entityTypeManager()->getStorage('node_type')->loadMultiple() as $type) {
-    if (in_array($type->id(), devportal_api_reference_bundles(), TRUE)) {
-      // Menu link for node add form.
-      $links["entity.api_ref.add.{$type->id()}"] = [
-        'title' => t('Add @type', ['@type' => $type->label()]),
-        'parent' => 'entity.api_ref.collection',
-        'route_name' => 'node.add',
-        'route_parameters' => [
-          'node_type' => $type->id(),
-        ],
-      ];
-      // Menu link for node bundle configuration.
-      $links["entity.api_ref.configuration.{$type->id()}"] = [
-        'title' => $type->label(),
-        'parent' => 'system.admin_devportal_config',
-        'description' => t('Manage %type configuration.', ['%type' => $type->label()]),
-        'route_name' => 'entity.node_type.edit_form',
-        'route_parameters' => [
-          'node_type' => $type->id(),
-        ],
-      ];
-    }
+  foreach (\Drupal::entityTypeManager()->getStorage('node_type')->loadMultiple(DEVPORTAL_API_REFERENCE_BUNDLES) as $type) {
+    // Menu link for node add form.
+    $links["entity.api_ref.add.{$type->id()}"] = [
+      'title' => t('Add @type', ['@type' => $type->label()]),
+      'parent' => 'entity.api_ref.collection',
+      'route_name' => 'node.add',
+      'route_parameters' => [
+        'node_type' => $type->id(),
+      ],
+    ];
+    // Menu link for node bundle configuration.
+    $links["entity.api_ref.configuration.{$type->id()}"] = [
+      'title' => $type->label(),
+      'parent' => 'system.admin_devportal_config',
+      'description' => t('Manage %type configuration.', ['%type' => $type->label()]),
+      'route_name' => 'entity.node_type.edit_form',
+      'route_parameters' => [
+        'node_type' => $type->id(),
+      ],
+    ];
   }
 }
 
@@ -105,6 +98,7 @@ function devportal_api_reference_api_reference_validate(array $form, FormStateIn
     }
   }
   catch (\Exception $e) {
+    watchdog_exception('devportal_api_reference', $e);
     \Drupal::messenger()->addError($e->getMessage());
     $form_state->setValue('field_source_file', []);
   }

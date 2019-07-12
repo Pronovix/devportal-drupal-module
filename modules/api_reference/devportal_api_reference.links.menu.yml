@@ -1,6 +1,6 @@
 entity.api_ref.collection:
   title: API References
-  route_name: view.devportal_api_reference.page_1
+  route_name: view.devportal_api_reference.admin_api_reference_list
   description: List API References.
   parent: system.admin_devportal
   weight: -5

@@ -5,11 +5,12 @@ namespace Drupal\devportal_api_reference\Plugin\Reference;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\devportal_api_reference\Exception\InvalidArgumentException;
+use Drupal\devportal_api_reference\Exception\ParseException;
 use Drupal\devportal_api_reference\Plugin\OpenApiValidationException;
 use JsonSchema\Validator;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -115,7 +116,19 @@ abstract class OpenApi extends ReferenceBase implements ContainerFactoryPluginIn
   abstract protected function isValid(\stdClass $data): bool;
 
   /**
-   * {@inheritdoc}
+   * Parses an OpenAPI file.
+   *
+   * @param string $file_path
+   *   The file path.
+   *
+   * @return object|null
+   *   The OpenAPI object or null.
+   *
+   * @throws \Exception
+   * @throws \Drupal\devportal_api_reference\Exception\ParseException
+   *   Thrown when the yaml or json file can not be parsed.
+   * @throws \Drupal\devportal_api_reference\Exception\InvalidArgumentException
+   *   Thrown when the source file extension is not yaml or json.
    */
   public function parse(string $file_path): ?\stdClass {
     $cid = $file_path . ':' . md5_file($file_path);
@@ -141,17 +154,17 @@ abstract class OpenApi extends ReferenceBase implements ContainerFactoryPluginIn
         $openapi = Yaml::parse($input, Yaml::PARSE_OBJECT | Yaml::PARSE_OBJECT_FOR_MAP);
       }
       catch (ParseException $e) {
-        throw new \Exception("Can not parse YAML source file ({$file_path}). {$e->getMessage()}", 0, $e);
+        throw ParseException::yamlParseError($file_path, $e->getMessage(), $e);
       }
     }
     elseif ($file_ext === 'json') {
       $openapi = json_decode($input, FALSE);
       if ($openapi === NULL) {
-        throw new \Exception("The JSON source file ({$file_path}) cannot be decoded (possible syntax error) or the encoded data is deeper then the recursion limit (512).");
+        throw ParseException::jsonParseError($file_path, json_last_error_msg(), json_last_error());
       }
     }
     else {
-      throw new \Exception("Unsupported source file extension: {$file_ext}. Please use YAML or JSON source.");
+      throw new InvalidArgumentException("Unsupported source file extension: {$file_ext}. Please use YAML or JSON source.");
     }
 
     if (!$this->isValid($openapi)) {
