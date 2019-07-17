@@ -8,7 +8,7 @@
         "drupal/core": "^8.7",
         "drupal/swagger_ui_formatter": "^2.3",
         "drupal/views_accordion": "^1.2",
-        "erusev/parsedown": "^1.6.3",
+        "erusev/parsedown": "^1.7.0",
         "justinrainbow/json-schema": "^5.2"
     },
     "require-dev": {
