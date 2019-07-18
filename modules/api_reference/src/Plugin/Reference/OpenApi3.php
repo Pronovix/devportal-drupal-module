@@ -25,7 +25,7 @@ class OpenApi3 extends OpenApi {
    * {@inheritdoc}
    */
   protected function isValid(\stdClass $data): bool {
-    if ($data->openapi === NULL) {
+    if (!isset($data->openapi)) {
       return FALSE;
     }
 
