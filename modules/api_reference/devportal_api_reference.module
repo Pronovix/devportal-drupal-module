@@ -80,7 +80,7 @@ function devportal_api_reference_api_reference_validate(array $form, FormStateIn
       $file = File::load($fid);
       if (!$file) {
         \Drupal::messenger()->addError('An error occoured while saving the file.');
-        $form_state->unsetValue('field_source_file');
+        $form_state->setValue('field_source_file', []);
         return;
       }
       /** @var \Drupal\devportal_api_reference\ReferenceInterface $type */
@@ -88,7 +88,7 @@ function devportal_api_reference_api_reference_validate(array $form, FormStateIn
 
       if (devportal_api_reference_check_api_version($node, $version)) {
         \Drupal::messenger()->addError('This version has been added before or missing.');
-        $form_state->unsetValue('field_source_file');
+        $form_state->setValue('field_source_file', []);
         return;
       }
 
@@ -106,7 +106,7 @@ function devportal_api_reference_api_reference_validate(array $form, FormStateIn
   }
   catch (\Exception $e) {
     \Drupal::messenger()->addError($e->getMessage());
-    $form_state->unsetValue('field_source_file');
+    $form_state->setValue('field_source_file', []);
   }
 }
 
