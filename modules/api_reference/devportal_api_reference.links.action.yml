@@ -4,4 +4,4 @@ api_ref.add_page:
     node_type: api_reference
   title: 'Add API Reference'
   appears_on:
-    - view.devportal_api_reference.page_1
+    - view.devportal_api_reference.admin_api_reference_list

@@ -7,6 +7,7 @@
 
 use Drupal\file\Entity\File;
 use Drupal\filter\Entity\FilterFormat;
+use Drupal\views\Entity\View;
 
 const API_REFERENCE_FIELD_CHECK_ALLOW_REQUIRED = ['title'];
 
@@ -45,12 +46,15 @@ function devportal_api_reference_requirements(string $phase): array {
   /** @var \Drupal\Core\Entity\EntityFieldManagerInterface $field_manager */
   $field_manager = \Drupal::service('entity_field.manager');
 
-  /** @var \Drupal\Core\Field\FieldDefinitionInterface[] $definitions */
-  $definitions = $field_manager->getFieldDefinitions('node', 'api_reference');
+  /** @var \Drupal\Core\Field\FieldDefinitionInterface[] $field_definitions */
+  $field_definitions = $field_manager->getFieldDefinitions('node', 'api_reference');
 
   /** @var \Drupal\devportal_api_reference\ReferenceTypeManager $reference_manager */
   $reference_manager = \Drupal::service('plugin.manager.reference');
 
+  // The devportal_api_reference_fields hook take out the value of the fields
+  // from the submitted file. $fields is the array of the fields of an empty API
+  // Reference content type.
   $fields = \Drupal::moduleHandler()->invokeAll(
     'devportal_api_reference_fields', [
       $reference_manager->createInstance('empty'),
@@ -59,23 +63,33 @@ function devportal_api_reference_requirements(string $phase): array {
       NULL,
     ]);
 
+  // Loop through the field definitions of the API Reference content type to check
+  // whether it has required fields or not. If a field is required then the label
+  // of the required field will be the next value of the $required_fields array.
   $required_fields = [];
-  foreach ($definitions as $definition) {
+  foreach ($field_definitions as $field_definition) {
+    // If the field definition is the Title then skip it, because it is the only
+    // required field.
     // On whitelist, will be ignored anyway.
-    if (in_array($definition->getName(), API_REFERENCE_FIELD_CHECK_ALLOW_REQUIRED)) {
+    if (in_array($field_definition->getName(), API_REFERENCE_FIELD_CHECK_ALLOW_REQUIRED)) {
       continue;
     }
 
-    // Not used by the api reference module.
-    if (!in_array($definition->getName(), array_keys($fields))) {
+    // If the field definition isn't amongst the fields of the API Reference
+    // content type, so it isn't used by the api reference module then skip it.
+    if (!in_array($field_definition->getName(), array_keys($fields))) {
       continue;
     }
 
-    if ($definition->isRequired()) {
-      $required_fields[] = $definition->getLabel();
+    // If the field definition is required then put its label to the
+    // $required_fields array.
+    if ($field_definition->isRequired()) {
+      $required_fields[] = $field_definition->getLabel();
     }
   }
 
+  // The API Reference content type can't have required fields, because of the
+  // 'Fill in the values manually' option.
   $ok = count($required_fields) === 0;
   $requirements['devportal_api_reference_required'] = [
     'title' => t('API Reference fields are not required.'),
@@ -150,4 +164,31 @@ function devportal_api_reference_update_8001(): ?string {
     watchdog_exception('devportal_api_reference', $e);
   }
   return t('Swagger UI enabled for API Reference nodes.');
+}
+
+/**
+ * Change machine name of the display of the Devportal API Reference view.
+ */
+function devportal_api_reference_update_8002(): ?string {
+  $database = \Drupal::database();
+  // Start a DB transaction in order to have some hopefully meaningful rollback
+  // option if anything goes wrong.
+  $transaction = $database->startTransaction();
+  try {
+    $view = View::load('devportal_api_reference');
+    // Rename page_1 display to admin_api_reference_list.
+    $displays = $view->get('display');
+    $displays['admin_api_reference_list'] = $displays['page_1'];
+    unset($displays['page_1']);
+    $displays['admin_api_reference_list']['id'] = 'admin_api_reference_list';
+    $view->set('display', $displays);
+    $view->save();
+  }
+  catch (Exception $e) {
+    // Catch any exceptions that are thrown.
+    $transaction->rollBack();
+    \Drupal::messenger()->addError($e->getMessage());
+    watchdog_exception('devportal_api_reference', $e);
+  }
+  return t('Fixed machine name of the display of the Devportal API Reference view.');
 }
