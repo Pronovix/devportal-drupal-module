@@ -2,14 +2,29 @@
 
 namespace Drupal\guides\Controller;
 
+/**
+ * Copyright (C) 2019 PRONOVIX GROUP BVBA.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301,
+ * USA.
+ */
+
 use Drupal\Core\Controller\ControllerBase;
-use Drupal\Core\Link;
-use Drupal\Core\Routing\RouteMatchInterface;
-use Drupal\Core\Site\Settings;
-use Drupal\Core\Url;
+use Drupal\guides\GuidesStorageInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Parsedown;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Drupal\guides\guidesStorage;
 
 /**
  * User guide page.
@@ -17,28 +32,28 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class GuidesController extends ControllerBase {
 
   /**
-   * The current route match.
+   * The guides storage.
    *
-   * @var \Drupal\Core\Routing\RouteMatchInterface
+   * @var \Drupal\guides\GuidesStorageInterface
    */
-  protected $routeMatch;
+  protected $guidesStorage;
 
   /**
-   * Creates a new HelpController.
+   * Creates a new GuidesController.
    *
-   * @param \Drupal\Core\Routing\RouteMatchInterface $route_match
-   *   The current route match.
+   * @param \Drupal\guides\GuidesStorageInterface $guides_storage
+   *   The guides storage.
    */
-  public function __construct(RouteMatchInterface $route_match) {
-    $this->routeMatch = $route_match;
+  public function __construct(GuidesStorageInterface $guides_storage) {
+    $this->guidesStorage = $guides_storage;
   }
 
   /**
    * {@inheritdoc}
    */
-  public static function create(ContainerInterface $container) {
+  public static function create(ContainerInterface $container): self {
     return new static(
-      $container->get('current_route_match')
+      $container->get('guides.guides_storage')
     );
   }
 
@@ -48,26 +63,11 @@ class GuidesController extends ControllerBase {
    * @return array
    *   Render array.
    */
-  public function listGuides() {
-    $guides = [];
-    $guides_dir = DRUPAL_ROOT . (Settings::get('guides_dir') ?? '/guides');
+  public function listGuides(): array {
+    // Get the links of the files.
+    $guides = $this->guidesStorage->getLinks();
 
-    foreach (array_diff(scandir($guides_dir), ['..', '.']) as $guide_dir) {
-      $dir = $guides_dir . '/' . $guide_dir;
-      if (is_dir($dir)) {
-        foreach (glob($dir . '/*.md') as $md) {
-          if (file_exists($md)) {
-            $parts = pathinfo($md);
-            $link = Url::fromRoute('guides.guide', ['filename' => $parts['filename']]);
-            $link = Link::fromTextAndUrl(str_replace('_', ' ', $guide_dir), $link)->toString();
-            $guides[] = [
-              '#markup' => $link,
-            ];
-          }
-        }
-      }
-    }
-
+    // If the guides array isn't empty, return its content as item list.
     if (!empty($guides)) {
       return [
         '#theme' => 'item_list',
@@ -76,7 +76,9 @@ class GuidesController extends ControllerBase {
     }
     else {
       return [
-        '#markup' => $this->t('<strong>@text</strong>', ['@text' => 'No guides found.']),
+        '#type' => 'html_tag',
+        '#tag' => 'h2',
+        '#value' => $this->t('No guides found.'),
       ];
     }
   }
@@ -84,32 +86,19 @@ class GuidesController extends ControllerBase {
   /**
    * Page callback that renders a markdown file on the UI.
    *
+   * @param string $path
+   *   The relative path of the guides file without extension.
+   *
    * @return array
    *   Render array.
+   *
+   * @throws \Drupal\guides\Exception\FileNotFoundException
+   *   Thrown when no guide file is found.
    */
-  public function guideContent($filename) {
-    $guides_dir = Settings::get('guides_dir') ?? '/guides';
-    $target = [
-      'dir' => FALSE,
-      'file' => FALSE,
-    ];
-
-    foreach (array_diff(scandir(DRUPAL_ROOT . $guides_dir), ['..', '.']) as $guide_dir) {
-      $dir = DRUPAL_ROOT . $guides_dir . '/' . $guide_dir;
-      $file = $dir . '/' . $filename . '.md';
-      if (file_exists($file)) {
-        $target['dir'] = $guides_dir . '/' . $guide_dir;
-        $target['file'] = $file;
-        break;
-      }
-    }
-
-    if (!$target['file']) {
-      throw new NotFoundHttpException();
-    }
-
-    $md = new Parsedown();
-    $md = $md->text(str_replace('@guide_path', $target['dir'], file_get_contents($target['file'])));
+  public function guideContent(string $path): array {
+    // Parses the guide file.
+    $md = new \Parsedown();
+    $md = $md->text($this->guidesStorage->getFileContent(str_replace(guidesStorage::GUIDES_SEPARATOR, '/', $path)));
 
     return [
       '#markup' => $md,
