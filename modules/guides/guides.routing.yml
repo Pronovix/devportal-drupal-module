@@ -7,8 +7,8 @@ guides.list:
     _permission: 'access guides'
 
 guides.guide:
-  path: '/admin/guides/{filename}'
+  path: '/admin/guides/{subdirectory}/{filename}'
   defaults:
     _controller: '\Drupal\guides\Controller\GuidesController::guideContent'
   requirements:
-    _permission: 'access guides'
+    _guides_access: 'TRUE'
