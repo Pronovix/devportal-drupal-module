@@ -55,7 +55,7 @@ interface ReferenceInterface extends PluginInspectionInterface {
    * @throws \Exception
    *   Thrown on validation failure.
    */
-  public function validate(\stdClass $content);
+  public function validate(\stdClass $content): void;
 
   /**
    * Returns the title of the API reference.

@@ -71,13 +71,13 @@ function devportal_api_reference_requirements(string $phase): array {
     // If the field definition is the Title then skip it, because it is the only
     // required field.
     // On whitelist, will be ignored anyway.
-    if (in_array($field_definition->getName(), API_REFERENCE_FIELD_CHECK_ALLOW_REQUIRED)) {
+    if (in_array($field_definition->getName(), API_REFERENCE_FIELD_CHECK_ALLOW_REQUIRED, TRUE)) {
       continue;
     }
 
     // If the field definition isn't amongst the fields of the API Reference
     // content type, so it isn't used by the api reference module then skip it.
-    if (!in_array($field_definition->getName(), array_keys($fields))) {
+    if (!array_key_exists($field_definition->getName(), $fields)) {
       continue;
     }
 
@@ -146,10 +146,10 @@ function devportal_api_reference_update_8001(): ?string {
     $view_config->set('content', $view_config_content);
     // Update dependencies.
     $dependencies = $view_config->get('dependencies');
-    if (!in_array('swagger_ui_formatter', $dependencies['module'])) {
+    if (!in_array('swagger_ui_formatter', $dependencies['module'], TRUE)) {
       $dependencies['module'][] = 'swagger_ui_formatter';
     }
-    $key = array_search('file', $dependencies['module']);
+    $key = array_search('file', $dependencies['module'], TRUE);
     if ($key !== FALSE) {
       unset($dependencies['module'][$key]);
     }
@@ -174,21 +174,26 @@ function devportal_api_reference_update_8002(): ?string {
   // Start a DB transaction in order to have some hopefully meaningful rollback
   // option if anything goes wrong.
   $transaction = $database->startTransaction();
+  $view_id = 'devportal_api_reference';
   try {
-    $view = View::load('devportal_api_reference');
-    // Rename page_1 display to admin_api_reference_list.
-    $displays = $view->get('display');
-    $displays['admin_api_reference_list'] = $displays['page_1'];
-    unset($displays['page_1']);
-    $displays['admin_api_reference_list']['id'] = 'admin_api_reference_list';
-    $view->set('display', $displays);
-    $view->save();
+    if ($view = View::load($view_id)) {
+      // Rename page_1 display to admin_api_reference_list.
+      $displays = $view->get('display');
+      $displays['admin_api_reference_list'] = $displays['page_1'];
+      unset($displays['page_1']);
+      $displays['admin_api_reference_list']['id'] = 'admin_api_reference_list';
+      $view->set('display', $displays);
+      $view->save();
+    }
+    else {
+      throw new Exception("View not found: {$view_id}");
+    }
   }
   catch (Exception $e) {
     // Catch any exceptions that are thrown.
     $transaction->rollBack();
     \Drupal::messenger()->addError($e->getMessage());
-    watchdog_exception('devportal_api_reference', $e);
+    watchdog_exception($view_id, $e);
   }
   return t('Fixed machine name of the display of the Devportal API Reference view.');
 }

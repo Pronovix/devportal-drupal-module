@@ -32,9 +32,9 @@ class ReferenceTypeManager extends DefaultPluginManager {
   /**
    * {@inheritdoc}
    */
-  protected function findDefinitions() {
+  protected function findDefinitions(): array {
     $definitions = parent::findDefinitions();
-    uasort($definitions, function (array $def0, array $def1): int {
+    uasort($definitions, static function (array $def0, array $def1): int {
       return ($def0['weight'] ?? 0) <=> ($def1['weight'] ?? 0);
     });
 
@@ -58,7 +58,7 @@ class ReferenceTypeManager extends DefaultPluginManager {
     $instances = [];
     foreach ($definitions as $name => $definition) {
       $extensions = $definition['extensions'] ?? [];
-      if (!in_array($extension, $extensions)) {
+      if (!in_array($extension, $extensions, TRUE)) {
         continue;
       }
 
