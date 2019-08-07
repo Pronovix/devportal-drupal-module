@@ -9,7 +9,9 @@
         "drupal/swagger_ui_formatter": "^2.3",
         "drupal/views_accordion": "^1.2",
         "erusev/parsedown": "^1.7.0",
-        "justinrainbow/json-schema": "^5.2"
+        "justinrainbow/json-schema": "^5.2",
+        "symfony/yaml": "^3.4.31",
+        "myclabs/deep-copy": "^1.9"
     },
     "require-dev": {
         "behat/mink": "dev-master#153e4bb",

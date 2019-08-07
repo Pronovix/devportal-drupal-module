@@ -2,7 +2,6 @@
 
 namespace Drupal\devportal_api_reference\Plugin\Reference;
 
-use Drupal\Core\Cache\Cache;
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\devportal_api_reference\Exception\InvalidArgumentException;
@@ -12,6 +11,7 @@ use JsonSchema\Validator;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Yaml\Yaml;
+use function DeepCopy\deep_copy;
 
 /**
  * Base class for OpenAPI references.
@@ -176,7 +176,7 @@ abstract class OpenApi extends ReferenceBase implements ContainerFactoryPluginIn
     $this->cache->set($cid, [
       'object' => $openapi,
       'plugin' => $this->getPluginId(),
-    ], Cache::PERMANENT);
+    ]);
 
     return $openapi;
   }
@@ -184,8 +184,10 @@ abstract class OpenApi extends ReferenceBase implements ContainerFactoryPluginIn
   /**
    * {@inheritdoc}
    */
-  public function validate(\stdClass $content) {
+  public function validate(\stdClass $content): void {
     $validator = new Validator();
+    $content = deep_copy($content);
+    $this->fixPatterns('', $content);
     $validator->validate($content, (object) [
       '$ref' => 'file://' . ($_SERVER['DOCUMENT_ROOT'] ?: getcwd()) . '/' . $this->getSchema(),
     ]);
@@ -193,6 +195,53 @@ abstract class OpenApi extends ReferenceBase implements ContainerFactoryPluginIn
       $errors = $validator->getErrors();
       throw OpenApiValidationException::fromErrors($errors);
     }
+  }
+
+  /**
+   * Fixes values in the 'pattern' key in an OpenApi structure.
+   *
+   * @param string $key
+   *   Key of the current value, empty string for root.
+   * @param mixed $val
+   *   Current value.
+   */
+  private function fixPatterns(string $key, &$val): void {
+    if (is_object($val) || is_array($val)) {
+      foreach ($val as $k => &$v) {
+        $this->fixPatterns($k, $v);
+      }
+    }
+    elseif ($key === 'pattern') {
+      $val = static::fixRegex($val);
+    }
+  }
+
+  /**
+   * Fixes the regex so json-schema can validate it.
+   *
+   * Currently all it does is escape `/` that is not escaped and not the first
+   * character of the regex.
+   *
+   * @param string $str
+   *   Input regex string.
+   *
+   * @return string
+   *   Fixed regex.
+   */
+  private static function fixRegex(string $str): string {
+    $output = '';
+
+    $escaped = FALSE;
+    for ($i = 0, $max = mb_strlen($str); $i < $max; $i++) {
+      $char = $str[$i];
+      if ($char === '/' && !$escaped && $i > 0) {
+        $output .= '\\';
+      }
+      $escaped = $char === '\\';
+      $output .= $char;
+    }
+
+    return $output;
   }
 
 }
