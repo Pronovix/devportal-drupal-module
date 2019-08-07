@@ -2,10 +2,12 @@
 
 namespace Drupal\devportal_api_reference\Plugin;
 
+use Exception;
+
 /**
  * Exception for OpenApi validation errors.
  */
-class OpenApiValidationException extends \Exception {
+class OpenApiValidationException extends Exception {
 
   /**
    * List of errors.
@@ -20,7 +22,7 @@ class OpenApiValidationException extends \Exception {
    * @return array
    *   Array of validation errors.
    */
-  public function getErrors() {
+  public function getErrors(): array {
     return $this->errors;
   }
 
@@ -30,10 +32,10 @@ class OpenApiValidationException extends \Exception {
    * @param array $errors
    *   Array of errors.
    *
-   * @return \self
+   * @return self
    *   New self.
    */
-  public function setErrors(array $errors) {
+  public function setErrors(array $errors): self {
     $this->errors = $errors;
     return $this;
   }
@@ -54,10 +56,10 @@ class OpenApiValidationException extends \Exception {
    * @param \Throwable|null $previous
    *   The previous exception or NULL.
    *
-   * @return \self
+   * @return self
    *   New OpenApiValidationException.
    */
-  public static function fromErrors(array $errors, \Throwable $previous = NULL) {
+  public static function fromErrors(array $errors, \Throwable $previous = NULL): self {
     return new self(implode(PHP_EOL, array_map(function ($error) {
       $msg = '';
 

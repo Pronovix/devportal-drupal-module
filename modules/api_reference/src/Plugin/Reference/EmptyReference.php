@@ -14,7 +14,7 @@ use Drupal\devportal_api_reference\ReferenceInterface;
  *   weight = 1,
  * )
  */
-class EmptyReference extends ReferenceBase implements ReferenceInterface {
+class EmptyReference extends ReferenceBase {
 
   /**
    * {@inheritdoc}
@@ -33,7 +33,7 @@ class EmptyReference extends ReferenceBase implements ReferenceInterface {
   /**
    * {@inheritdoc}
    */
-  public function validate(\stdClass $content) {
+  public function validate(\stdClass $content): void {
   }
 
   /**
