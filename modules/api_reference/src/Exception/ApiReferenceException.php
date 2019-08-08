@@ -24,6 +24,6 @@ namespace Drupal\devportal_api_reference\Exception;
 /**
  * Module specific base exception.
  */
-class ApiReferenceException extends \Throwable {
+interface ApiReferenceException extends \Throwable {
 
 }

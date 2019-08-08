@@ -5,6 +5,7 @@
  * Install, update, and uninstall functions for devportal_api_reference module.
  */
 
+use Drupal\devportal_api_reference\Exception\RuntimeException;
 use Drupal\file\Entity\File;
 use Drupal\filter\Entity\FilterFormat;
 use Drupal\views\Entity\View;
@@ -176,7 +177,8 @@ function devportal_api_reference_update_8002(): ?string {
   $transaction = $database->startTransaction();
   $view_id = 'devportal_api_reference';
   try {
-    if ($view = View::load($view_id)) {
+    $view = View::load($view_id);
+    if ($view) {
       // Rename page_1 display to admin_api_reference_list.
       $displays = $view->get('display');
       $displays['admin_api_reference_list'] = $displays['page_1'];
@@ -186,7 +188,7 @@ function devportal_api_reference_update_8002(): ?string {
       $view->save();
     }
     else {
-      throw new Exception("View not found: {$view_id}");
+      throw new RuntimeException("View not found: {$view_id}");
     }
   }
   catch (Exception $e) {

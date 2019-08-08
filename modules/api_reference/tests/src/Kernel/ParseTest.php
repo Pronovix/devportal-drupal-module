@@ -2,14 +2,12 @@
 
 namespace Drupal\Tests\devportal_api_reference\Kernel;
 
+use DirectoryIterator;
 use Drupal\Core\Cache\NullBackend;
 use Drupal\Core\Logger\LoggerChannelInterface;
-use Drupal\Core\Session\AccountInterface;
 use Drupal\devportal_api_reference\Plugin\Reference\OpenApi3;
 use Drupal\devportal_api_reference\Plugin\Reference\Swagger;
 use Drupal\KernelTests\KernelTestBase;
-use Psr\Log\LoggerInterface;
-use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Tests the parsing and validating edge-case swagger/openapi files.
@@ -66,14 +64,10 @@ final class ParseTest extends KernelTestBase {
 
     $files = [];
 
-    if ($dh = @opendir($dir)) {
-      while (($file = readdir($dh)) !== FALSE) {
-        $path = "{$dir}/{$file}";
-        if (strpos($file, '.') !== 0 && filetype($path) === 'file') {
-          $files[$file] = [$path];
-        }
+    foreach (new DirectoryIterator($dir) as $fileinfo) {
+      if ($fileinfo->isFile()) {
+        $files[$fileinfo->getFilename()] = [$fileinfo->getRealPath()];
       }
-      closedir($dh);
     }
 
     return $files;
@@ -133,87 +127,7 @@ final class ParseTest extends KernelTestBase {
   protected function setUp(): void {
     parent::setUp();
     $this->mockCache = new NullBackend('');
-    $this->mockLogger = new class() implements LoggerChannelInterface {
-
-      /**
-       * {@inheritdoc}
-       */
-      public function setRequestStack(RequestStack $requestStack = NULL): void {
-      }
-
-      /**
-       * {@inheritdoc}
-       */
-      public function setCurrentUser(AccountInterface $current_user = NULL): void {
-      }
-
-      /**
-       * {@inheritdoc}
-       */
-      public function setLoggers(array $loggers): void {
-      }
-
-      /**
-       * {@inheritdoc}
-       */
-      public function addLogger(LoggerInterface $logger, $priority = 0): void {
-      }
-
-      /**
-       * {@inheritdoc}
-       */
-      public function emergency($message, array $context = []): void {
-      }
-
-      /**
-       * {@inheritdoc}
-       */
-      public function alert($message, array $context = []): void {
-      }
-
-      /**
-       * {@inheritdoc}
-       */
-      public function critical($message, array $context = []): void {
-      }
-
-      /**
-       * {@inheritdoc}
-       */
-      public function error($message, array $context = []): void {
-      }
-
-      /**
-       * {@inheritdoc}
-       */
-      public function warning($message, array $context = []): void {
-      }
-
-      /**
-       * {@inheritdoc}
-       */
-      public function notice($message, array $context = []): void {
-      }
-
-      /**
-       * {@inheritdoc}
-       */
-      public function info($message, array $context = []): void {
-      }
-
-      /**
-       * {@inheritdoc}
-       */
-      public function debug($message, array $context = []): void {
-      }
-
-      /**
-       * {@inheritdoc}
-       */
-      public function log($level, $message, array $context = []): void {
-      }
-
-    };
+    $this->mockLogger = $this->createMock(LoggerChannelInterface::class);
   }
 
 }
