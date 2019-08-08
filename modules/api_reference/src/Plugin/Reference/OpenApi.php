@@ -212,7 +212,7 @@ abstract class OpenApi extends ReferenceBase implements ContainerFactoryPluginIn
       }
     }
     elseif ($key === 'pattern') {
-      $val = static::fixRegex($val);
+      $val = $this->fixRegex($val);
     }
   }
 
@@ -228,7 +228,7 @@ abstract class OpenApi extends ReferenceBase implements ContainerFactoryPluginIn
    * @return string
    *   Fixed regex.
    */
-  private static function fixRegex(string $str): string {
+  private function fixRegex(string $str): string {
     $output = '';
 
     $escaped = FALSE;
