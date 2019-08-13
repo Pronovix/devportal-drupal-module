@@ -86,7 +86,7 @@ Drupal.guidesInPageNavigation = {
         }
 
         // Adding the active status to the new header.
-        var link = this.navigation.querySelector('a[href*=' + item.getAttribute('id') + ']');
+        var link = this.navigation.querySelector('a[href*="' + item.getAttribute('id') + '"]');
         link.classList.add('guides__active-nav');
         isNewSpySet = true;
         break;
