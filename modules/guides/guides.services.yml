@@ -1,0 +1,16 @@
+services:
+  guides.guides_access_checker:
+    class: Drupal\guides\Access\GuidesAccessCheck
+    arguments: ['@guides.guides_storage']
+    tags:
+      - { name: access_check, applies_to: _guides_access }
+  guides.guides_storage:
+    class: Drupal\guides\GuidesStorage
+    arguments: ['@settings', '@cache.guides']
+    lazy: true
+  cache.guides:
+    class: Drupal\Core\Cache\CacheBackendInterface
+    tags:
+      - { name: cache.bin }
+    factory: cache_factory:get
+    arguments: [guides]
